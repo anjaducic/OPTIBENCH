@@ -442,11 +442,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\diplomski\\OptibenchProblem\\OptibenchProblem.csproj",
+      "projectUniqueName": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\OptibenchProblem.csproj",
       "projectName": "OptibenchProblem",
-      "projectPath": "C:\\diplomski\\OptibenchProblem\\OptibenchProblem.csproj",
+      "projectPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\OptibenchProblem.csproj",
       "packagesPath": "C:\\Users\\Anja\\.nuget\\packages\\",
-      "outputPath": "C:\\diplomski\\OptibenchProblem\\obj\\",
+      "outputPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Anja\\AppData\\Roaming\\NuGet\\NuGet.Config",

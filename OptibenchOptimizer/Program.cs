@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 
@@ -16,6 +17,54 @@ namespace HttpClientSample
            
         };
 
+        private static void SetClient() 
+        {
+            client.BaseAddress = new Uri("http://localhost:5030/"); //za "problem",
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            
+        }
+
+        private static string EnterProblemName()
+        {
+            string problem_name;
+            Console.Write("Enter problem name: ");
+            do
+            {
+                problem_name = Console.ReadLine()!.Trim();
+            }
+            while(string.IsNullOrWhiteSpace(problem_name));
+            return problem_name;
+        }
+
+        private static (double[], bool) EnterXValues()
+        {
+            string xInput;
+            bool validInput = true;
+            Console.Write("Enter array x: (separated by a comma): ");
+            do
+            {
+                xInput = Console.ReadLine()!.Trim();
+            }
+            while(string.IsNullOrWhiteSpace(xInput));
+                
+            string[] xStringArray = xInput.Split(',');
+            double[] x = new double[xStringArray.Length];
+            for (int i = 0; i < xStringArray.Length; i++)
+            {
+                if (double.TryParse(xStringArray[i], out double value))
+                {
+                    x[i] = value;
+                }
+                else
+                {
+                    validInput = false;
+                }
+            }
+
+            return (x, validInput);
+        }
+
         static async Task<double> GetProblemAsync(string path)
         {
             HttpResponseMessage response = await client.GetAsync(path);
@@ -23,69 +72,29 @@ namespace HttpClientSample
             if (response.IsSuccessStatusCode)
             {
                 string problemString = await response.Content.ReadAsStringAsync();
+
                 if (double.TryParse(problemString, out double parsedProblem))
-                {
                     problem = parsedProblem;
-                }
                 else
-                {
                     Console.WriteLine($"Cannot parse response '{problemString}' to double value.");
-                }
+
             }
             return problem;
-        }
-        
-
-        
-
-        static void Main()
-        {
-            RunAsync().GetAwaiter().GetResult();
         }
 
         static async Task RunAsync()
         {
-            client.BaseAddress = new Uri("http://localhost:5030/"); //za "problem",
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            
+            SetClient();
             
             // Get problem
             double problem;
             do 
             {
                 bool validInput = true;
-                string problem_name;
-                Console.Write("Enter problem name: ");
-                do
-                {
-                    problem_name = Console.ReadLine()!.Trim();
-                }
-                while(string.IsNullOrWhiteSpace(problem_name));
+                double[] x;
+                string problem_name = EnterProblemName();
+                (x, validInput) = EnterXValues();
                  
-
-                string xInput;
-                Console.Write("Enter array x: (separated by a comma): ");
-                do
-                {
-                    xInput = Console.ReadLine()!.Trim();
-                }
-                while(string.IsNullOrWhiteSpace(xInput));
-                
-                string[] xStringArray = xInput.Split(',');
-                double[] x = new double[xStringArray.Length];
-                for (int i = 0; i < xStringArray.Length; i++)
-                {
-                    if (double.TryParse(xStringArray[i], out double value))
-                    {
-                        x[i] = value;
-                    }
-                    else
-                    {
-                        validInput = false;
-                    }
-                }
-
                 if(validInput)
                 {
                     string path = $"problems/{problem_name}?{string.Join("&", x.Select(p => $"x={p}"))}";
@@ -108,13 +117,16 @@ namespace HttpClientSample
                 Console.WriteLine("Enter 0 to finish or anything else to continue.");
 
             }
-            while(!Console.ReadLine().Equals("0"));
-            
-            
-
-
-            
-            
+            while(!Console.ReadLine()!.Equals("0"));  
         }
+
+        
+        
+        static void Main()
+        {
+            RunAsync().GetAwaiter().GetResult();
+        }
+
+        
     }
 }

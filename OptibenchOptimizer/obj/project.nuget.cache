@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YeSEZ3bFkvZyiiWGDe1JCtPiNjYpmJnOq2ArrAxlQySxSCkjOlVssD/Ql5eEA3rRoT3zear/cI8bWJVCydyVCQ==",
+  "dgSpecHash": "6hAqz39hxrbznXoUCgbMub1HrME7Z29PNm6fICcrqG+1B39LKQfwCOxkvgF/PNSztqfjKF+RR/MpbvOkar0sfw==",
   "success": true,
-  "projectFilePath": "C:\\diplomski\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
+  "projectFilePath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\diplomski\\OptibenchOptimizer\\OptibenchOptimizer.csproj": {}
+    "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj": {}
   },
   "projects": {
-    "C:\\diplomski\\OptibenchOptimizer\\OptibenchOptimizer.csproj": {
+    "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\diplomski\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
+        "projectUniqueName": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
         "projectName": "OptibenchOptimizer",
-        "projectPath": "C:\\diplomski\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
+        "projectPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
         "packagesPath": "C:\\Users\\Anja\\.nuget\\packages\\",
-        "outputPath": "C:\\diplomski\\OptibenchOptimizer\\obj\\",
+        "outputPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Anja\\AppData\\Roaming\\NuGet\\NuGet.Config",
