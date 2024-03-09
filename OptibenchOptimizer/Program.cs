@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Headers;
 
 
 namespace HttpClientSample
@@ -11,6 +6,7 @@ namespace HttpClientSample
 
     class Program
     {
+        static Random random = new Random();
         static HttpClient client = new HttpClient
         {
             Timeout = TimeSpan.FromSeconds(2) // ako ne dobije odgovor u roku od 2s, http zahtjev ce se prekinuti
@@ -37,33 +33,7 @@ namespace HttpClientSample
             return problem_name;
         }
 
-        private static (double[], bool) EnterXValues()
-        {
-            string xInput;
-            bool validInput = true;
-            Console.Write("Enter array x: (separated by a comma): ");
-            do
-            {
-                xInput = Console.ReadLine()!.Trim();
-            }
-            while(string.IsNullOrWhiteSpace(xInput));
-                
-            string[] xStringArray = xInput.Split(',');
-            double[] x = new double[xStringArray.Length];
-            for (int i = 0; i < xStringArray.Length; i++)
-            {
-                if (double.TryParse(xStringArray[i], out double value))
-                {
-                    x[i] = value;
-                }
-                else
-                {
-                    validInput = false;
-                }
-            }
-
-            return (x, validInput);
-        }
+       
 
         static async Task<double> GetProblemAsync(string path)
         {
@@ -82,43 +52,81 @@ namespace HttpClientSample
             return problem;
         }
 
+    //algotirmi
+
+    // Random search algoritam, N dimenz prostor
+        static async Task<(double[], double)> RandomSearch(string problem_name, double[] lowerBounds, double[] upperBounds, int dimension, int maxIterations)
+        {
+            //inicijalizujem
+            double[] bestX = new double[dimension];
+            double bestFitness = double.NaN;
+            for (int i = 0; i < dimension; i++)
+            {
+                bestX[i] = random.NextDouble() * (upperBounds[i] - lowerBounds[i]) + lowerBounds[i];
+            }
+            //vratim f(x) pozivom servera
+            string path = $"problems/{problem_name}?{string.Join("&", bestX.Select(p => $"x={p}"))}";
+            try
+            { 
+                bestFitness = await GetProblemAsync(path);
+                Console.WriteLine("Problem f(x): " + bestFitness);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            for (int i = 0; i < maxIterations; i++)
+            {
+                double[] currentX = new double[dimension];
+                double currentFitness = double.NaN;
+                for (int j = 0; j < dimension; j++)
+                {
+                    currentX[j] = random.NextDouble() * (upperBounds[j] - lowerBounds[j]) + lowerBounds[j];
+                }
+                //vratim f(x) pozivom servera
+                path = $"problems/{problem_name}?{string.Join("&", currentX.Select(p => $"x={p}"))}";
+                try
+                { 
+                    currentFitness = await GetProblemAsync(path);
+                    Console.WriteLine("Problem f(x): " + currentFitness);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                
+                // novo najbolje rjesenje
+                if (currentFitness < bestFitness)
+                {
+                    Array.Copy(currentX, bestX, dimension);
+                    bestFitness = currentFitness;
+                }
+            }
+
+            return (bestX, bestFitness);
+        }
+
         static async Task RunAsync()
         {
             SetClient();
             
-            // Get problem
-            double problem;
+            // Find optimum
             do 
             {
-                bool validInput = true;
-                double[] x;
+                double[] bestX;
+                double bestFitness;
                 string problem_name = EnterProblemName();
-                (x, validInput) = EnterXValues();
-                 
-                if(validInput)
-                {
-                    string path = $"problems/{problem_name}?{string.Join("&", x.Select(p => $"x={p}"))}";
-                    try
-                    {
-                        problem = await GetProblemAsync(path);
-                        Console.WriteLine("Problem f(x): " + problem);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid input for x array.");
-                }
-                
-
+                (bestX, bestFitness) = await RandomSearch(problem_name,[-5],[5],1,1000);  //vidjeti za ND  
+                Console.WriteLine("\nBEST X: " + $"[{string.Join(", ", bestX)}]" + ", BEST F(X): " + bestFitness);          
                 Console.WriteLine("Enter 0 to finish or anything else to continue.");
 
             }
             while(!Console.ReadLine()!.Equals("0"));  
         }
+
+
+
 
         
         
