@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\OptibenchProblem.csproj": {}
+    "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj": {}
   },
   "projects": {
-    "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\OptibenchProblem.csproj": {
+    "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\OptibenchProblem.csproj",
-        "projectName": "OptibenchProblem",
-        "projectPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\OptibenchProblem.csproj",
+        "projectUniqueName": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
+        "projectName": "OptibenchOptimizer",
+        "projectPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\OptibenchOptimizer.csproj",
         "packagesPath": "C:\\Users\\Anja\\.nuget\\packages\\",
-        "outputPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchProblem\\obj\\",
+        "outputPath": "C:\\DIPLOMSKI_OPTIBENCH\\OPTIBENCH\\OptibenchOptimizer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Anja\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -44,12 +44,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -62,9 +56,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
