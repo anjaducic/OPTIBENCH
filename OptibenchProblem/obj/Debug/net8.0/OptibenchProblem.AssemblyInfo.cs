@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OptibenchProblem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7fbfc99f7ece5a848bad73b55b512584e2619bd4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e33641dbe04fd459e3d153c230f52cb25354099e")]
 [assembly: System.Reflection.AssemblyProductAttribute("OptibenchProblem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OptibenchProblem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
