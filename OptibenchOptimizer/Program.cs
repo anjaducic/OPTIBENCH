@@ -9,7 +9,7 @@ namespace HttpClientSample
         static Random random = new Random();
         static HttpClient client = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(2) // ako ne dobije odgovor u roku od 2s, http zahtjev ce se prekinuti
+            Timeout = TimeSpan.FromSeconds(3) // ako ne dobije odgovor u roku od 3s, http zahtjev ce se prekinuti
            
         };
 
