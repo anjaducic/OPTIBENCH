@@ -1,42 +1,33 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.IO;
+using System.Net.Http.Headers;
 
 
 namespace HttpClientSample
 {
 
-    class Program
+    interface IProblem
     {
-        static Random random = new Random();
-        static HttpClient client = new HttpClient
+        Task<double> GetValue(double[] x);
+    }
+
+    interface IOptimizer
+    {
+        Task<(double[], double)> Optimize(IProblem problem);
+    }
+
+    class RemoteProblem : IProblem
+    {
+        private readonly HttpClient client = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(3) // ako ne dobije odgovor u roku od 3s, http zahtjev ce se prekinuti
-           
+           Timeout = TimeSpan.FromSeconds(3) // ako ne dobije odgovor u roku od 3s, http zahtjev ce se prekinuti
         };
 
-        private static void SetClient() 
-        {
-            client.BaseAddress = new Uri("http://localhost:5030/"); //za "problem",
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            
-        }
+        private readonly string problemName;
 
-        private static string EnterProblemName()
+        public async Task<double> GetValue(double[] x)
         {
-            string problem_name;
-            Console.Write("Enter problem name: ");
-            do
-            {
-                problem_name = Console.ReadLine()!.Trim();
-            }
-            while(string.IsNullOrWhiteSpace(problem_name));
-            return problem_name;
-        }
-
-       
-
-        static async Task<double> GetProblemAsync(string path)
-        {
+            string path = $"problems/{this.problemName}?{string.Join("&", x.Select(p => $"x={p}"))}";
             HttpResponseMessage response = await client.GetAsync(path);
             double problem = double.NaN;
             if (response.IsSuccessStatusCode)
@@ -52,78 +43,193 @@ namespace HttpClientSample
             return problem;
         }
 
-    //algotirmi
-
-    // Random search algoritam, N dimenz prostor
-        static async Task<(double[], double)> RandomSearch(string problem_name, double[] lowerBounds, double[] upperBounds, int dimension, int maxIterations)
+        public RemoteProblem(string uri, string problemName) 
         {
-            //inicijalizujem
-            double[] bestX = new double[dimension];
-            double bestFitness = double.NaN;
-            for (int i = 0; i < dimension; i++)
-            {
-                bestX[i] = random.NextDouble() * (upperBounds[i] - lowerBounds[i]) + lowerBounds[i];
-            }
-            //vratim f(x) pozivom servera
-            string path = $"problems/{problem_name}?{string.Join("&", bestX.Select(p => $"x={p}"))}";
-            try
-            { 
-                bestFitness = await GetProblemAsync(path);
-                Console.WriteLine("Problem f(x): " + bestFitness);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            this.problemName = problemName;
+            client.BaseAddress = new Uri(uri); //za "problem",
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+    }
 
-            for (int i = 0; i < maxIterations; i++)
+    class LocalProblem : IProblem
+    {
+        public async Task<double> GetValue(double[] x)
+        {
+            return x.Sum(p => p * p);
+        }
+    }
+
+    class RandomSearchOptimizer : IOptimizer
+    {
+
+        public RandomSearchOptimizer(double[] lowerBounds, double[] upperBounds, int dimension, int maxIterations) 
+        {
+            LowerBounds = lowerBounds;
+            UpperBounds = upperBounds;
+            Dimension = dimension;
+            MaxIterations = maxIterations;
+        }
+
+        public double[] LowerBounds { get; }
+        public double[] UpperBounds { get; }
+        public int Dimension { get; }
+        public int MaxIterations { get; }
+
+        public async Task<(double[], double)> Optimize(IProblem problem)
+        {
+            var random = new Random();
+            double[] bestX = new double[this.Dimension];
+            for (int i = 0; i < this.Dimension; i++)
             {
-                double[] currentX = new double[dimension];
-                double currentFitness = double.NaN;
-                for (int j = 0; j < dimension; j++)
+                bestX[i] = random.NextDouble() * (this.UpperBounds[i] - this.LowerBounds[i]) + this.LowerBounds[i];
+            }
+            double bestFitness = await problem.GetValue(bestX);
+
+            for (int i = 0; i < this.MaxIterations; i++)
+            {
+                double[] currentX = new double[this.Dimension];
+                for (int j = 0; j < this.Dimension; j++)
                 {
-                    currentX[j] = random.NextDouble() * (upperBounds[j] - lowerBounds[j]) + lowerBounds[j];
+                    currentX[j] = random.NextDouble() * (this.UpperBounds[j] - this.LowerBounds[j]) + this.LowerBounds[j];
                 }
+                double currentFitness = await problem.GetValue(currentX);
                 //vratim f(x) pozivom servera
-                path = $"problems/{problem_name}?{string.Join("&", currentX.Select(p => $"x={p}"))}";
-                try
-                { 
-                    currentFitness = await GetProblemAsync(path);
-                    Console.WriteLine("Problem f(x): " + currentFitness);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                
+
                 // novo najbolje rjesenje
                 if (currentFitness < bestFitness)
                 {
-                    Array.Copy(currentX, bestX, dimension);
+                    Array.Copy(currentX, bestX, this.Dimension);
                     bestFitness = currentFitness;
                 }
             }
 
             return (bestX, bestFitness);
         }
+    }
 
-        static async Task RunAsync()
-        {
-            SetClient();
+    class Program
+    {
+    //    static Random random = new Random();
+    //    static HttpClient client = new HttpClient
+    //    {
+    //        Timeout = TimeSpan.FromSeconds(3) // ako ne dobije odgovor u roku od 3s, http zahtjev ce se prekinuti
+           
+    //    };
+
+    //    private static void SetClient() 
+    //    {
+    //        client.BaseAddress = new Uri("http://localhost:5030/"); //za "problem",
+    //        client.DefaultRequestHeaders.Accept.Clear();
+    //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             
-            // Find optimum
-            do 
-            {
-                double[] bestX;
-                double bestFitness;
-                string problem_name = EnterProblemName();
-                (bestX, bestFitness) = await RandomSearch(problem_name,[-5],[5],1,1000);  //vidjeti za ND  
-                Console.WriteLine("\nBEST X: " + $"[{string.Join(", ", bestX)}]" + ", BEST F(X): " + bestFitness);          
-                Console.WriteLine("Enter 0 to finish or anything else to continue.");
+    //    }
 
-            }
-            while(!Console.ReadLine()!.Equals("0"));  
-        }
+    //    private static string EnterProblemName()
+    //    {
+    //        string problem_name;
+    //        Console.Write("Enter problem name: ");
+    //        do
+    //        {
+    //            problem_name = Console.ReadLine()!.Trim();
+    //        }
+    //        while(string.IsNullOrWhiteSpace(problem_name));
+    //        return problem_name;
+    //    }
+
+       
+
+    //    static async Task<double> GetProblemAsync(string path)
+    //    {
+    //        HttpResponseMessage response = await client.GetAsync(path);
+    //        double problem = double.NaN;
+    //        if (response.IsSuccessStatusCode)
+    //        {
+    //            string problemString = await response.Content.ReadAsStringAsync();
+
+    //            if (double.TryParse(problemString, out double parsedProblem))
+    //                problem = parsedProblem;
+    //            else
+    //                Console.WriteLine($"Cannot parse response '{problemString}' to double value.");
+
+    //        }
+    //        return problem;
+    //    }
+
+    ////algotirmi
+
+        
+
+    //// Random search algoritam, N dimenz prostor
+    //    static async Task<(double[], double)> RandomSearch(string problem_name, double[] lowerBounds, double[] upperBounds, int dimension, int maxIterations)
+    //    {
+    //        //inicijalizujem
+    //        double[] bestX = new double[dimension];
+    //        double bestFitness = double.NaN;
+    //        for (int i = 0; i < dimension; i++)
+    //        {
+    //            bestX[i] = random.NextDouble() * (upperBounds[i] - lowerBounds[i]) + lowerBounds[i];
+    //        }
+    //        //vratim f(x) pozivom servera
+    //        string path = $"problems/{problem_name}?{string.Join("&", bestX.Select(p => $"x={p}"))}";
+    //        try
+    //        { 
+    //            bestFitness = await GetProblemAsync(path);
+    //            Console.WriteLine("Problem f(x): " + bestFitness);
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Console.WriteLine(e.Message);
+    //        }
+
+    //        for (int i = 0; i < maxIterations; i++)
+    //        {
+    //            double[] currentX = new double[dimension];
+    //            double currentFitness = double.NaN;
+    //            for (int j = 0; j < dimension; j++)
+    //            {
+    //                currentX[j] = random.NextDouble() * (upperBounds[j] - lowerBounds[j]) + lowerBounds[j];
+    //            }
+    //            //vratim f(x) pozivom servera
+    //            path = $"problems/{problem_name}?{string.Join("&", currentX.Select(p => $"x={p}"))}";
+    //            try
+    //            { 
+    //                currentFitness = await GetProblemAsync(path);
+    //                Console.WriteLine("Problem f(x): " + currentFitness);
+    //            }
+    //            catch (Exception e)
+    //            {
+    //                Console.WriteLine(e.Message);
+    //            }
+                
+    //            // novo najbolje rjesenje
+    //            if (currentFitness < bestFitness)
+    //            {
+    //                Array.Copy(currentX, bestX, dimension);
+    //                bestFitness = currentFitness;
+    //            }
+    //        }
+
+    //        return (bestX, bestFitness);
+    //    }
+
+        //static async Task RunAsync()
+        //{
+        //    // SetClient();
+            
+        //    // Find optimum
+        //    do 
+        //    {
+        //        double[] bestX;
+        //        double bestFitness;
+        //        string problem_name = "" EnterProblemName();
+        //        (bestX, bestFitness) = await RandomSearch(problem_name,[-5],[5],1,1000);  //vidjeti za ND  
+        //        Console.WriteLine("\nBEST X: " + $"[{string.Join(", ", bestX)}]" + ", BEST F(X): " + bestFitness);          
+        //        Console.WriteLine("Enter 0 to finish or anything else to continue.");
+
+        //    }
+        //    while(!Console.ReadLine()!.Equals("0"));  
+        //}
 
 
 
@@ -132,7 +238,18 @@ namespace HttpClientSample
         
         static void Main()
         {
-            RunAsync().GetAwaiter().GetResult();
+            // RunAsync().GetAwaiter().GetResult();
+
+            var problem_remote = new RemoteProblem("http://localhost:5030", "spherical");
+            var problem_local = new LocalProblem();
+
+            var optimizer = new RandomSearchOptimizer(new double[] { 0, 0 }, new double[] { 1, 1 }, 2, 100);
+            var t = optimizer.Optimize(problem_remote);
+
+            t.Wait();
+            var (x, fx) = t.Result;
+
+            Console.WriteLine($"x = {x}, fx = {fx}");
         }
 
         
