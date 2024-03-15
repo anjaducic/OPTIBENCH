@@ -1,7 +1,9 @@
+using Dtos;
+
 namespace interfaces
 {
      interface IMonitor
     {
-        Task Save();
+        Task Save(OptimizationResultDto result);
     }
 }

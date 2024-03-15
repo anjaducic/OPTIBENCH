@@ -31,26 +31,25 @@ namespace HttpClientSample
             "{\"number\": 30.0}" // EvaluationCount
             );
 
+            var monitor = new Implementations.Monitor("http://localhost:5201/");//Zahtjeva namespace zbog System.Threading.Monitor-a
+            var monitoring = monitor.Save(result);
+            monitoring.Wait();  //jel ovo moze da se dodijeli prom. iako vraca samo Task, tj nista
 
-            // Serijalizujem obijekat u json string
-            var stringPayload = JsonConvert.SerializeObject(result);
 
-            // StringContent moze da se koristi sa klijentom
-            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-
-            var httpClient = new HttpClient() ;  //treba li novi klijent u odnosu na onaj za problem?
-            httpClient.BaseAddress = new Uri("http://localhost:5201/"); //za "monitor",
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        
-       
-            var httpResponse = httpClient.PostAsync($"result", httpContent);
-            httpResponse.Wait();
 
             
-                var (x, fx) = optimum.Result;
+            
 
-                Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
-            }     
+            
+       
+           
+
+            
+            var (x, fx) = optimum.Result;
+
+            Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
+        } 
+
+            //ne saljem id, baza ga upise sama :D    
     }
 }
