@@ -4,6 +4,7 @@ using Dtos;
 using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using Utilities;
 
 
 
@@ -20,13 +21,20 @@ namespace HttpClientSample
 
             var optimizer = new RandomSearchOptimizer([0, 0], [1, 1], 2, 100);
             var optimum = optimizer.Optimize(problem_remote);  //vraca optimum
-
             optimum.Wait();
+
+            var (x, fx) = optimum.Result;
+            Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
+        
+
+            ParameterJsonGenerator generator = new ParameterJsonGenerator();
             var result = new OptimizationResultDto(
-            1, // Id
-            [1, 2, 3], // X
-            3, // Y
-            "{\"prviParam\": 10.0, \"drugiParam\": 20.0}", // Params
+            x, // X
+            fx, // Y
+            generator.GenerateJson(new Dictionary<string, object>{
+                {"param1", new double[] { 1.2, 3.4, 5.6 }},
+                {"param2", "some string" }
+            }), // Params
             "spherical", // ProblemName
             "{\"number\": 30.0}" // EvaluationCount
             );
@@ -36,20 +44,12 @@ namespace HttpClientSample
             monitoring.Wait();  //jel ovo moze da se dodijeli prom. iako vraca samo Task, tj nista
 
 
+            } 
 
-            
-            
-
-            
-       
-           
-
-            
-            var (x, fx) = optimum.Result;
-
-            Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
-        } 
-
-            //ne saljem id, baza ga upise sama :D    
+            //ne saljem id, baza ga upise sama :D  
+            //koliko je bitna float preciznost decimalna za rjesenje 
+            //pitati za eval. count dal ga vracati u optimize, i zasto je on json i dal je to maxiter 
+            //treba li random search da se izvrsava do nekog epsilon ili uvijek maxiter puta
+            //namespacovi
     }
 }

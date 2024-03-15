@@ -9,7 +9,7 @@ namespace Dtos
         public string Params { get; set; } 
         public string ProblemName { get; set; } 
         public string EvaluationCount { get; set; } 
-        public OptimizationResultDto(int v, double[] x, double y, string parameters, string problemName, string evaluationCount)
+        public OptimizationResultDto(double[] x, double y, string parameters, string problemName, string evaluationCount)
         {
             X = x;
             Y = y;
