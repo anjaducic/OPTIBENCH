@@ -21,7 +21,7 @@
 mono_crash.*
 
 #Migracije
-/Migrations
+OptibenchMonitor/Migrations/
 
 # Build results
 [Dd]ebug/
