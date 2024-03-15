@@ -27,24 +27,15 @@ namespace HttpClientSample
             Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
         
 
-            ParameterJsonGenerator generator = new ParameterJsonGenerator();
-            var result = new OptimizationResultDto(x, fx, generator.GenerateJson(new Dictionary<string, object>{
-                                                    {"param1", new double[] { 1.2, 3.4, 5.6 }}, {"param2", "some string" }}), // Params
-                                                    "spherical", generator.GenerateJson(new Dictionary<string, object>{
-                                                    {"number", 1}}));
             
-            var monitor = new Implementations.Monitor("http://localhost:5201/");//Zahtjeva namespace zbog System.Threading.Monitor-a
-            var monitoring = monitor.Save(result);
-            monitoring.Wait();  //jel ovo moze da se dodijeli prom. iako vraca samo Task, tj nista
 
-
-            } 
+        } 
 
             //ne saljem id, baza ga upise sama :D  
             //koliko je bitna float preciznost decimalna za rjesenje 
             //pitati za eval. count dal ga vracati u optimize, i zasto je on json i dal je to maxiter 
             //treba li random search da se izvrsava do nekog epsilon ili uvijek maxiter puta
             //namespacovi
-            //parametri, ako se doda novi algoritam???, i za sad su zakucani
+            //parametri, ako se doda novi algoritam???, i za sad su zakucani???
     }
 }

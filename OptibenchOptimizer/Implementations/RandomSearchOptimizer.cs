@@ -1,4 +1,6 @@
+using Dtos;
 using interfaces;
+using Utilities;
 
 namespace Implementations
 {
@@ -17,6 +19,7 @@ namespace Implementations
         public double[] UpperBounds { get; }
         public int Dimension { get; }
         public int MaxIterations { get; }
+        private Monitor monitor = new Monitor("http://localhost:5201/");
 
         public async Task<(double[], double)> Optimize(IProblem problem)
         {
@@ -44,6 +47,15 @@ namespace Implementations
                     bestFitness = currentFitness;
                 }
             }
+
+            ParameterJsonGenerator generator = new ParameterJsonGenerator();
+            var result = new OptimizationResultDto(bestX, bestFitness, generator.GenerateJson(new Dictionary<string, object>{
+                                                    {"param1", new double[] { 1.2, 3.4, 5.6 }}, {"param2", "some string" }}), // Params
+                                                    "spherical", generator.GenerateJson(new Dictionary<string, object>{
+                                                    {"number", 1}}));
+            
+            
+            await monitor.Save(result);
 
             return (bestX, bestFitness);
         }
