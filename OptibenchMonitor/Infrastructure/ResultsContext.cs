@@ -13,6 +13,15 @@ public class ResultsContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+     
+        modelBuilder.Entity<OptimizationResult>()
+            .Property(b => b.Params)
+            .HasColumnType("json");
+
+        modelBuilder.Entity<OptimizationResult>()
+            .Property(b => b.EvaluationCount)
+            .HasColumnType("json");
+
         //unique dodati po potrebii
     }
 

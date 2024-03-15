@@ -25,5 +25,14 @@ app.UseSwaggerUI(c =>
 });
 
 app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync());
+app.MapGet("/param/{id}", async (ResultsContext db, int id) =>
+{
+    var result = await db.Results.FindAsync(id);
+    if (result == null)
+    {
+        return Results.NotFound();
+    }
 
+    return Results.Ok(result.Params);
+});
 app.Run();
