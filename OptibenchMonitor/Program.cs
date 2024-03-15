@@ -2,6 +2,7 @@ using Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Model;
 
 //port 5201
 var builder = WebApplication.CreateBuilder(args);
@@ -35,4 +36,11 @@ app.MapGet("/param/{id}", async (ResultsContext db, int id) =>
 
     return Results.Ok(result.Params);
 });
+app.MapPost("/result", async (ResultsContext db, OptimizationResult result) =>
+{
+    await db.Results.AddAsync(result);
+    await db.SaveChangesAsync();
+    return Results.Created($"/result/{result.Id}", result);
+});
+
 app.Run();

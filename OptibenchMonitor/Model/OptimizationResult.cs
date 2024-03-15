@@ -1,8 +1,11 @@
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Model
 {
     public class OptimizationResult
     {
+        [Key]
         public required int Id { get; set; }
         public required double[] X { get; set; } 
         public required double Y { get; set; } 
