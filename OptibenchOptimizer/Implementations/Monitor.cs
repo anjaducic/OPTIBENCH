@@ -28,7 +28,7 @@ namespace Implementations
             var httpResponse = await client.PostAsync(path, httpContent);
             if (!httpResponse.IsSuccessStatusCode)
             {            
-                 Console.WriteLine($"Failed to save the result to the database.");   //jel ovo ok samo da ispisem ako nije success
+                 Console.WriteLine($"Failed to save the result to the database.");  
             }
         }
 

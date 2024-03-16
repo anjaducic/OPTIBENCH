@@ -50,9 +50,10 @@ namespace Implementations
 
             ParameterJsonGenerator generator = new ParameterJsonGenerator();
             var result = new OptimizationResultDto(bestX, bestFitness, generator.GenerateJson(new Dictionary<string, object>{
-                                                    {"param1", new double[] { 1.2, 3.4, 5.6 }}, {"param2", "some string" }}), // Params
+                                                    {"LowerBounds", LowerBounds}, {"UpperBounds", UpperBounds },
+                                                    {"Dimension", Dimension}, {"MaxIterations", MaxIterations }}), // Params
                                                     "spherical", generator.GenerateJson(new Dictionary<string, object>{
-                                                    {"number", 1}}));
+                                                    {"Count", MaxIterations}}));
             
             
             await monitor.Save(result);

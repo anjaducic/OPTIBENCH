@@ -25,17 +25,6 @@ namespace HttpClientSample
 
             var (x, fx) = optimum.Result;
             Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
-        
-
-            
-
         } 
-
-            //ne saljem id, baza ga upise sama :D  
-            //koliko je bitna float preciznost decimalna za rjesenje 
-            //pitati za eval. count dal ga vracati u optimize, i zasto je on json i dal je to maxiter 
-            //treba li random search da se izvrsava do nekog epsilon ili uvijek maxiter puta
-            //namespacovi
-            //parametri, ako se doda novi algoritam???, i za sad su zakucani???
     }
 }
