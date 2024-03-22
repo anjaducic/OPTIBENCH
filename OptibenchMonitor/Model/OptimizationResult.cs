@@ -13,13 +13,15 @@ namespace Model
         public required string Params { get; set; } 
         public required string ProblemInfo { get; set; } 
         public required string EvaluationCount { get; set; } 
-        public OptimizationResult(double[] x, double y, string parameters, string problemInfo, string evaluationCount)
+        public required string OptimizerName { get; set; }
+        public OptimizationResult(double[] x, double y, string parameters, string problemInfo, string evaluationCount, string optimizerName)
         {
             X = x;
             Y = y;
             Params = parameters; 
             ProblemInfo = problemInfo;
             EvaluationCount = evaluationCount;
+            OptimizerName = optimizerName;
         }
         public OptimizationResult(){}
     }
