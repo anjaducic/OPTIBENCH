@@ -1,132 +1,46 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http.Json;
+using Implementations;
+using Dtos;
+using System.Text;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+using Utilities;
+
+
 
 
 namespace HttpClientSample
-{
-
+{   
     class Program
-    {
-        static HttpClient client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(2) // ako ne dobije odgovor u roku od 2s, http zahtjev ce se prekinuti
-           
-        };
-
-        private static void SetClient() 
-        {
-            client.BaseAddress = new Uri("http://localhost:5030/"); //za "problem",
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            
-        }
-
-        private static string EnterProblemName()
-        {
-            string problem_name;
-            Console.Write("Enter problem name: ");
-            do
-            {
-                problem_name = Console.ReadLine()!.Trim();
-            }
-            while(string.IsNullOrWhiteSpace(problem_name));
-            return problem_name;
-        }
-
-        private static (double[], bool) EnterXValues()
-        {
-            string xInput;
-            bool validInput = true;
-            Console.Write("Enter array x: (separated by a comma): ");
-            do
-            {
-                xInput = Console.ReadLine()!.Trim();
-            }
-            while(string.IsNullOrWhiteSpace(xInput));
-                
-            string[] xStringArray = xInput.Split(',');
-            double[] x = new double[xStringArray.Length];
-            for (int i = 0; i < xStringArray.Length; i++)
-            {
-                if (double.TryParse(xStringArray[i], out double value))
-                {
-                    x[i] = value;
-                }
-                else
-                {
-                    validInput = false;
-                }
-            }
-
-            return (x, validInput);
-        }
-
-        static async Task<double> GetProblemAsync(string path)
-        {
-            HttpResponseMessage response = await client.GetAsync(path);
-            double problem = double.NaN;
-            if (response.IsSuccessStatusCode)
-            {
-                string problemString = await response.Content.ReadAsStringAsync();
-
-                if (double.TryParse(problemString, out double parsedProblem))
-                    problem = parsedProblem;
-                else
-                    Console.WriteLine($"Cannot parse response '{problemString}' to double value.");
-
-            }
-            return problem;
-        }
-
-        static async Task RunAsync()
-        {
-            SetClient();
-            
-            // Get problem
-            double problem;
-            do 
-            {
-                bool validInput = true;
-                double[] x;
-                string problem_name = EnterProblemName();
-                (x, validInput) = EnterXValues();
-                 
-                if(validInput)
-                {
-                    string path = $"problems/{problem_name}?{string.Join("&", x.Select(p => $"x={p}"))}";
-                    try
-                    {
-                        problem = await GetProblemAsync(path);
-                        Console.WriteLine("Problem f(x): " + problem);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid input for x array.");
-                }
-                
-
-                Console.WriteLine("Enter 0 to finish or anything else to continue.");
-
-            }
-            while(!Console.ReadLine()!.Equals("0"));  
-        }
-
-        
-        
+    {  
         static void Main()
         {
-            RunAsync().GetAwaiter().GetResult();
-        }
 
-        
+            var problem_remote = new RemoteProblem("http://localhost:5030", "spherical");
+            var problem_local = new LocalProblem();
+
+            var args = new OptimizerArguments 
+            {
+                ArrayDoubleSpecs = new Dictionary<string, double[]>{{"LowerBounds", new double[] {0,0}}, {"UpperBounds", new double[] {1,1} }},
+                IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 100 }},
+            };
+            //Console.WriteLine(args.GenerateJson());
+
+            var optimizer = new RandomSearchOptimizer(args);
+            var optimum = optimizer.Optimize(problem_remote);  //vraca optimum
+            optimum.Wait();
+            var (x, fx, iterNum) = optimum.Result;
+            Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
+
+            //store result
+            ParameterJsonGenerator generator = new ParameterJsonGenerator();
+            var result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", problem_remote.Uri},{"ProblemName", problem_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+
+            var monitor = new Implementations.Monitor("http://localhost:5201/");//Zahtjeva namespace zbog System.Threading.Monitor-a
+            var monitoring = monitor.Save(result);
+            monitoring.Wait();  //jel ovo moze da se dodijeli prom. iako vraca samo Task, tj nista
+
+            
+        } 
     }
 }
