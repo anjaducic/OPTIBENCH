@@ -2,9 +2,6 @@
 using Dtos;
 using Utilities;
 
-
-
-
 namespace HttpClientSample
 {   
     class Program
