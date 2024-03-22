@@ -34,8 +34,7 @@ namespace HttpClientSample
 
             //store result
             ParameterJsonGenerator generator = new ParameterJsonGenerator();
-            var result = new OptimizationResultDto(x, fx, args.GenerateJson(), // Params
-        /*odakle problemName  */                    "spherical", generator.GenerateJson(new Dictionary<string, object>{{"Count", 100}}));
+            var result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", problem_remote.Uri},{"ProblemName", problem_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", 100}}));
 
             var monitor = new Implementations.Monitor("http://localhost:5201/");//Zahtjeva namespace zbog System.Threading.Monitor-a
             var monitoring = monitor.Save(result);

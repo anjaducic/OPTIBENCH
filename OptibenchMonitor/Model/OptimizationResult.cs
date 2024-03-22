@@ -9,15 +9,16 @@ namespace Model
         public required int Id { get; set; }
         public required double[] X { get; set; } 
         public required double Y { get; set; } 
+
         public required string Params { get; set; } 
-        public required string ProblemName { get; set; } 
+        public required string ProblemInfo { get; set; } 
         public required string EvaluationCount { get; set; } 
-        public OptimizationResult(double[] x, double y, string parameters, string problemName, string evaluationCount)
+        public OptimizationResult(double[] x, double y, string parameters, string problemInfo, string evaluationCount)
         {
             X = x;
             Y = y;
             Params = parameters; 
-            ProblemName = problemName;
+            ProblemInfo = problemInfo;
             EvaluationCount = evaluationCount;
         }
         public OptimizationResult(){}

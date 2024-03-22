@@ -22,6 +22,10 @@ public class ResultsContext : DbContext
             .Property(b => b.EvaluationCount)
             .HasColumnType("json");
 
+        modelBuilder.Entity<OptimizationResult>()
+            .Property(b => b.ProblemInfo)
+            .HasColumnType("json");
+
         //unique dodati po potrebii
     }
 

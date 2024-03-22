@@ -7,14 +7,14 @@ namespace Dtos
         public double[] X { get; set; } 
         public double Y { get; set; } 
         public string Params { get; set; } 
-        public string ProblemName { get; set; } 
+        public string ProblemInfo { get; set; } 
         public string EvaluationCount { get; set; } 
-        public OptimizationResultDto(double[] x, double y, string parameters, string problemName, string evaluationCount)
+        public OptimizationResultDto(double[] x, double y, string parameters, string problemInfo, string evaluationCount)
         {
             X = x;
             Y = y;
             Params = parameters; 
-            ProblemName = problemName;
+            ProblemInfo = problemInfo;
             EvaluationCount = evaluationCount;
         }
     }
