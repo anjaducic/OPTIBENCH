@@ -7,19 +7,20 @@ namespace Implementations
     class RandomSearchOptimizer : IOptimizer
     {
 
-        public RandomSearchOptimizer(double[] lowerBounds, double[] upperBounds, int dimension, int maxIterations) 
+        public RandomSearchOptimizer(OptimizerArguments args) 
         {
-            LowerBounds = lowerBounds;
-            UpperBounds = upperBounds;
-            Dimension = dimension;
-            MaxIterations = maxIterations;
+            LowerBounds = args.ArrayDoubleSpecs!["LowerBounds"];
+            UpperBounds = args.ArrayDoubleSpecs!["UpperBounds"];;
+            Dimension = args.IntSpecs!["Dimension"];
+            MaxIterations = args.IntSpecs!["MaxIterations"];;
         }
+       
 
         public double[] LowerBounds { get; }
         public double[] UpperBounds { get; }
         public int Dimension { get; }
         public int MaxIterations { get; }
-        private Monitor monitor = new Monitor("http://localhost:5201/");
+        //private Monitor monitor = new Monitor("http://localhost:5201/");
 
         public async Task<(double[], double)> Optimize(IProblem problem)
         {
