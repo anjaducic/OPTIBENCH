@@ -22,8 +22,9 @@ namespace Implementations
         public int MaxIterations { get; }
         //private Monitor monitor = new Monitor("http://localhost:5201/");
 
-        public async Task<(double[], double)> Optimize(IProblem problem)
+        public async Task<(double[], double, int)> Optimize(IProblem problem)
         {
+            int iterNum = 0;
             var random = new Random();
             double[] bestX = new double[this.Dimension];
             for (int i = 0; i < this.Dimension; i++)
@@ -40,6 +41,7 @@ namespace Implementations
                     currentX[j] = random.NextDouble() * (this.UpperBounds[j] - this.LowerBounds[j]) + this.LowerBounds[j];
                 }
                 double currentFitness = await problem.GetValue(currentX);
+                iterNum++;
 
                 // novo najbolje rjesenje
                 if (currentFitness < bestFitness)
@@ -51,7 +53,7 @@ namespace Implementations
 
             
 
-            return (bestX, bestFitness);
+            return (bestX, bestFitness, iterNum);
         }
     }
 }

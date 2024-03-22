@@ -29,12 +29,12 @@ namespace HttpClientSample
             var optimizer = new RandomSearchOptimizer(args);
             var optimum = optimizer.Optimize(problem_remote);  //vraca optimum
             optimum.Wait();
-            var (x, fx) = optimum.Result;
+            var (x, fx, iterNum) = optimum.Result;
             Console.WriteLine($"x = [{string.Join(", ", x)}], fx = {fx}");
 
             //store result
             ParameterJsonGenerator generator = new ParameterJsonGenerator();
-            var result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", problem_remote.Uri},{"ProblemName", problem_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", 100}}), "RandomSearch");
+            var result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", problem_remote.Uri},{"ProblemName", problem_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
 
             var monitor = new Implementations.Monitor("http://localhost:5201/");//Zahtjeva namespace zbog System.Threading.Monitor-a
             var monitoring = monitor.Save(result);

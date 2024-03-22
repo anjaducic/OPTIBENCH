@@ -2,6 +2,6 @@ namespace interfaces
 {
      interface IOptimizer
     {
-        Task<(double[], double)> Optimize(IProblem problem);
+        Task<(double[], double, int)> Optimize(IProblem problem);
     }
 }
