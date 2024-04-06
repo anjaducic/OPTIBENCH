@@ -7,6 +7,14 @@ using Model;
 //port 5201
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options => //dodato da bi radilo gadjanje sa fronta
+{
+    options.AddPolicy("AllowAnyOrigin",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -18,6 +26,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ResultsContext>(m => m.UseNpgsql(connectionString));
 
 var app = builder.Build();
+app.UseCors("AllowAnyOrigin");  //dodato da bi radilo gadjanje sa fronta
+
+
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

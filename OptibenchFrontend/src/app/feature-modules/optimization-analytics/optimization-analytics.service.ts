@@ -1,8 +1,18 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { OptimizationResult } from "../model/optimization-result.model";
+import { environment } from "src/env/environment";
 
 @Injectable({
     providedIn: "root",
 })
 export class OptimizationAnalyticsService {
-    constructor() {}
+    constructor(private http: HttpClient) {}
+
+    getResults(): Observable<OptimizationResult[]> {
+        return this.http.get<OptimizationResult[]>(
+            environment.apiHost + "results",
+        );
+    }
 }
