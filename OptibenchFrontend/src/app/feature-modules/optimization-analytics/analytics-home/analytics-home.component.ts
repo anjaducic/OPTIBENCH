@@ -19,4 +19,7 @@ export class AnalyticsHomeComponent implements OnInit {
             },
         });
     }
+    getObjectKeys(obj: any): string[] {
+        return Object.keys(obj);
+    }
 }
