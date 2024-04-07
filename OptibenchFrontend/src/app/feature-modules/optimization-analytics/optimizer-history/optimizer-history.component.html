@@ -1,1 +1,22 @@
-<p>optimizer-history works!</p>
+<div class="dialog">
+    <h3>{{ data.problemName }} - {{ data.optimizerName }}</h3>
+    <div>
+        <div *ngFor="let result of results">
+            <div class="card">
+                <div>
+                    <label>x: </label><label>{{ result.x }}</label>
+                </div>
+                <div>
+                    <label>y: </label><label>{{ result.y }}</label>
+                </div>
+                <div>
+                    <label>params: </label><label>{{ result.params }}</label>
+                </div>
+                <div>
+                    <label>evaluation count: </label
+                    ><label>{{ result.evaluationCount }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

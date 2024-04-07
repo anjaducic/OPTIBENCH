@@ -65,7 +65,8 @@ export class AnalyticsHomeComponent implements OnInit {
 
     openDialog(problemName: string, optimizerName: string): void {
         this.dialog.open(OptimizerHistoryComponent, {
-            width: "250px",
+            width: "70%",
+            height: "70%",
             data: { problemName: problemName, optimizerName: optimizerName },
         });
     }
