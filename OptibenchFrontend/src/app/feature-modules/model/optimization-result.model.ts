@@ -3,7 +3,7 @@ export interface OptimizationResult {
     x: number[];
     y: number;
     params: JSON;
-    problemInfo: JSON;
+    problemInfo: string;
     evaluationCount: JSON;
     optimizerName: string;
 }

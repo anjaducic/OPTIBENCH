@@ -9,6 +9,7 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 })
 export class AnalyticsHomeComponent implements OnInit {
     results: OptimizationResult[] = [];
+    selectedProblemName: string = "";
 
     constructor(private service: OptimizationAnalyticsService) {}
 
@@ -19,7 +20,27 @@ export class AnalyticsHomeComponent implements OnInit {
             },
         });
     }
-    getObjectKeys(obj: any): string[] {
-        return Object.keys(obj);
+
+    parseJsonString(jsonString: string): any {
+        try {
+            return JSON.parse(jsonString);
+        } catch (e) {
+            console.error("Error parsing JSON string:", e);
+            return null;
+        }
+    }
+
+    getUniqueProblemNames(): string[] {
+        var uniqueNames = new Set<string>(); //set-da uzmem u obzir samo jedinstvene problemNames
+        this.results.forEach(result => {
+            uniqueNames.add(
+                this.parseJsonString(result.problemInfo).ProblemName,
+            );
+        });
+        return Array.from(uniqueNames);
+    }
+
+    chooseProblem(): void {
+        console.log("Selected problem name:", this.selectedProblemName);
     }
 }

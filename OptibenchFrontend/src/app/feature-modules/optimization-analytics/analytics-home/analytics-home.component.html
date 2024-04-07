@@ -1,7 +1,32 @@
 <p>analytics-home works!</p>
 <div>
-    <div *ngFor="let result of results">
+    <!--div *ngFor="let result of results">
         <label>{{ result.y }}</label>
-        <label>{{ result.problemInfo }}</label>
-    </div>
+        <ng-container *ngIf="result.problemInfo">
+            <ng-container>
+                <label>{{
+                    parseJsonString(result.problemInfo).ProblemName
+                }}</label>
+            </ng-container>
+        </ng-container>
+    </div-->
+    <mat-form-field class="category">
+        <mat-label>Select problem</mat-label>
+        <mat-select [(value)]="selectedProblemName">
+            <mat-option
+                *ngFor="let name of getUniqueProblemNames()"
+                [value]="name"
+            >
+                {{ name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button
+        type="submit"
+        color="primary"
+        (click)="chooseProblem()"
+        mat-raised-button
+    >
+        <div>Choose</div>
+    </button>
 </div>

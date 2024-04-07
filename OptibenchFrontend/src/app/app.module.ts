@@ -7,11 +7,13 @@ import { AnalyticsHomeComponent } from "./feature-modules/optimization-analytics
 import { OptimizationAnalyticsModule } from "./feature-modules/optimization-analytics/optimization-analytics.module";
 import { HttpClientModule } from "@angular/common/http";
 import { MaterialModule } from "./infrastructure/material/material.module";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatCardModule } from "@angular/material/card";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
     declarations: [AppComponent],
@@ -22,10 +24,13 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
         OptimizationAnalyticsModule,
         MaterialModule,
         FormsModule,
+        ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
         MatCardModule,
         FontAwesomeModule,
+        BrowserAnimationsModule,
+        MatSelectModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
