@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Model;
+using Newtonsoft.Json.Linq;
 
 //port 5201
 var builder = WebApplication.CreateBuilder(args);
@@ -37,8 +38,8 @@ app.UseSwaggerUI(c =>
    c.SwaggerEndpoint("/swagger/v1/swagger.json", "OptibenchMonitor API V1");
 });
 
-app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync());
-app.MapGet("/param/{id}", async (ResultsContext db, int id) =>
+app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync());    //get all
+/*app.MapGet("/param/{id}", async (ResultsContext db, int id) =>
 {
     var result = await db.Results.FindAsync(id);
     if (result == null)
@@ -47,7 +48,18 @@ app.MapGet("/param/{id}", async (ResultsContext db, int id) =>
     }
 
     return Results.Ok(result.Params);
+});*/
+app.MapGet("/results/problemName/{problemName}/optimizerName/{optimizerName}", async (ResultsContext db, string problemName, string optimizerName) =>
+{
+    var allResults = await db.Results.ToListAsync();
+
+    var filteredResults = allResults
+            .Where(r => JObject.Parse(r.ProblemInfo)["ProblemName"]!.ToString() == problemName && r.OptimizerName == optimizerName)
+            .ToList();
+    return filteredResults;
+
 });
+
 app.MapPost("/result", async (ResultsContext db, OptimizationResult result) =>
 {
     await db.Results.AddAsync(result);

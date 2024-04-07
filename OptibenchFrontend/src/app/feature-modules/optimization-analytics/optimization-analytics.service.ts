@@ -15,4 +15,17 @@ export class OptimizationAnalyticsService {
             environment.apiHost + "results",
         );
     }
+
+    getResultsByProblemAndOptimizer(
+        problem: string,
+        optimizer: string,
+    ): Observable<OptimizationResult[]> {
+        return this.http.get<OptimizationResult[]>(
+            environment.apiHost +
+                "results/problemName/" +
+                problem +
+                "/optimizerName/" +
+                optimizer,
+        );
+    }
 }
