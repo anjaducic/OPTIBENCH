@@ -1,32 +1,25 @@
-<p>analytics-home works!</p>
-<div>
-    <!--div *ngFor="let result of results">
-        <label>{{ result.y }}</label>
-        <ng-container *ngIf="result.problemInfo">
-            <ng-container>
-                <label>{{
-                    parseJsonString(result.problemInfo).ProblemName
-                }}</label>
-            </ng-container>
-        </ng-container>
-    </div-->
-    <mat-form-field class="category">
-        <mat-label>Select problem</mat-label>
-        <mat-select [(value)]="selectedProblemName">
-            <mat-option
-                *ngFor="let name of getUniqueProblemNames()"
-                [value]="name"
+<div class="container">
+    <div class="column">
+        <mat-form-field>
+            <mat-label>Select problem</mat-label>
+            <mat-select
+                [(value)]="selectedProblemName"
+                (selectionChange)="chooseProblem()"
             >
-                {{ name }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <button
-        type="submit"
-        color="primary"
-        (click)="chooseProblem()"
-        mat-raised-button
-    >
-        <div>Choose</div>
-    </button>
+                <mat-option
+                    *ngFor="let name of getUniqueProblemNames()"
+                    [value]="name"
+                >
+                    {{ name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="column">
+        <ul class="link-list" *ngIf="isProblemNameSelected">
+            <li *ngFor="let alg of getUniqueOptimizersForProblem()">
+                <a href="#">{{ alg }}</a>
+            </li>
+        </ul>
+    </div>
 </div>

@@ -10,6 +10,7 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 export class AnalyticsHomeComponent implements OnInit {
     results: OptimizationResult[] = [];
     selectedProblemName: string = "";
+    isProblemNameSelected: boolean = false;
 
     constructor(private service: OptimizationAnalyticsService) {}
 
@@ -41,6 +42,19 @@ export class AnalyticsHomeComponent implements OnInit {
     }
 
     chooseProblem(): void {
+        this.isProblemNameSelected = true;
         console.log("Selected problem name:", this.selectedProblemName);
+    }
+
+    getUniqueOptimizersForProblem(): string[] {
+        var uniqueNames = new Set<string>(); //set-da uzmem u obzir samo jedinstvene optimizerNames
+        this.results.forEach(result => {
+            if (
+                this.parseJsonString(result.problemInfo).ProblemName ==
+                this.selectedProblemName
+            )
+                uniqueNames.add(result.optimizerName);
+        });
+        return Array.from(uniqueNames);
     }
 }
