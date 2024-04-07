@@ -18,7 +18,12 @@
     <div class="column">
         <ul class="link-list" *ngIf="isProblemNameSelected">
             <li *ngFor="let alg of getUniqueOptimizersForProblem()">
-                <a href="#">{{ alg }}</a>
+                <a
+                    href="javascript:void(0)"
+                    (click)="openDialog(selectedProblemName, alg)"
+                >
+                    {{ alg }}
+                </a>
             </li>
         </ul>
     </div>

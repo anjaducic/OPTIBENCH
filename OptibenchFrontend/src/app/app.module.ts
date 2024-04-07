@@ -14,6 +14,7 @@ import { MatCardModule } from "@angular/material/card";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatSelectModule } from "@angular/material/select";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
     declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { MatSelectModule } from "@angular/material/select";
         FontAwesomeModule,
         BrowserAnimationsModule,
         MatSelectModule,
+        MatDialogModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

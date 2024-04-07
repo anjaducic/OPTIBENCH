@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { OptimizationResult } from "../../model/optimization-result.model";
 import { OptimizationAnalyticsService } from "../optimization-analytics.service";
+import { MatDialog } from "@angular/material/dialog";
+import { OptimizerHistoryComponent } from "../optimizer-history/optimizer-history.component";
 
 @Component({
     selector: "app-analytics-home",
@@ -12,7 +14,10 @@ export class AnalyticsHomeComponent implements OnInit {
     selectedProblemName: string = "";
     isProblemNameSelected: boolean = false;
 
-    constructor(private service: OptimizationAnalyticsService) {}
+    constructor(
+        private service: OptimizationAnalyticsService,
+        private dialog: MatDialog,
+    ) {}
 
     ngOnInit(): void {
         this.service.getResults().subscribe({
@@ -56,5 +61,12 @@ export class AnalyticsHomeComponent implements OnInit {
                 uniqueNames.add(result.optimizerName);
         });
         return Array.from(uniqueNames);
+    }
+
+    openDialog(problemName: string, optimizerName: string): void {
+        this.dialog.open(OptimizerHistoryComponent, {
+            width: "250px",
+            data: { problemName: problemName, optimizerName: optimizerName },
+        });
     }
 }
