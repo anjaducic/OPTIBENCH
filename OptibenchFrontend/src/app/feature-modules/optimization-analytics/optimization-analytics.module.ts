@@ -6,11 +6,16 @@ import { MatOptionModule } from "@angular/material/core";
 import { MaterialModule } from "src/app/infrastructure/material/material.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
-import { OptimizerHistoryComponent } from './optimizer-history/optimizer-history.component';
-import { ChartComponent } from './chart/chart.component';
+import { OptimizerHistoryComponent } from "./optimizer-history/optimizer-history.component";
+import { ChartComponent } from "./chart/chart.component";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @NgModule({
-    declarations: [AnalyticsHomeComponent, OptimizerHistoryComponent, ChartComponent],
+    declarations: [
+        AnalyticsHomeComponent,
+        OptimizerHistoryComponent,
+        ChartComponent,
+    ],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -19,6 +24,7 @@ import { ChartComponent } from './chart/chart.component';
         ReactiveFormsModule,
         FormsModule,
         MatSelectModule,
+        FontAwesomeModule,
     ],
 })
 export class OptimizationAnalyticsModule {}

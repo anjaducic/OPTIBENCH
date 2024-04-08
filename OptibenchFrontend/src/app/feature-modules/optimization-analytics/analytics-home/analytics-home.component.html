@@ -1,6 +1,30 @@
 <div class="container">
-    <div class="column">
-        <mat-form-field>
+    <div class="header">
+        <h1>OPTIBENCH - Testing Optimization Algorithms</h1>
+        <hr />
+        <p class="bold-text">
+            Select a problem from the dropdown list below, and view the
+            algorithms that have been applied to solve it. Explore the history
+            and details of the solving process, including histograms of the
+            results.
+        </p>
+        <p>
+            The goal of an optimization algorithm is to minimize or maximize an
+            objective function, which represents a measure of the quality of a
+            solution. Different algorithms use different strategies to explore
+            the solution space and find the optimal solution. Some algorithms
+            use deterministic approaches, while others use stochastic methods
+            such as genetic algorithms, simulated annealing, or particle swarm
+            optimization. Evaluating the performance of optimization algorithms
+            requires testing them on a variety of benchmark problems, which are
+            well-known problems with known optimal solutions. This allows
+            researchers to compare the performance of different algorithms
+            objectively.
+        </p>
+    </div>
+
+    <div>
+        <mat-form-field class="form-field">
             <mat-label>Select problem</mat-label>
             <mat-select
                 [(value)]="selectedProblemName"
@@ -15,20 +39,27 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="column">
+    <hr class="line" />
+    <div>
         <ul class="link-list" *ngIf="isProblemNameSelected">
-            <li *ngFor="let alg of getUniqueOptimizersForProblem()">
+            <li
+                *ngFor="let alg of getUniqueOptimizersForProblem()"
+                class="list-item"
+            >
                 <a
                     href="javascript:void(0)"
                     (click)="openDialog(selectedProblemName, alg)"
+                    class="link"
                 >
                     {{ alg }}
                 </a>
                 <button
                     (click)="showChart(selectedProblemName, alg)"
                     mat-raised-button
+                    color="primary"
+                    class="chart-button"
                 >
-                    <div>Chart</div>
+                    <fa-icon [icon]="faChartLine" />
                 </button>
             </li>
         </ul>

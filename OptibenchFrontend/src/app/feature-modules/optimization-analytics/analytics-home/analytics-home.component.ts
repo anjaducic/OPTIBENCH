@@ -4,6 +4,7 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 import { MatDialog } from "@angular/material/dialog";
 import { OptimizerHistoryComponent } from "../optimizer-history/optimizer-history.component";
 import { ChartComponent } from "../chart/chart.component";
+import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: "app-analytics-home",
@@ -14,6 +15,7 @@ export class AnalyticsHomeComponent implements OnInit {
     results: OptimizationResult[] = [];
     selectedProblemName: string = "";
     isProblemNameSelected: boolean = false;
+    faChartLine = faChartLine;
 
     constructor(
         private service: OptimizationAnalyticsService,
