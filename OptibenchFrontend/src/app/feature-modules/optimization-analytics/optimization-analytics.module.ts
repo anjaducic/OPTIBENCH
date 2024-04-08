@@ -7,9 +7,10 @@ import { MaterialModule } from "src/app/infrastructure/material/material.module"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { OptimizerHistoryComponent } from './optimizer-history/optimizer-history.component';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
-    declarations: [AnalyticsHomeComponent, OptimizerHistoryComponent],
+    declarations: [AnalyticsHomeComponent, OptimizerHistoryComponent, ChartComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,

@@ -3,6 +3,7 @@ import { OptimizationResult } from "../../model/optimization-result.model";
 import { OptimizationAnalyticsService } from "../optimization-analytics.service";
 import { MatDialog } from "@angular/material/dialog";
 import { OptimizerHistoryComponent } from "../optimizer-history/optimizer-history.component";
+import { ChartComponent } from "../chart/chart.component";
 
 @Component({
     selector: "app-analytics-home",
@@ -65,6 +66,14 @@ export class AnalyticsHomeComponent implements OnInit {
 
     openDialog(problemName: string, optimizerName: string): void {
         this.dialog.open(OptimizerHistoryComponent, {
+            width: "70%",
+            height: "70%",
+            data: { problemName: problemName, optimizerName: optimizerName },
+        });
+    }
+
+    showChart(problemName: string, optimizerName: string): void {
+        this.dialog.open(ChartComponent, {
             width: "70%",
             height: "70%",
             data: { problemName: problemName, optimizerName: optimizerName },

@@ -24,6 +24,12 @@
                 >
                     {{ alg }}
                 </a>
+                <button
+                    (click)="showChart(selectedProblemName, alg)"
+                    mat-raised-button
+                >
+                    <div>Chart</div>
+                </button>
             </li>
         </ul>
     </div>
