@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -19,17 +20,26 @@ app.UseSwaggerUI(c =>
 
 
 //http://localhost:5030/problems/spherical?x=1&x=1.2&x=-0.5&x=0 - primjer izgleda putanje
-app.MapGet("/problems/{problem_name}", (string problem_name, float[] x) => {
+app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
 
    switch(problem_name)
    {
       case "spherical":
-         return x.Select(xi => xi * xi).Sum();
+         return MathFunctions.Sphere(x);
+      case "rosenbrock":
+         return MathFunctions.Rosenbrock(x);
+      case "rastrigin":
+         return MathFunctions.Rastrigin(x);
+      case "shekel":
+         return MathFunctions.Shekel(x);
       default:
          return -1;
    }
 
 });
+
+
+
 
 
 
