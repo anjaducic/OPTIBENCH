@@ -32,6 +32,10 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
          return MathFunctions.Rastrigin(x);
       case "shekel":
          return MathFunctions.Shekel(x);
+      case "matyas":
+         return MathFunctions.Matyas(x);
+      case "easom":
+         return MathFunctions.Easom(x);
       default:
          return -1;
    }
