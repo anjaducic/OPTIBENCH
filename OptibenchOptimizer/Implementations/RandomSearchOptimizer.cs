@@ -20,7 +20,6 @@ namespace Implementations
         public double[] UpperBounds { get; }
         public int Dimension { get; }
         public int MaxIterations { get; }
-        //private Monitor monitor = new Monitor("http://localhost:5201/");
 
         public async Task<(double[], double, int)> Optimize(IProblem problem)
         {
