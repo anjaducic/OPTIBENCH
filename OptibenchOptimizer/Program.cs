@@ -114,7 +114,7 @@ namespace HttpClientSample
             var mishras_bird_result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", mishras_bird_remote.Uri},{"ProblemName", mishras_bird_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
             monitoring = monitor.Save(mishras_bird_result);
             monitoring.Wait(); 
-            Console.WriteLine($"mishras: x = [{string.Join(", ", x)}], fx = {fx}"); 
+            Console.WriteLine($" mishras: x = [{string.Join(", ", x)}], fx = {fx}"); 
 
             
         } 

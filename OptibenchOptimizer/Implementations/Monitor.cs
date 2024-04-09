@@ -21,7 +21,7 @@ namespace Implementations
         }
         public async Task Save(OptimizationResultDto result)  //nema povr vrijednost za sada
         {
-            if(result.Y == double.NaN)
+            if(double.IsNaN(result.Y))
             {
                 Console.WriteLine($"Failed to save the result to the database."); 
                 return;

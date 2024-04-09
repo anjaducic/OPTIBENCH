@@ -26,20 +26,21 @@ namespace Implementations
             int iterNum = 0;
             var random = new Random();
             double[] bestX = new double[this.Dimension];
-            for (int i = 0; i < this.Dimension; i++)
-            {
-                bestX[i] = random.NextDouble() * (this.UpperBounds[i] - this.LowerBounds[i]) + this.LowerBounds[i];
-            }
-            double bestFitness = await problem.GetValue(bestX);
-
+            double bestFitness = double.PositiveInfinity;
+            
             for (int i = 0; i < this.MaxIterations; i++)
             {
                 double[] currentX = new double[this.Dimension];
+                double currentFitness;
                 for (int j = 0; j < this.Dimension; j++)
                 {
                     currentX[j] = random.NextDouble() * (this.UpperBounds[j] - this.LowerBounds[j]) + this.LowerBounds[j];
                 }
-                double currentFitness = await problem.GetValue(currentX);
+                currentFitness = await problem.GetValue(currentX);
+
+                if(double.IsNaN(currentFitness))    //da li je u redu dodati ovu provjeru ovdje
+                    continue;
+                
                 iterNum++;
 
                 // novo najbolje rjesenje
@@ -50,9 +51,9 @@ namespace Implementations
                 }
             }
 
-            
-
-            return (bestX, bestFitness, iterNum);
+            if(iterNum > 0)
+                return (bestX, bestFitness, iterNum);
+            return (bestX, double.NaN, iterNum);
         }
     }
 }
