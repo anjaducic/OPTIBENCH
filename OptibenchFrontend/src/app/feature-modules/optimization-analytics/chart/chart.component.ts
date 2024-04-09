@@ -62,10 +62,16 @@ export class ChartComponent implements OnInit {
         } else {
             const rangeSize = (this.yMax - this.yMin) / 10; //provjeriti za negativne
             for (let i = 0; i < 10; i++) {
-                const range: Range = {
-                    start: this.yMin + i * rangeSize,
-                    end: this.yMin + (i + 1) * rangeSize,
-                };
+                if (i === 9)
+                    var range: Range = {
+                        start: this.yMin + i * rangeSize,
+                        end: this.yMax,
+                    };
+                else
+                    var range: Range = {
+                        start: this.yMin + i * rangeSize,
+                        end: this.yMin + (i + 1) * rangeSize,
+                    };
                 this.xRanges.push(range);
             }
         }
@@ -78,6 +84,7 @@ export class ChartComponent implements OnInit {
     }
 
     private calculateDataSet(): void {
+        //console.log(this.xRanges[9].end);
         if (this.results.length == 1) {
             this.dataSets = Array(1).fill(1);
         } else {
