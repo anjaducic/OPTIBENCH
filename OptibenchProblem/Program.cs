@@ -24,20 +24,25 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
 
    switch(problem_name)
    {
-      case "spherical":
+      case "Spherical":
          return MathFunctions.Sphere(x);
-      case "rosenbrock":
+      case "Rosenbrock":
          return MathFunctions.Rosenbrock(x);
-      case "rastrigin":
+      case "Rastrigin":
          return MathFunctions.Rastrigin(x);
-      case "shekel":
+      case "Shekel":
          return MathFunctions.Shekel(x);
-      case "matyas":
+      case "Matyas":
          return MathFunctions.Matyas(x);
-      case "easom":
+      case "Easom":
          return MathFunctions.Easom(x);
+      //sa ogranicenjima:
+      case "GomezLevi":
+         return MathFunctions.GomezLevi(x);
+      case "MishrasBird":
+         return MathFunctions.MishrasBird(x);
       default:
-         return -1;
+         return double.NaN;
    }
 
 });

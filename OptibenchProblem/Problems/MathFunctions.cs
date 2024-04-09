@@ -1,4 +1,5 @@
 using System;
+using Microsoft.OpenApi.Any;
 
 // klasa koja sadrzi samo funkcije probleme
 public static class MathFunctions
@@ -81,6 +82,52 @@ public static class MathFunctions
 
         return -term1 * term2 * term3;
     }
+
+
+
+    //sa ogranicenjima:
+    public static double GomezLevi(double[] x)
+    {
+        if (!GomezLeviConstraints(x))
+        {
+            return double.NaN; // nije ispunjen uslov
+        }
+
+        double f = 4 * Math.Pow(x[0], 2) - 2.1 * Math.Pow(x[0], 4) + (1.0 / 3.0) * Math.Pow(x[0], 6)
+                + x[0] * x[1] - 4 * Math.Pow(x[1], 2) + 4 * Math.Pow(x[1], 4);
+        return f;
+    }
+
+    private static bool GomezLeviConstraints(double[] x)
+    {
+        double constraint = -Math.Sin(4 * Math.PI * x[0]) + 2 * Math.Pow(Math.Sin(2 * Math.PI * x[1]), 2) - 1.5;
+        return constraint <= 0; // ispunjen->true
+    }
+
+    public static double MishrasBird(double[] x)
+    {
+        if (!MishrasBirdConstraints(x))
+        {
+            return double.NaN; // nije ispunjen uslov
+        }
+
+        double sinY = Math.Sin(x[1]);
+        double cosX = Math.Cos(x[0]);
+        double exp1 = Math.Exp(Math.Pow(1 - cosX, 2));
+        double exp2 = Math.Exp(Math.Pow(1 - sinY, 2));
+        double f = sinY * exp1 + cosX * exp2 + Math.Pow(x[0] - x[1], 2);
+
+        return f;
+    }
+
+    private static bool MishrasBirdConstraints(double[] x)
+    {
+        double constraint = Math.Pow(x[0] + 5, 2) + Math.Pow(x[1] + 5, 2) - 25;
+        return constraint < 0; // ispunjen->true
+    }
+
+
+
 
 
 
