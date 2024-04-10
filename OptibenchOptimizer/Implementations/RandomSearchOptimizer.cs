@@ -26,7 +26,7 @@ namespace Implementations
             int iterNum = 0;
             var random = new Random();
             double[] bestX = new double[this.Dimension];
-            double bestFitness = double.PositiveInfinity;
+            double bestFitness = double.NaN;
             
             for (int i = 0; i < this.MaxIterations; i++)
             {
@@ -38,13 +38,13 @@ namespace Implementations
                 }
                 currentFitness = await problem.GetValue(currentX);
 
-                if(double.IsNaN(currentFitness))    //da li je u redu dodati ovu provjeru ovdje
+                if(currentFitness == double.MaxValue)    //da li je u redu dodati ovu provjeru ovdje
                     continue;
                 
                 iterNum++;
 
                 // novo najbolje rjesenje
-                if (currentFitness < bestFitness)
+                if (double.IsNaN(bestFitness) || currentFitness < bestFitness)
                 {
                     Array.Copy(currentX, bestX, this.Dimension);
                     bestFitness = currentFitness;
@@ -53,7 +53,7 @@ namespace Implementations
 
             if(iterNum > 0)
                 return (bestX, bestFitness, iterNum);
-            return (bestX, double.NaN, iterNum);
+            return (bestX, double.NaN, iterNum);    // :|
         }
     }
 }

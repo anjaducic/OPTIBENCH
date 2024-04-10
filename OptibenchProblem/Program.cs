@@ -15,7 +15,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-   c.SwaggerEndpoint("/swagger/v1/swagger.json", "OptibenchProcess API V1");
+   c.SwaggerEndpoint("/swagger/v1/swagger.json", "OptibenchProblem API V1");
 });
 
 
@@ -42,7 +42,7 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
       case "MishrasBird":
          return MathFunctions.MishrasBird(x);
       default:
-         return double.NaN;
+         return double.MaxValue;
    }
 
 });

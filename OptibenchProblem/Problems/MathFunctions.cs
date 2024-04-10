@@ -90,7 +90,7 @@ public static class MathFunctions
     {
         if (!GomezLeviConstraints(x))
         {
-            return double.NaN; // nije ispunjen uslov
+            return double.MaxValue; // nije ispunjen uslov, da li ovo smije
         }
 
         double f = 4 * Math.Pow(x[0], 2) - 2.1 * Math.Pow(x[0], 4) + (1.0 / 3.0) * Math.Pow(x[0], 6)
@@ -108,7 +108,7 @@ public static class MathFunctions
     {
         if (!MishrasBirdConstraints(x))
         {
-            return double.NaN; // nije ispunjen uslov
+            return double.MaxValue; // nije ispunjen uslov
         }
 
         double sinY = Math.Sin(x[1]);
