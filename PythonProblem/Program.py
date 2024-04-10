@@ -4,20 +4,27 @@ import json
 import logging
 import re
 
-from MathFunctions import MathFunctions
+from PythonProblem.MathFunctions import MathFunctions
 
-
+def calculate_problem(self, problem_name, x_values):
+        if problem_name == "Spherical":
+            return MathFunctions.Sphere(x_values)
+        elif problem_name == "Rosenbrock":
+            return MathFunctions.Rosenbrock(x_values)
+        elif problem_name == "Rastrigin":
+            return MathFunctions.Rastrigin(x_values)
+        elif problem_name == "Matyas":
+            return MathFunctions.Matyas(x_values)
+        elif problem_name == "Easom":
+            return MathFunctions.Easom(x_values)
+        else:
+            return None
 
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
         query_params = parse_qs(parsed_path.query)
-
-        if parsed_path.path == '/favicon.ico':
-            self.send_response(204)
-            self.end_headers()
-            return
         if parsed_path.path.startswith('/problems/'):
             problem_name = parsed_path.path.split('/')[-1]
             x_values = [float(x) for x in query_params.get('x', [])]
@@ -37,20 +44,6 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(404, 'Not Found: endpoint does not exist')
             self.end_headers()
-
-    def calculate_problem(self, problem_name, x_values):
-        if problem_name == "Spherical":
-            return MathFunctions.Sphere(x_values)
-        elif problem_name == "Rosenbrock":
-            return MathFunctions.Rosenbrock(x_values)
-        elif problem_name == "Rastrigin":
-            return MathFunctions.Rastrigin(x_values)
-        elif problem_name == "Matyas":
-            return MathFunctions.Matyas(x_values)
-        elif problem_name == "Easom":
-            return MathFunctions.Easom(x_values)
-        else:
-            return None
 
         
 if __name__ == '__main__':

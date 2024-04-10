@@ -40,11 +40,12 @@ namespace HttpClientSample
             var spherical_optimum = random_search_optimizer.Optimize(spherical_remote);  //vraca optimum
             spherical_optimum.Wait();
             var (x, fx, iterNum) = spherical_optimum.Result;
+            Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
             //store result
             var spherical_result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
             var monitoring = monitor.Save(spherical_result);
             monitoring.Wait(); 
-            Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
+            
 
             //rosenbrock
             var rosenbrock_optimum = random_search_optimizer.Optimize(rosenbrock_remote);  //vraca optimum

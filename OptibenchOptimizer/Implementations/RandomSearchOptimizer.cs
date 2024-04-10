@@ -38,7 +38,7 @@ namespace Implementations
                 }
                 currentFitness = await problem.GetValue(currentX);
 
-                if(currentFitness == double.MaxValue)    //da li je u redu dodati ovu provjeru ovdje
+                if(double.IsNaN(currentFitness))    //da li je u redu dodati ovu provjeru ovdje
                     continue;
                 
                 iterNum++;

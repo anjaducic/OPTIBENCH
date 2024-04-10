@@ -25,24 +25,66 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
    switch(problem_name)
    {
       case "Spherical":
-         return MathFunctions.Sphere(x);
+      {
+         double fx = MathFunctions.Sphere(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }         
       case "Rosenbrock":
-         return MathFunctions.Rosenbrock(x);
+      {
+         double fx = MathFunctions.Rosenbrock(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
       case "Rastrigin":
-         return MathFunctions.Rastrigin(x);
+      {
+         double fx = MathFunctions.Rastrigin(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
       case "Shekel":
-         return MathFunctions.Shekel(x);
+      {
+         double fx = MathFunctions.Shekel(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
       case "Matyas":
-         return MathFunctions.Matyas(x);
+      {
+         double fx = MathFunctions.Matyas(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
       case "Easom":
-         return MathFunctions.Easom(x);
+      {
+         double fx = MathFunctions.Easom(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
+        
       //sa ogranicenjima:
       case "GomezLevi":
-         return MathFunctions.GomezLevi(x);
+      {
+         double fx = MathFunctions.GomezLevi(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
       case "MishrasBird":
-         return MathFunctions.MishrasBird(x);
+      {
+         double fx = MathFunctions.MishrasBird(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
+         
       default:
-         return double.MaxValue;
+         return Results.NotFound("Problem not found.");
    }
 
 });

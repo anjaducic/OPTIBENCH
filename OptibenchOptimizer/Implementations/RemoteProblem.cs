@@ -27,9 +27,12 @@ namespace Implementations
             string path = $"problems/{this.ProblemName}?{string.Join("&", x.Select(p => $"x={p}"))}";
             HttpResponseMessage response = await client.GetAsync(path);
             double problem = double.NaN;
+
+            
             if (response.IsSuccessStatusCode)
             {
                 string retProblem = await response.Content.ReadAsStringAsync();
+                
 
                 if (double.TryParse(retProblem, out double parsedProblem))
                     problem = parsedProblem;
@@ -37,7 +40,8 @@ namespace Implementations
                     Console.WriteLine($"Cannot parse response '{retProblem}' to double value.");
 
             }
-            return problem;
+            
+            return problem; //vratice NaN ako nesto ne valja
         }
 
         
