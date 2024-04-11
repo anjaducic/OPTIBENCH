@@ -4,21 +4,9 @@ import json
 import logging
 import re
 
-from PythonProblem.MathFunctions import MathFunctions
+from MathFunctions import MathFunctions
 
-def calculate_problem(self, problem_name, x_values):
-        if problem_name == "Spherical":
-            return MathFunctions.Sphere(x_values)
-        elif problem_name == "Rosenbrock":
-            return MathFunctions.Rosenbrock(x_values)
-        elif problem_name == "Rastrigin":
-            return MathFunctions.Rastrigin(x_values)
-        elif problem_name == "Matyas":
-            return MathFunctions.Matyas(x_values)
-        elif problem_name == "Easom":
-            return MathFunctions.Easom(x_values)
-        else:
-            return None
+
 
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
@@ -39,11 +27,25 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 response = str(result)
                 self.wfile.write(response.encode('utf-8'))
             else:
-                self.send_response(404, 'Not Found: problem does not exist')
+                self.send_response(404, 'Not Found: result does not exist')
                 self.end_headers()
         else:
-            self.send_response(404, 'Not Found: endpoint does not exist')
+            self.send_response(404, 'Not Found: problem does not exist')
             self.end_headers()
+
+    def calculate_problem(self, problem_name, x_values):
+        if problem_name == "Spherical":
+            return MathFunctions.Sphere(x_values)
+        elif problem_name == "Rosenbrock":
+            return MathFunctions.Rosenbrock(x_values)
+        elif problem_name == "Rastrigin":
+            return MathFunctions.Rastrigin(x_values)
+        elif problem_name == "Matyas":
+            return MathFunctions.Matyas(x_values)
+        elif problem_name == "Easom":
+            return MathFunctions.Easom(x_values)
+        else:
+            return None
 
         
 if __name__ == '__main__':

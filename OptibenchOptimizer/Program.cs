@@ -20,6 +20,8 @@ namespace HttpClientSample
             var mishras_bird_remote = new RemoteProblem("http://localhost:5030", "MishrasBird");
 
 
+            var py_spherical_remote = new RemoteProblem("http://localhost:5055", "Spherical");
+
 
 
 
@@ -37,7 +39,7 @@ namespace HttpClientSample
             ParameterJsonGenerator generator = new ParameterJsonGenerator();
 
             //spherical
-            var spherical_optimum = random_search_optimizer.Optimize(spherical_remote);  //vraca optimum
+           /* var spherical_optimum = random_search_optimizer.Optimize(spherical_remote);  //vraca optimum
             spherical_optimum.Wait();
             var (x, fx, iterNum) = spherical_optimum.Result;
             Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
@@ -116,7 +118,18 @@ namespace HttpClientSample
             monitoring = monitor.Save(mishras_bird_result);
             monitoring.Wait(); 
             Console.WriteLine($" mishras: x = [{string.Join(", ", x)}], fx = {fx}"); 
+*/
 
+
+            //py spherical
+            var py_spherical_optimum = random_search_optimizer.Optimize(py_spherical_remote);  //vraca optimum
+            py_spherical_optimum.Wait();
+            var (x, fx, iterNum) = py_spherical_optimum.Result;
+            Console.WriteLine($"py spherical: x = [{string.Join(", ", x)}], fx = {fx}");
+            //store result
+            var spherical_result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", py_spherical_remote.Uri},{"ProblemName", py_spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var monitoring = monitor.Save(spherical_result);
+            monitoring.Wait();
             
         } 
     }
