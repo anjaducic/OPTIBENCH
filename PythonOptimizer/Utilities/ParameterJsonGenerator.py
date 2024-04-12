@@ -2,7 +2,7 @@ import json
 
 class ParameterJsonGenerator:
     def generate_json(self, parameters):
-        return json.dumps(parameters)
+        return json.dumps(parameters, separators=(',', ':'))
 
 
 #generator = ParameterJsonGenerator()

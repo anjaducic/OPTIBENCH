@@ -1,8 +1,8 @@
 import math
 from typing import Tuple
 from random import random
-from AbstractClasses import IOptimizer
-from PythonOptimizer.AbstractClasses.IProblem import IProblem
+from Abstractions.IOptimizer import IOptimizer
+from Abstractions.IProblem import IProblem
 from Utilities import OptimizerArguments
 
 

@@ -62,6 +62,7 @@ app.MapGet("/results/problemName/{problemName}/optimizerName/{optimizerName}", a
 
 app.MapPost("/result", async (ResultsContext db, OptimizationResult result) =>
 {
+    Console.WriteLine(result.ProblemInfo);
     await db.Results.AddAsync(result);
     await db.SaveChangesAsync();
     return Results.Created($"/result/{result.Id}", result);

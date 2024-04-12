@@ -2,12 +2,12 @@ import json
 
 
 class OptimizerArguments:
-    def __init__(self):
-        self.int_specs = None
-        self.array_int_specs = None
-        self.double_specs = None
-        self.array_double_specs = None
-        self.boolean_config = None
+    def __init__(self, int_specs=None, array_int_specs=None, double_specs=None, array_double_specs=None, boolean_config=None):
+        self.int_specs = int_specs or {}
+        self.array_int_specs = array_int_specs or {}
+        self.double_specs = double_specs or {}
+        self.array_double_specs = array_double_specs or {}
+        self.boolean_config = boolean_config or {}
     def generate_json(self):
         all_parameters = {}
         if self.int_specs:
@@ -21,5 +21,5 @@ class OptimizerArguments:
         if self.boolean_config:
             all_parameters["BooleanConfig"] = self.boolean_config
 
-        return json.dumps(all_parameters)   #vraca json string
+        return json.dumps(all_parameters, separators=(',', ':'))   #vraca json string
              
