@@ -67,6 +67,12 @@ namespace HttpClientSample
                 ArrayDoubleSpecs = new Dictionary<string, double[]>{{"LowerBounds", new double[] {-4,-2.5}}, {"UpperBounds", new double[] {-2,-0.5} }},
                 IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 1000 }},
             };
+
+            var matyas_pso_args = new OptimizerArguments 
+            {
+                ArrayDoubleSpecs = new Dictionary<string, double[]>{{"NumDime", new double[] {-4,-2.5}}, {"UpperBounds", new double[] {-2,-0.5} }},
+                IntSpecs = new Dictionary<string, int>{{"NumDimensions", 2}},
+            };
             //Console.WriteLine(args.GenerateJson());
 
             var monitor = new Implementations.Monitor("http://localhost:5201/");//Zahtjeva namespace zbog System.Threading.Monitor-a
@@ -79,11 +85,12 @@ namespace HttpClientSample
             var gomez_levi_random_search_optimizer = new RandomSearchOptimizer(gomez_levi_args);
             var mishras_bird_random_search_optimizer = new RandomSearchOptimizer(mishras_bird_args);
 
+            
 
             ParameterJsonGenerator generator = new ParameterJsonGenerator();
 
             //spherical
-            var spherical_optimum = spherical_random_search_optimizer.Optimize(spherical_remote);  //vraca optimum
+            /*var spherical_optimum = spherical_random_search_optimizer.Optimize(spherical_remote);  //vraca optimum
             spherical_optimum.Wait();
             var (x, fx, iterNum) = spherical_optimum.Result;
             Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
@@ -162,6 +169,7 @@ namespace HttpClientSample
             monitoring = monitor.Save(mishras_bird_result);
             monitoring.Wait(); 
             Console.WriteLine($" mishras: x = [{string.Join(", ", x)}], fx = {fx}"); 
+*/
 /*
 
 
@@ -174,6 +182,13 @@ namespace HttpClientSample
             var spherical_result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", py_spherical_remote.Uri},{"ProblemName", py_spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
             var monitoring = monitor.Save(spherical_result);
             monitoring.Wait();*/
+
+            PSOOptions options = new();
+            options.NPart = 150;
+            options.NIter = 300;
+
+            
+        
             
         } 
     }

@@ -3,15 +3,7 @@ using Utilities;
 
 namespace Implementations
 {
-    public class PsoOptimizer : IOptimizer
-    {
-        
-
-        public Task<(double[], double, int)> Optimize(IProblem problem)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    
 
     public class PSOOptions
     {
@@ -30,6 +22,8 @@ namespace Implementations
         public double InitOffset { get; set; } = 0;
         public double InitSpan { get; set; } = 1;
         public double TrustOffset { get; set; } = 0;
+
+        
     }
 
 
@@ -111,7 +105,7 @@ namespace Implementations
         }
     }
 
-    public class PSOOptimizer
+    public class PSOOptimizer : IOptimizer
     {
         public int NumDimensions { get; set; }
         public int MaxIterations { get; set; }
@@ -133,24 +127,39 @@ namespace Implementations
 
             if (!Options.InitPopulation!.Cast<double>().Any(double.IsNaN))
             {
-                var b = Options.InitPopulation!.GetLength(0);
-                var pdim = 1;
-                var pno = b;
+                int pno = 0;
+                int pdim = 1;
 
-                if (pno != Options.NPart || pdim != Options.NPart)  //pisalo nvar??
+                if (Options.InitPopulation != null && Options.InitPopulation.GetType().IsArray)
                 {
-                    throw new Exception("The format of initial population is inconsistent with desired population");
-                }
-
-                Population = [];
-                for (var i = 0; i < NumParticles; i++)
-                {
-                    var initialPosition = new double[NumDimensions];
-                    for (var j = 0; j < NumDimensions; j++)
+                    var array = (Array)Options.InitPopulation;
+                    if (array.Rank == 1)
                     {
-                        initialPosition[j] = (double)Options.InitPopulation[i, j]!;
+                        pno = array.GetLength(0);                       
+                        pdim = 1;
                     }
-                    Population.Append(new Particle(initialPosition, NumDimensions, Options));
+                    else if (array.Rank == 2)
+                    {
+                        pno = array.GetLength(0);
+                        pdim = array.GetLength(1);
+                    }
+                
+
+                    if (pno != Options.NPart || pdim != NumDimensions)  //pisalo nvar??
+                    {
+                        throw new Exception("The format of initial population is inconsistent with desired population");
+                    }
+
+                    Population = [];
+                    for (var i = 0; i < NumParticles; i++)
+                    {
+                        var initialPosition = new double[NumDimensions];
+                        for (var j = 0; j < NumDimensions; j++)
+                        {
+                            initialPosition[j] = (double)Options.InitPopulation[i, j]!;
+                        }
+                        Population.Append(new Particle(initialPosition, NumDimensions, Options));
+                    }
                 }
             }
             else
