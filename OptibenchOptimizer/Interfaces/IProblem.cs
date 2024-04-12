@@ -1,6 +1,6 @@
 namespace interfaces
 {
-    interface IProblem
+    public interface IProblem
     {
         Task<double> GetValue(double[] x);
     }
