@@ -68,16 +68,16 @@ export class AnalyticsHomeComponent implements OnInit {
 
     openDialog(problemName: string, optimizerName: string): void {
         this.dialog.open(OptimizerHistoryComponent, {
-            width: "70%",
-            height: "70%",
+            width: "70vw",
+            height: "80vh",
             data: { problemName: problemName, optimizerName: optimizerName },
         });
     }
 
     showChart(problemName: string, optimizerName: string): void {
         this.dialog.open(ChartComponent, {
-            width: "70%",
-            height: "70%",
+            width: "70vw",
+            height: "80vh",
             data: { problemName: problemName, optimizerName: optimizerName },
         });
     }

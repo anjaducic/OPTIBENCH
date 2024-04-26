@@ -2,8 +2,8 @@ export interface OptimizationResult {
     id: number;
     x: number[];
     y: number;
-    params: JSON;
+    params: string;
     problemInfo: string;
-    evaluationCount: JSON;
+    evaluationCount: string;
     optimizerName: string;
 }
