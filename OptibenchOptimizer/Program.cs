@@ -27,6 +27,8 @@ namespace HttpClientSample
         static OptimizerArguments? gomez_levi_args;
         static OptimizerArguments? mishras_bird_args;
         static OptimizerArguments? matyas_pso_args;
+        
+        static OptimizerArguments? spherical_pso_args;
         static RandomSearchOptimizer? spherical_random_search_optimizer;
         static RandomSearchOptimizer? rosenbrock_random_search_optimizer;
         static RandomSearchOptimizer? rastrigin_random_search_optimizer;
@@ -35,6 +37,9 @@ namespace HttpClientSample
         static RandomSearchOptimizer? easom_random_search_optimizer;
         static RandomSearchOptimizer? gomez_levi_random_search_optimizer;
         static RandomSearchOptimizer? mishras_bird_random_search_optimizer;
+
+
+        static PSOOptimizer? spherical_pso_optimizer;
 
         static void Main()
         {
@@ -64,6 +69,7 @@ namespace HttpClientSample
             gomez_levi_remote = new RemoteProblem("http://localhost:5030", "GomezLevi");
             mishras_bird_remote = new RemoteProblem("http://localhost:5030", "MishrasBird");
             py_spherical_remote = new RemoteProblem("http://localhost:5055", "Spherical");
+            
         }
 
         private static void DefineArguments()
@@ -115,6 +121,14 @@ namespace HttpClientSample
                 IntSpecs = new Dictionary<string, int>{{"NumDimensions", 2}},
             };
 
+
+            //za pso
+            spherical_pso_args = new OptimizerArguments 
+            {
+                IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 1000 }, {"NumParticles", 200}},
+                DoubleSpecs = new Dictionary<string, double>{{"Cbi", 2.5}, {"Cbf", 0.5}, {"Cgi", 0.5}, {"Cgf", 2.5}, {"Wi", 0.9}, {"Wf", 0.4}, {"VSpanInit", 1}, {"InitOffset", 0}, {"InitSpan", 1}}
+            };
+
         }
 
         private static void InstantiateOptimizers()
@@ -128,7 +142,7 @@ namespace HttpClientSample
             gomez_levi_random_search_optimizer = new RandomSearchOptimizer(gomez_levi_args!);
             mishras_bird_random_search_optimizer = new RandomSearchOptimizer(mishras_bird_args!); 
 
-            //spherical_pso_optimizer = new PSOOptimizer()      
+            spherical_pso_optimizer = new PSOOptimizer(spherical_pso_args!);      
         }
 
         private static void ExecuteOptimizers()
@@ -141,6 +155,16 @@ namespace HttpClientSample
             //store result
             var spherical_result = new OptimizationResultDto(x, fx, spherical_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");   
             var monitoring = monitor.Save(spherical_result);
+            monitoring.Wait(); 
+
+            //spherical
+            var spherical_pso_optimum = spherical_pso_optimizer!.Optimize(spherical_remote!);  //vraca optimum
+            spherical_pso_optimum.Wait();
+            (x, fx, iterNum) = spherical_pso_optimum.Result;
+            Console.WriteLine($"spherical pso: x = [{string.Join(", ", x)}], fx = {fx}");
+            //store result
+            var spherical_pso_result = new OptimizationResultDto(x, fx, spherical_pso_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "PSO");   
+            monitoring = monitor.Save(spherical_pso_result);
             monitoring.Wait(); 
             
 
