@@ -58,30 +58,34 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
 
     def calculate_problem(self, problem_name, x_values):
-        if problem_name == "Spherical":
-            return MathFunctions.Sphere(x_values)
-        elif problem_name == "Rosenbrock":
-            return MathFunctions.Rosenbrock(x_values)
-        elif problem_name == "Rastrigin":
-            return MathFunctions.Rastrigin(x_values)
-        elif problem_name == "Matyas":
-            return MathFunctions.Matyas(x_values)
-        elif problem_name == "Easom":
+        if problem_name == "Easom":
             return MathFunctions.Easom(x_values)
+        elif problem_name == "Beale":
+            return MathFunctions.Beale(x_values)
+        elif problem_name == "Booth":
+            return MathFunctions.Booth(x_values)
+        elif problem_name == "ThreeHumpCamel":
+            return MathFunctions.ThreeHumpCamel(x_values)
+        elif problem_name == "McCormick":
+            return MathFunctions.McCormick(x_values)
+        elif problem_name == "BukinN6":
+            return MathFunctions.BukinN6(x_values)
         else:
             return None
         
     def get_exact_solution(self, problem_name):
-            if problem_name == "Spherical":
-                return 0.0
-            elif problem_name == "Rosenbrock":
-                return 0.0
-            elif problem_name == "Rastrigin":
-                return 0.0
-            elif problem_name == "Matyas":
-                return 0.0
-            elif problem_name == "Easom":
+            if problem_name == "Easom":
                 return -1.0
+            elif problem_name == "Beale":
+                return 0.0
+            elif problem_name == "Booth":
+                return 0.0
+            elif problem_name == "ThreeHumpCamel":
+                return 0.0
+            elif problem_name == "McCormick":
+                return -1.9133
+            elif problem_name == "BukinN6":
+                return -0.0
             else:
                 return None
 

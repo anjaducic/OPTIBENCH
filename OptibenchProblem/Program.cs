@@ -59,13 +59,13 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
             return Results.NotFound("No result.");
          return Results.Ok(fx);
       }
-      case "Easom":
+      /*case "Easom":
       {
          double fx = MathFunctions.Easom(x);
          if(double.IsNaN(fx))
             return Results.NotFound("No result.");
          return Results.Ok(fx);
-      }
+      }*/
         
       //sa ogranicenjima:
       case "GomezLevi":
@@ -114,10 +114,10 @@ app.MapGet("/exact-solution/{problem_name}", (string problem_name) => {
       {
          return Results.Ok(0.0);
       }
-      case "Easom":
+      /*case "Easom":
       {
          return Results.Ok(-1.0);
-      }
+      }*/
         
       //sa ogranicenjima:
       case "GomezLevi":
