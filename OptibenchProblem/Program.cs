@@ -90,6 +90,52 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
 });
 
 
+app.MapGet("/exact-solution/{problem_name}", (string problem_name) => {
+
+   switch(problem_name)
+   {
+      case "Spherical":
+      {
+         return Results.Ok(0.0);
+      }         
+      case "Rosenbrock":
+      {
+         return Results.Ok(0.0);
+      }
+      case "Rastrigin":
+      {
+         return Results.Ok(0.0);
+      }
+      case "Shekel":
+      {
+         return Results.Ok(double.NaN);   //ok jer postoji fja, ali nepoznato rj
+      }
+      case "Matyas":
+      {
+         return Results.Ok(0.0);
+      }
+      case "Easom":
+      {
+         return Results.Ok(-1.0);
+      }
+        
+      //sa ogranicenjima:
+      case "GomezLevi":
+      {
+         return Results.Ok(-1.031628453);
+      }
+      case "MishrasBird":
+      {
+         return Results.Ok(-106.7645367);
+      }
+         
+      default:
+         return Results.NotFound("Problem not found.");
+   }
+
+});
+
+
 
 
 
