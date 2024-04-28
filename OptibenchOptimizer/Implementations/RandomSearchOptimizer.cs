@@ -14,6 +14,7 @@ namespace Implementations
             MaxIterations = args.IntSpecs!["MaxIterations"];;
         }
        
+        public string OptimizerName { get; } = "Random-Search-Csharp-DOTNET";
 
         public double[] LowerBounds { get; }
         public double[] UpperBounds { get; }

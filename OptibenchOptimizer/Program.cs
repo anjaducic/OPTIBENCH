@@ -153,7 +153,7 @@ namespace HttpClientSample
             var (x, fx, iterNum) = spherical_optimum.Result;
             Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
             //store result
-            var spherical_result = new OptimizationResultDto(x, fx, spherical_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");   
+            var spherical_result = new OptimizationResultDto(x, fx, spherical_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);   
             var monitoring = monitor.Save(spherical_result);
             monitoring.Wait(); 
 
@@ -163,7 +163,7 @@ namespace HttpClientSample
             (x, fx, iterNum) = spherical_pso_optimum.Result;
             Console.WriteLine($"spherical pso: x = [{string.Join(", ", x)}], fx = {fx}");
             //store result
-            var spherical_pso_result = new OptimizationResultDto(x, fx, spherical_pso_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "PSO");   
+            var spherical_pso_result = new OptimizationResultDto(x, fx, spherical_pso_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_pso_optimizer.OptimizerName);   
             monitoring = monitor.Save(spherical_pso_result);
             monitoring.Wait(); 
             
@@ -173,7 +173,7 @@ namespace HttpClientSample
             rosenbrock_optimum.Wait();
             (x, fx, iterNum) = rosenbrock_optimum.Result;
             //store result
-            var rosenbrock_result = new OptimizationResultDto(x, fx, rosenbrock_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", rosenbrock_remote!.Uri},{"ProblemName", rosenbrock_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var rosenbrock_result = new OptimizationResultDto(x, fx, rosenbrock_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", rosenbrock_remote!.Uri},{"ProblemName", rosenbrock_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(rosenbrock_result);
             monitoring.Wait(); 
             Console.WriteLine($"rosenbrock: x = [{string.Join(", ", x)}], fx = {fx}"); 
@@ -183,7 +183,7 @@ namespace HttpClientSample
             rastrigin_optimum.Wait();
             (x, fx, iterNum) = rastrigin_optimum.Result;
             //store result
-            var rastrigin_result = new OptimizationResultDto(x, fx, rastrigin_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", rastrigin_remote!.Uri},{"ProblemName", rastrigin_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var rastrigin_result = new OptimizationResultDto(x, fx, rastrigin_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", rastrigin_remote!.Uri},{"ProblemName", rastrigin_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(rastrigin_result);
             monitoring.Wait(); 
             Console.WriteLine($"rastrigin: x = [{string.Join(", ", x)}], fx = {fx}"); 
@@ -193,7 +193,7 @@ namespace HttpClientSample
             shekel_optimum.Wait();
             (x, fx, iterNum) = shekel_optimum.Result;
             //store result
-            var shekel_result = new OptimizationResultDto(x, fx, shekel_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", shekel_remote!.Uri},{"ProblemName", shekel_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var shekel_result = new OptimizationResultDto(x, fx, shekel_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", shekel_remote!.Uri},{"ProblemName", shekel_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(shekel_result);
             monitoring.Wait(); 
             Console.WriteLine($"shekel: x = [{string.Join(", ", x)}], fx = {fx}"); 
@@ -203,7 +203,7 @@ namespace HttpClientSample
             matyas_optimum.Wait();
             (x, fx, iterNum) = matyas_optimum.Result;
             //store result
-            var matyas_result = new OptimizationResultDto(x, fx, matyas_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", matyas_remote!.Uri},{"ProblemName", matyas_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var matyas_result = new OptimizationResultDto(x, fx, matyas_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", matyas_remote!.Uri},{"ProblemName", matyas_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(matyas_result);
             monitoring.Wait(); 
             Console.WriteLine($"matyas: x = [{string.Join(", ", x)}], fx = {fx}"); 
@@ -213,7 +213,7 @@ namespace HttpClientSample
             easom_optimum.Wait();
             (x, fx, iterNum) = easom_optimum.Result;
             //store result
-            var easom_result = new OptimizationResultDto(x, fx, easom_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", easom_remote!.Uri},{"ProblemName", easom_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var easom_result = new OptimizationResultDto(x, fx, easom_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", easom_remote!.Uri},{"ProblemName", easom_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(easom_result);
             monitoring.Wait(); 
             Console.WriteLine($"easom: x = [{string.Join(", ", x)}], fx = {fx}");
@@ -223,7 +223,7 @@ namespace HttpClientSample
             gomez_levi_optimum.Wait();
             (x, fx, iterNum) = gomez_levi_optimum.Result;
             //store result
-            var gomez_levi_result = new OptimizationResultDto(x, fx, gomez_levi_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", gomez_levi_remote!.Uri},{"ProblemName", gomez_levi_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var gomez_levi_result = new OptimizationResultDto(x, fx, gomez_levi_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", gomez_levi_remote!.Uri},{"ProblemName", gomez_levi_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(gomez_levi_result);
             monitoring.Wait(); 
             Console.WriteLine($"gomez-levi: x = [{string.Join(", ", x)}], fx = {fx}"); 
@@ -233,21 +233,21 @@ namespace HttpClientSample
             mishras_bird_optimum.Wait();
             (x, fx, iterNum) = mishras_bird_optimum.Result;
             //store result
-            var mishras_bird_result = new OptimizationResultDto(x, fx, mishras_bird_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", mishras_bird_remote!.Uri},{"ProblemName", mishras_bird_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var mishras_bird_result = new OptimizationResultDto(x, fx, mishras_bird_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", mishras_bird_remote!.Uri},{"ProblemName", mishras_bird_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(mishras_bird_result);
             monitoring.Wait(); 
             Console.WriteLine($"mishras: x = [{string.Join(", ", x)}], fx = {fx}");
 
             */
 
-            /*
+            /* ovdje optimizer preimenovati i optimizername
             //py spherical
            /* var py_spherical_optimum = random_search_optimizer.Optimize(py_spherical_remote);  //vraca optimum
             py_spherical_optimum.Wait();
             var (x, fx, iterNum) = py_spherical_optimum.Result;
             Console.WriteLine($"py spherical: x = [{string.Join(", ", x)}], fx = {fx}");
             //store result
-            var spherical_result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", py_spherical_remote.Uri},{"ProblemName", py_spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), "RandomSearch");
+            var spherical_result = new OptimizationResultDto(x, fx, args.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", py_spherical_remote.Uri},{"ProblemName", py_spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             var monitoring = monitor.Save(spherical_result);
             monitoring.Wait();*/
         }

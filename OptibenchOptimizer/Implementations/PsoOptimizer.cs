@@ -103,6 +103,7 @@ namespace Implementations
 
     public class PSOOptimizer : IOptimizer
     {
+        public string OptimizerName { get; } = "PSO-Csharp-DOTNET";
         public int Dimension { get; set; }
         public int MaxIterations { get; set; }
         public int NumParticles { get; set; }
