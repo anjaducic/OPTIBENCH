@@ -2,8 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 import json
 import logging
-import re
-
+import math
 from MathFunctions import MathFunctions
 
 
@@ -33,6 +32,32 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_response(404, 'Not Found: problem does not exist')
             self.end_headers()
 
+    def do_GET_exact_solution(self):
+        parsed_path = urlparse(self.path)
+        query_params = parse_qs(parsed_path.query)
+        if parsed_path.path.startswith('/exact-solution/'):
+            problem_name = parsed_path.path.split('/')[-1]
+            result = self.get_exact_solution(problem_name)
+
+            if result is not None:
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/plain')
+                self.end_headers()
+
+                response = str(result)
+                self.wfile.write(response.encode('utf-8'))
+            else:
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/plain')
+                self.end_headers()
+
+                response = str(math.nan)
+                self.wfile.write(response.encode('utf-8'))
+        else:
+            self.send_response(404, 'Problem not found.')
+            self.end_headers()
+
+
     def calculate_problem(self, problem_name, x_values):
         if problem_name == "Spherical":
             return MathFunctions.Sphere(x_values)
@@ -44,6 +69,20 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
             return MathFunctions.Matyas(x_values)
         elif problem_name == "Easom":
             return MathFunctions.Easom(x_values)
+        else:
+            return None
+        
+def get_exact_solution(self, problem_name):
+        if problem_name == "Spherical":
+            return 0.0
+        elif problem_name == "Rosenbrock":
+            return 0.0
+        elif problem_name == "Rastrigin":
+            return 0.0
+        elif problem_name == "Matyas":
+            return 0.0
+        elif problem_name == "Easom":
+            return -1.0
         else:
             return None
 
