@@ -7,21 +7,15 @@ namespace Implementations
 
     public class PSOOptions
     {
-        public int NPart { get; set; } = 30;
-        public int NIter { get; set; } = 100;
         public double Cbi { get; set; } = 2.5;
         public double Cbf { get; set; } = 0.5;
         public double Cgi { get; set; } = 0.5;
         public double Cgf { get; set; } = 2.5;
         public double Wi { get; set; } = 0.9;
         public double Wf { get; set; } = 0.4;
-        public double VMax { get; set; } = double.PositiveInfinity;
-        public double VMaxScale { get; set; } = double.NaN;
         public double VSpanInit { get; set; } = 1;
-        public double?[,]? InitPopulation { get; set; } = null;
         public double InitOffset { get; set; } = 0;
         public double InitSpan { get; set; } = 1;
-        public double TrustOffset { get; set; } = 0;
 
         
     }
@@ -107,80 +101,47 @@ namespace Implementations
 
     public class PSOOptimizer : IOptimizer
     {
-        public int NumDimensions { get; set; }
+        public int Dimension { get; set; }
         public int MaxIterations { get; set; }
         public int NumParticles { get; set; }
-        public Particle[] Population { get; set; }
-        public PSOOptions Options { get; set; }
+        public Particle[] Population { get; set; } = [];
+        public PSOOptions Options { get; set; } = new();
 
-        public PSOOptimizer(int numDimensions, PSOOptions options)
+        public PSOOptimizer(OptimizerArguments args)
         {
-            NumDimensions = numDimensions;
-            MaxIterations = options.NIter;
-            NumParticles = options.NPart;
-            Options = options;
-            Population = [];
+            Dimension = args.IntSpecs!["Dimension"];
+            MaxIterations = args.IntSpecs!["MaxIterations"];
+            NumParticles = args.IntSpecs!["NumParticles"];
+            Options.Cbi = args.DoubleSpecs!["Cbi"];
+            Options.Cbf = args.DoubleSpecs!["Cbf"];
+            Options.Cgi = args.DoubleSpecs!["Cgi"];
+            Options.Cgf = args.DoubleSpecs!["Cgf"];
+            Options.Wi = args.DoubleSpecs!["Wi"];
+            Options.Wf = args.DoubleSpecs!["Wf"];
+            Options.VSpanInit = args.DoubleSpecs!["VSpanInit"];
+            Options.InitOffset = args.DoubleSpecs!["InitOffset"];
+            Options.InitSpan = args.DoubleSpecs!["InitSpan"];
+
+
+            //Population = [];
         }
         public async Task<(double[], double, int)> Optimize(IProblem problem)
         {
             
-
-            if (!Options.InitPopulation!.Cast<double>().Any(double.IsNaN))
+            Population = [];
+            for (var i = 0; i < NumParticles; i++)
             {
-                int pno = 0;
-                int pdim = 1;
-
-                if (Options.InitPopulation != null && Options.InitPopulation.GetType().IsArray)
+                var initialPosition = new double[Dimension];
+                var random = new Random();
+                for (var j = 0; j < Dimension; j++)
                 {
-                    var array = (Array)Options.InitPopulation;
-                    if (array.Rank == 1)
-                    {
-                        pno = array.GetLength(0);                       
-                        pdim = 1;
-                    }
-                    else if (array.Rank == 2)
-                    {
-                        pno = array.GetLength(0);
-                        pdim = array.GetLength(1);
-                    }
-                
-
-                    if (pno != Options.NPart || pdim != NumDimensions)  //pisalo nvar??
-                    {
-                        throw new Exception("The format of initial population is inconsistent with desired population");
-                    }
-
-                    Population = [];
-                    for (var i = 0; i < NumParticles; i++)
-                    {
-                        var initialPosition = new double[NumDimensions];
-                        for (var j = 0; j < NumDimensions; j++)
-                        {
-                            initialPosition[j] = (double)Options.InitPopulation[i, j]!;
-                        }
-                        Population.Append(new Particle(initialPosition, NumDimensions, Options));
-                    }
+                    initialPosition[j] = (random.NextDouble() - 0.5) * 2 * Options.InitSpan + Options.InitOffset;
                 }
+                Population.Append(new Particle(initialPosition, Dimension, Options));
             }
-            else
-            {
-                Population = [];
-                for (var i = 0; i < NumParticles; i++)
-                {
-                    var initialPosition = new double[NumDimensions];
-                    var random = new Random();
-                    for (var j = 0; j < NumDimensions; j++)
-                    {
-                        initialPosition[j] = (random.NextDouble() - 0.5) * 2 * Options.InitSpan + Options.InitOffset;
-                    }
-                    Population.Append(new Particle(initialPosition, NumDimensions, Options));
-                }
-            }
-
-
             
 
-            var globalBestPosition = new double[NumDimensions];
+            var globalBestPosition = new double[Dimension];
             var globalBestFitness = -1.0;
 
             // opt petlja
@@ -189,7 +150,7 @@ namespace Implementations
                 // Evaluate fitness - za svaku cesticu
                 foreach (var particle in Population)
                 {
-                    await particle.Evaluate(problem);   //treba li i Wait?
+                    await particle.Evaluate(problem);   
 
                     // Update global best
                     if (particle.BestFitness < globalBestFitness || globalBestFitness == -1)

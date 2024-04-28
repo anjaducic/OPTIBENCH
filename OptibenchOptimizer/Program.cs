@@ -126,7 +126,9 @@ namespace HttpClientSample
             matyas_random_search_optimizer = new RandomSearchOptimizer(matyas_args!);
             easom_random_search_optimizer = new RandomSearchOptimizer(easom_args!);
             gomez_levi_random_search_optimizer = new RandomSearchOptimizer(gomez_levi_args!);
-            mishras_bird_random_search_optimizer = new RandomSearchOptimizer(mishras_bird_args!);       
+            mishras_bird_random_search_optimizer = new RandomSearchOptimizer(mishras_bird_args!); 
+
+            //spherical_pso_optimizer = new PSOOptimizer()      
         }
 
         private static void ExecuteOptimizers()
@@ -143,7 +145,7 @@ namespace HttpClientSample
             
 
             //rosenbrock
-            var rosenbrock_optimum = rosenbrock_random_search_optimizer!.Optimize(rosenbrock_remote!);  //vraca optimum
+          /*  var rosenbrock_optimum = rosenbrock_random_search_optimizer!.Optimize(rosenbrock_remote!);  //vraca optimum
             rosenbrock_optimum.Wait();
             (x, fx, iterNum) = rosenbrock_optimum.Result;
             //store result
@@ -212,7 +214,7 @@ namespace HttpClientSample
             monitoring.Wait(); 
             Console.WriteLine($"mishras: x = [{string.Join(", ", x)}], fx = {fx}");
 
-            
+            */
 
             /*
             //py spherical
