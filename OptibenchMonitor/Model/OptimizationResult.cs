@@ -14,6 +14,8 @@ namespace Model
         public required string ProblemInfo { get; set; } 
         public required string EvaluationCount { get; set; } 
         public required string OptimizerName { get; set; }
+
+        public int ParamsHashCode { get; set; } //ne treba required zbog baze
         public OptimizationResult(double[] x, double y, string parameters, string problemInfo, string evaluationCount, string optimizerName)
         {
             X = x;

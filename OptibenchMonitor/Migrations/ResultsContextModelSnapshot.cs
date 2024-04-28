@@ -41,6 +41,9 @@ namespace OptibenchMonitor.Migrations
                         .IsRequired()
                         .HasColumnType("json");
 
+                    b.Property<int>("ParamsHashCode")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ProblemInfo")
                         .IsRequired()
                         .HasColumnType("json");

@@ -6,4 +6,5 @@ export interface OptimizationResult {
     problemInfo: string;
     evaluationCount: string;
     optimizerName: string;
+    paramsHashCode: number;
 }
