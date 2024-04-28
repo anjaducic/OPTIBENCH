@@ -1,6 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
-import json
 import logging
 import math
 from MathFunctions import MathFunctions
@@ -72,19 +71,19 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         else:
             return None
         
-def get_exact_solution(self, problem_name):
-        if problem_name == "Spherical":
-            return 0.0
-        elif problem_name == "Rosenbrock":
-            return 0.0
-        elif problem_name == "Rastrigin":
-            return 0.0
-        elif problem_name == "Matyas":
-            return 0.0
-        elif problem_name == "Easom":
-            return -1.0
-        else:
-            return None
+    def get_exact_solution(self, problem_name):
+            if problem_name == "Spherical":
+                return 0.0
+            elif problem_name == "Rosenbrock":
+                return 0.0
+            elif problem_name == "Rastrigin":
+                return 0.0
+            elif problem_name == "Matyas":
+                return 0.0
+            elif problem_name == "Easom":
+                return -1.0
+            else:
+                return None
 
         
 if __name__ == '__main__':
