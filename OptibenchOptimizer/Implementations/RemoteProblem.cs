@@ -21,6 +21,26 @@ namespace Implementations
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public async Task<double> GetExactSolution(string problemName)
+        {
+            string path = $"exact-solution/{this.ProblemName}";
+            HttpResponseMessage response = await client.GetAsync(path);
+            double exactSolution = double.MaxValue;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string retSolution = await response.Content.ReadAsStringAsync();
+                
+
+                if (double.TryParse(retSolution, out double parsedSolution))
+                    exactSolution = parsedSolution;
+                else
+                    Console.WriteLine($"Cannot parse response '{retSolution}' to double value.");
+
+            }
+            return exactSolution; //vratice NaN ako nesto ne valja, ne postoji problem ili ne postoji tacno rjesenje
+
+        }
 
         public async Task<double> GetValue(double[] x)
         {

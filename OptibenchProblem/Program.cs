@@ -108,7 +108,7 @@ app.MapGet("/exact-solution/{problem_name}", (string problem_name) => {
       }
       case "Shekel":
       {
-         return Results.Ok(double.NaN);   //ok jer postoji fja, ali nepoznato rj
+         return Results.NotFound(double.NaN.ToString());   //ok jer postoji fja, ali nepoznato rj
       }
       case "Matyas":
       {

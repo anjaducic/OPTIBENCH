@@ -10,6 +10,7 @@ namespace Dtos
         public string ProblemInfo { get; set; } 
         public string EvaluationCount { get; set; } 
         public string OptimizerName { get; set; }
+        public double ExactSolution { get; set; }
         public OptimizationResultDto(double[] x, double y, string parameters, string problemInfo, string evaluationCount, string optimizerName)
         {
             X = x;

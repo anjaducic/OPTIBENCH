@@ -7,4 +7,5 @@ export interface OptimizationResult {
     evaluationCount: string;
     optimizerName: string;
     paramsHashCode: number;
+    exactSolution: number;
 }

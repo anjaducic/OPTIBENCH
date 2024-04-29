@@ -18,6 +18,7 @@ export class ChartComponent implements OnInit {
     dataSets: number[] = [];
     yMin: number = 0;
     yMax: number = 0;
+    exactSolution: number = 0;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -33,10 +34,13 @@ export class ChartComponent implements OnInit {
             .subscribe({
                 next: (results: OptimizationResult[]) => {
                     this.results = results;
-                    this.findYBounds();
-                    this.findXRanges();
-                    this.calculateDataSet();
-                    this.createChart();
+                    if (this.results.length > 0) {
+                        this.exactSolution = this.results[0].exactSolution;
+                        this.findYBounds();
+                        this.findXRanges();
+                        this.calculateDataSet();
+                        this.createChart();
+                    }
                 },
             });
     }
@@ -127,6 +131,7 @@ export class ChartComponent implements OnInit {
                         },
                     },
                 },
+                plugins: {},
             },
         });
     }

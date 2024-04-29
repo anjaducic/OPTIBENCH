@@ -1,3 +1,11 @@
-<div>
-    <canvas id="canvas">{{ chart }}</canvas>
+<div class="dialog">
+    <div class="title">
+        <h3>HISTOGRAM (for all parameter combinations)</h3>
+        <label class="subtitle">Problem: {{ data.problemName }}</label>
+        <br />
+        <label class="subtitle">Algorithm: {{ data.optimizerName }}</label>
+    </div>
+    <div class="canvas-container">
+        <canvas id="canvas">{{ chart }}</canvas>
+    </div>
 </div>

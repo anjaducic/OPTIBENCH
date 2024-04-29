@@ -49,6 +49,8 @@ app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync
 
     return Results.Ok(result.Params);
 });*/
+
+//za veliki histogram
 app.MapGet("/results/problemName/{problemName}/optimizerName/{optimizerName}", async (ResultsContext db, string problemName, string optimizerName) =>
 {
     var allResults = await db.Results.ToListAsync();

@@ -33,6 +33,9 @@ namespace OptibenchMonitor.Migrations
                         .IsRequired()
                         .HasColumnType("json");
 
+                    b.Property<double>("ExactSolution")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("OptimizerName")
                         .IsRequired()
                         .HasColumnType("text");
