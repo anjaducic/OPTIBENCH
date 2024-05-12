@@ -1,16 +1,29 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import {
+    AfterContentChecked,
+    AfterContentInit,
+    AfterViewChecked,
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Inject,
+    OnInit,
+    ViewChild,
+} from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { OptimizationAnalyticsService } from "../optimization-analytics.service";
 import { OptimizationResult } from "../../model/optimization-result.model";
-import { Chart } from "chart.js/auto";
+import { Chart, registerables } from "chart.js/auto";
 import { Range } from "../../model/range.model";
+import * as ChartAnnotation from "chartjs-plugin-annotation";
 
 @Component({
     selector: "app-chart",
     templateUrl: "./chart.component.html",
     styleUrls: ["./chart.component.css"],
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, AfterViewChecked {
+    @ViewChild("canvas")
+    canvasRef!: ElementRef;
     results: OptimizationResult[] = [];
     chart: any = [];
     xRanges: Range[] = [];
@@ -19,6 +32,8 @@ export class ChartComponent implements OnInit {
     yMin: number = 0;
     yMax: number = 0;
     exactSolution: number = 0;
+    ctx: any;
+    canvas: any;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,6 +41,8 @@ export class ChartComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        Chart.register(...registerables);
+        Chart.register(ChartAnnotation);
         this.service
             .getResultsByProblemAndOptimizer(
                 this.data.problemName,
@@ -39,7 +56,7 @@ export class ChartComponent implements OnInit {
                         this.findYBounds();
                         this.findXRanges();
                         this.calculateDataSet();
-                        this.createChart();
+                        //this.createChart();
                     }
                 },
             });
@@ -107,13 +124,23 @@ export class ChartComponent implements OnInit {
             }
         }
     }
+    ngAfterViewChecked(): void {
+        setTimeout(() => {
+            if (this.canvasRef && this.canvasRef.nativeElement) {
+                this.canvas = this.canvasRef.nativeElement;
+                this.ctx = this.canvas.getContext("2d");
+                this.createChart();
+            }
+        }, 2000);
+    }
 
     private createChart(): void {
         const chartType = this.results.length === 1 ? "scatter" : "bar";
-        this.chart = new Chart("canvas", {
+        this.chart = new Chart(this.canvas, {
             type: chartType,
             data: {
                 labels: this.labels,
+
                 datasets: [
                     {
                         label: "# number of solutions",
@@ -134,5 +161,12 @@ export class ChartComponent implements OnInit {
                 plugins: {},
             },
         });
+
+        const xValue = 20; // x-koordinata vertikalne linije
+        this.ctx.beginPath();
+        this.ctx.moveTo(xValue, 0);
+        this.ctx.lineTo(xValue, this.canvas.height);
+        this.ctx.strokeStyle = "red";
+        this.ctx.stroke();
     }
 }
