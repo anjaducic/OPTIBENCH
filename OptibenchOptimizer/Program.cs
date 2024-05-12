@@ -76,7 +76,7 @@ namespace HttpClientSample
         {
             spherical_args = new OptimizerArguments 
             {
-                ArrayDoubleSpecs = new Dictionary<string, double[]>{{"LowerBounds", new double[] {-15,-3}}, {"UpperBounds", new double[] {-5,3} }},
+                ArrayDoubleSpecs = new Dictionary<string, double[]>{{"LowerBounds", new double[] {-1,-1}}, {"UpperBounds", new double[] {1,1} }},
                 IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 1000 }},
             };
             rosenbrock_args = new OptimizerArguments 

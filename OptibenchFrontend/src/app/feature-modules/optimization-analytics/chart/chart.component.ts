@@ -64,9 +64,9 @@ export class ChartComponent implements OnInit {
             };
             this.xRanges.push(singleRange);
         } else {
-            const rangeSize = (this.yMax - this.yMin) / 10; //provjeriti za negativne
-            for (let i = 0; i < 10; i++) {
-                if (i === 9)
+            const rangeSize = (this.yMax - this.yMin) / 5; //provjeriti za negativne
+            for (let i = 0; i < 5; i++) {
+                if (i === 4)
                     var range: Range = {
                         start: this.yMin + i * rangeSize,
                         end: this.yMax,
@@ -83,7 +83,7 @@ export class ChartComponent implements OnInit {
             this.results.length === 1
                 ? [this.results[0].y.toString()]
                 : this.xRanges.map((range, index) => {
-                      return `${range.start}`;
+                      return `to ${range.end}`;
                   });
     }
 
@@ -92,13 +92,13 @@ export class ChartComponent implements OnInit {
         if (this.results.length == 1) {
             this.dataSets = Array(1).fill(1);
         } else {
-            this.dataSets = Array(10).fill(0);
+            this.dataSets = Array(5).fill(0);
             for (let result of this.results) {
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 5; i++) {
                     if (
                         result.y >= this.xRanges[i].start &&
                         (result.y < this.xRanges[i].end ||
-                            (i === 9 && result.y <= this.xRanges[i].end))
+                            (i === 4 && result.y <= this.xRanges[i].end))
                     ) {
                         this.dataSets[i]++;
                         break;

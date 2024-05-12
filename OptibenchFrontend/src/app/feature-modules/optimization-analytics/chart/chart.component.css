@@ -16,6 +16,16 @@
 }
 
 .canvas-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center; /* Dodaj ovo kako bi centrirao horizontalno */
+    justify-content: center; /* Dodaj ovo kako bi centrirao vertikalno */
+    text-align: center; /* Ovo nije potrebno ako centriramo preko flexboxa */
+}
+
+.title {
+    text-align: center; /* Ovo možeš zadržati ako želiš centrirati naslov */
 }
