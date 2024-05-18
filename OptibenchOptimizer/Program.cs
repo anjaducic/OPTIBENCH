@@ -152,14 +152,14 @@ namespace HttpClientSample
         private static void ExecuteOptimizers()
         {
              //spherical
-           /* var spherical_optimum = spherical_random_search_optimizer!.Optimize(spherical_remote!);  //vraca optimum
+            var spherical_optimum = spherical_random_search_optimizer!.Optimize(spherical_remote!);  //vraca optimum
             spherical_optimum.Wait();
             var (x, fx, iterNum) = spherical_optimum.Result;
             Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
             //store result
             var spherical_result = new OptimizationResultDto(x, fx, spherical_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);   
             var monitoring = monitor.Save(spherical_result, spherical_remote);
-            monitoring.Wait(); 
+            monitoring.Wait(); /*
 
           
             
@@ -248,14 +248,14 @@ namespace HttpClientSample
             monitoring.Wait();*/
 
               //spherical pso
-            var spherical_pso_optimum = spherical_pso_optimizer!.Optimize(mishras_bird_remote!);  //vraca optimum
+           /* var spherical_pso_optimum = spherical_pso_optimizer!.Optimize(mishras_bird_remote!);  //vraca optimum
             spherical_pso_optimum.Wait();
             var (x, fx, iterNum) = spherical_pso_optimum.Result;
             Console.WriteLine($"spherical pso: x = [{string.Join(", ", x)}], fx = {fx}");
             //store result
             var spherical_pso_result = new OptimizationResultDto(x, fx, spherical_pso_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", mishras_bird_remote!.Uri},{"ProblemName", mishras_bird_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_pso_optimizer.OptimizerName);   
             var monitoring = monitor.Save(spherical_pso_result, mishras_bird_remote!);
-            monitoring.Wait(); 
+            monitoring.Wait(); */
         }
     }
 }

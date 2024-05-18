@@ -34,7 +34,6 @@ export class ChartComponent implements OnInit {
     dataSets: number[] = [];
     yMin: number = 0;
     yMax: number = 0;
-    exactSolution: number = 0;
 
     canvas: any;
 
@@ -53,7 +52,6 @@ export class ChartComponent implements OnInit {
                 next: (results: OptimizationResult[]) => {
                     this.results = results;
                     if (this.results.length > 0) {
-                        //this.exactSolution = this.results[0].exactSolution;
                         this.findYBounds();
                         this.findXRanges();
                         this.calculateDataSet();
@@ -129,6 +127,7 @@ export class ChartComponent implements OnInit {
     private createChart(): void {
         const chartType = this.results.length === 1 ? "scatter" : "bar";
         const maxResult = Math.max(...this.dataSets);
+        const exactSolution = this.results[0].exactSolution;
 
         const config: ChartConfiguration<"scatter" | "bar", number[], string> =
             {
@@ -163,7 +162,37 @@ export class ChartComponent implements OnInit {
                             const ctx = chart.ctx;
                             const xAxis = chart.scales["y"];
 
-                            const xValue = xAxis.getPixelForValue(-0.7);
+                            const xValue =
+                                xAxis.getPixelForValue(exactSolution);
+
+                            chart.canvas.addEventListener(
+                                "mousemove",
+                                function (event) {
+                                    const mouseX =
+                                        event.clientX -
+                                        chart.canvas.getBoundingClientRect()
+                                            .left;
+                                    const mouseY =
+                                        event.clientY -
+                                        chart.canvas.getBoundingClientRect()
+                                            .top;
+
+                                    // Provjerite da li se miš nalazi u blizini linije
+                                    if (Math.abs(mouseX - xValue) < 5) {
+                                        // Prikazati vrijednost exactSolution kao tooltip
+                                        const tooltipText =
+                                            "Exact Solution: " + exactSolution;
+                                        // Kreirati tooltip objekt
+                                        const tooltip = chart.tooltip;
+                                        if (tooltip) {
+                                            tooltip.setActiveElements(
+                                                [{ datasetIndex: 0, index: 0 }],
+                                                { x: mouseX, y: mouseY },
+                                            );
+                                        }
+                                    }
+                                },
+                            );
                             ctx.save();
                             ctx.strokeStyle = "rgb(0, 255, 0)";
                             ctx.lineWidth = 2;
