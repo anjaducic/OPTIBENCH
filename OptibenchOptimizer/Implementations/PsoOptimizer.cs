@@ -1,10 +1,11 @@
 using interfaces;
 using Utilities;
 
+
+
 namespace Implementations
 {
     
-
     public class PSOOptions
     {
         public double Cbi { get; set; }
@@ -23,6 +24,7 @@ namespace Implementations
 
     public class Particle
     {
+        
         private readonly int Dimensions;
         private readonly PSOOptions Options;
 
@@ -51,11 +53,16 @@ namespace Implementations
 
         public async Task Evaluate(IProblem problem)
         {
-            Fitness = await problem.GetValue(Position);
-             
+            //dodajem provjeru ako npr ne zadovoljava ogranicenje (NaN), da se izignorise taj fitness
+            double newFitness = await problem.GetValue(Position);
+            if(double.IsNaN(newFitness))
+                return;
 
+            PSOOptimizer.iterNum++ ;
+            Fitness = newFitness;
+            
             // azuriraj
-            if (Fitness < BestFitness || BestFitness == -1)
+            if (Fitness < BestFitness || double.IsNaN(BestFitness)) //BestFitness je NaN samo na pocetku, inace ga sprijecim uslovom gore
             {
                 BestPosition = (double[])Position.Clone();
                 BestFitness = Fitness;
@@ -85,27 +92,23 @@ namespace Implementations
             for (var i = 0; i < Dimensions; i++)
             {
                 Position[i] += Velocity[i];
-
-                // Adjust position if necessary - ?
-                //if (Position[i] > bounds[i][1])
-                //    Position[i] = bounds[i][1];
-                //if (Position[i] < bounds[i][0])
-                //    Position[i] = bounds[i][0];
             }
         }
 
         private double LinearInterpolation(double xmax, double xmin, int tmax, int tmin, int t)
         {
-            return xmin + ((xmax - xmin) / (tmax - tmin)) * (tmax - t);
+            return xmin + (xmax - xmin) / (tmax - tmin) * (tmax - t);
         }
     }
 
     public class PSOOptimizer : IOptimizer
     {
+        public static int iterNum = 0;
         public string OptimizerName { get; } = "PSO-Csharp-DOTNET";
         public int Dimension { get; set; }
         public int MaxIterations { get; set; }
         public int NumParticles { get; set; }
+        
         public List<Particle> Population { get; set; } = [];
         public PSOOptions Options { get; set; } = new();
 
@@ -139,11 +142,12 @@ namespace Implementations
                 Population.Add(new Particle(initialPosition, Dimension, Options));
             }
             
-            Console.WriteLine(Population.Count);
+            //Console.WriteLine(Population.Count);
 
             var globalBestPosition = new double[Dimension];
-            var globalBestFitness = -1.0;
+            var globalBestFitness = double.NaN;
 
+            
             // opt petlja
             for (var iter = 0; iter < MaxIterations; iter++)
             {
@@ -160,7 +164,7 @@ namespace Implementations
                 }
             }
 
-            return (globalBestPosition, globalBestFitness, MaxIterations);
+            return (globalBestPosition, globalBestFitness, iterNum);
         }
         
         private async Task<(double[], double)> EvaluateFitness(IProblem problem, double[] globalBestPosition, double globalBestFitness) {
@@ -171,7 +175,7 @@ namespace Implementations
                      
 
                     // Update global best
-                    if (particle.BestFitness < globalBestFitness || globalBestFitness == -1)
+                    if (particle.BestFitness < globalBestFitness || double.IsNaN(globalBestFitness))
                     {
                         globalBestPosition = (double[])particle.BestPosition.Clone();
                         globalBestFitness = particle.BestFitness;
@@ -183,3 +187,5 @@ namespace Implementations
 
 
 }
+
+

@@ -47,6 +47,7 @@ namespace Implementations
             string path = $"problems/{this.ProblemName}?{string.Join("&", x.Select(p => $"x={p}"))}";
             HttpResponseMessage response = await client.GetAsync(path);
             double problem = double.NaN;
+            //Console.WriteLine(path);
 
             
             if (response.IsSuccessStatusCode)

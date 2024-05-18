@@ -78,6 +78,7 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
       case "MishrasBird":
       {
          double fx = MathFunctions.MishrasBird(x);
+        // Console.WriteLine(fx);
          if(double.IsNaN(fx))
             return Results.NotFound("No result.");
          return Results.Ok(fx);

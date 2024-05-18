@@ -9,7 +9,7 @@ namespace Implementations
         public RandomSearchOptimizer(OptimizerArguments args) 
         {
             LowerBounds = args.ArrayDoubleSpecs!["LowerBounds"];
-            UpperBounds = args.ArrayDoubleSpecs!["UpperBounds"];;
+            UpperBounds = args.ArrayDoubleSpecs!["UpperBounds"];
             Dimension = args.IntSpecs!["Dimension"];
             MaxIterations = args.IntSpecs!["MaxIterations"];;
         }
@@ -30,9 +30,9 @@ namespace Implementations
             
             for (int i = 0; i < this.MaxIterations; i++)
             {
-                double[] currentX = new double[this.Dimension];
+                double[] currentX = new double[Dimension];
                 double currentFitness;
-                for (int j = 0; j < this.Dimension; j++)
+                for (int j = 0; j < Dimension; j++)
                 {
                     currentX[j] = random.NextDouble() * (this.UpperBounds[j] - this.LowerBounds[j]) + this.LowerBounds[j];
                 }

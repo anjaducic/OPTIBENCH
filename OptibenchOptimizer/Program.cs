@@ -126,7 +126,7 @@ namespace HttpClientSample
             spherical_pso_args = new OptimizerArguments 
             {
                 IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 100 }, {"NumParticles", 200}},
-                DoubleSpecs = new Dictionary<string, double>{{"Cbi", 2.5}, {"Cbf", 0.5}, {"Cgi", 0.5}, {"Cgf", 2.5}, {"Wi", 0.9}, {"Wf", 0.4}, {"VSpanInit", 1}, {"InitOffset", 0}, {"InitSpan", 1}}
+                DoubleSpecs = new Dictionary<string, double>{{"Cbi", 2.5}, {"Cbf", 0.5}, {"Cgi", 0.5}, {"Cgf", 2.5}, {"Wi", 0.9}, {"Wf", 0.4}, {"VSpanInit", 1}, {"InitOffset", 0}, {"InitSpan", 10}}
             };
 
            

@@ -108,6 +108,7 @@ public static class MathFunctions
     {
         if (!MishrasBirdConstraints(x))
         {
+            Console.WriteLine("ooo");  
             return double.NaN; // nije ispunjen uslov
         }
 
@@ -116,6 +117,7 @@ public static class MathFunctions
         double exp1 = Math.Exp(Math.Pow(1 - cosX, 2));
         double exp2 = Math.Exp(Math.Pow(1 - sinY, 2));
         double f = sinY * exp1 + cosX * exp2 + Math.Pow(x[0] - x[1], 2);
+        
 
         return f;
     }
