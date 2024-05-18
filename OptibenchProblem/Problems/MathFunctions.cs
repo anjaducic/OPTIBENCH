@@ -108,7 +108,6 @@ public static class MathFunctions
     {
         if (!MishrasBirdConstraints(x))
         {
-            Console.WriteLine("ooo");  
             return double.NaN; // nije ispunjen uslov
         }
 

@@ -1,8 +1,4 @@
 import {
-    AfterContentChecked,
-    AfterContentInit,
-    AfterViewChecked,
-    AfterViewInit,
     Component,
     ElementRef,
     Inject,
@@ -12,18 +8,25 @@ import {
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { OptimizationAnalyticsService } from "../optimization-analytics.service";
 import { OptimizationResult } from "../../model/optimization-result.model";
-import { Chart, registerables } from "chart.js/auto";
+import Chart, {
+    ChartConfiguration,
+    ChartTypeRegistry,
+    Plugin,
+} from "chart.js/auto";
 import { Range } from "../../model/range.model";
 import * as ChartAnnotation from "chartjs-plugin-annotation";
+import { AnyObject } from "chart.js/types/basic";
+
+type PluginAfterDrawCallback<T extends keyof ChartTypeRegistry> = (
+    chart: Chart<T>,
+) => void;
 
 @Component({
     selector: "app-chart",
     templateUrl: "./chart.component.html",
     styleUrls: ["./chart.component.css"],
 })
-export class ChartComponent implements OnInit, AfterViewChecked {
-    @ViewChild("canvas")
-    canvasRef!: ElementRef;
+export class ChartComponent implements OnInit {
     results: OptimizationResult[] = [];
     chart: any = [];
     xRanges: Range[] = [];
@@ -32,7 +35,7 @@ export class ChartComponent implements OnInit, AfterViewChecked {
     yMin: number = 0;
     yMax: number = 0;
     exactSolution: number = 0;
-    ctx: any;
+
     canvas: any;
 
     constructor(
@@ -41,8 +44,6 @@ export class ChartComponent implements OnInit, AfterViewChecked {
     ) {}
 
     ngOnInit(): void {
-        Chart.register(...registerables);
-        Chart.register(ChartAnnotation);
         this.service
             .getResultsByProblemAndOptimizer(
                 this.data.problemName,
@@ -52,11 +53,11 @@ export class ChartComponent implements OnInit, AfterViewChecked {
                 next: (results: OptimizationResult[]) => {
                     this.results = results;
                     if (this.results.length > 0) {
-                        this.exactSolution = this.results[0].exactSolution;
+                        //this.exactSolution = this.results[0].exactSolution;
                         this.findYBounds();
                         this.findXRanges();
                         this.calculateDataSet();
-                        //this.createChart();
+                        this.createChart();
                     }
                 },
             });
@@ -124,49 +125,61 @@ export class ChartComponent implements OnInit, AfterViewChecked {
             }
         }
     }
-    ngAfterViewChecked(): void {
-        setTimeout(() => {
-            if (this.canvasRef && this.canvasRef.nativeElement) {
-                this.canvas = this.canvasRef.nativeElement;
-                this.ctx = this.canvas.getContext("2d");
-                this.createChart();
-            }
-        }, 2000);
-    }
 
     private createChart(): void {
         const chartType = this.results.length === 1 ? "scatter" : "bar";
-        this.chart = new Chart(this.canvas, {
-            type: chartType,
-            data: {
-                labels: this.labels,
+        const maxResult = Math.max(...this.dataSets);
 
-                datasets: [
-                    {
-                        label: "# number of solutions",
-                        data: this.dataSets,
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1, // cjelobrojne vrijednoti na y
+        const config: ChartConfiguration<"scatter" | "bar", number[], string> =
+            {
+                type: chartType,
+                data: {
+                    labels: this.labels,
+                    datasets: [
+                        {
+                            label: "# number of results",
+                            data: this.dataSets,
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        x: {
+                            min: this.xRanges[0].start,
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                            },
                         },
                     },
                 },
-                plugins: {},
-            },
-        });
+                plugins: [
+                    {
+                        id: "myPlugin",
+                        afterDraw: function (chart: Chart<"bar" | "scatter">) {
+                            const ctx = chart.ctx;
+                            const xAxis = chart.scales["y"];
 
-        const xValue = 20; // x-koordinata vertikalne linije
-        this.ctx.beginPath();
-        this.ctx.moveTo(xValue, 0);
-        this.ctx.lineTo(xValue, this.canvas.height);
-        this.ctx.strokeStyle = "red";
-        this.ctx.stroke();
+                            const xValue = xAxis.getPixelForValue(-0.7);
+                            ctx.save();
+                            ctx.strokeStyle = "rgb(0, 255, 0)";
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.moveTo(xValue, chart.scales["y"].bottom); //pocni u dnu y
+                            const top =
+                                chart.scales["y"].getPixelForValue(maxResult); //visina max vrijednosti dataseta
+                            ctx.lineTo(xValue, top);
+                            ctx.stroke();
+                            ctx.restore();
+                        },
+                    } as Plugin<"bar" | "scatter", AnyObject>,
+                ],
+            };
+
+        const ctx = document.getElementById("myChart") as HTMLCanvasElement;
+        new Chart(ctx, config);
     }
 }
