@@ -51,7 +51,6 @@ namespace Implementations
 
         public async Task Evaluate(IProblem problem)
         {
-            Console.WriteLine("eeee".ToString());
             Fitness = await problem.GetValue(Position);
              
 
@@ -107,7 +106,7 @@ namespace Implementations
         public int Dimension { get; set; }
         public int MaxIterations { get; set; }
         public int NumParticles { get; set; }
-        public Particle[] Population { get; set; } = [];
+        public List<Particle> Population { get; set; } = [];
         public PSOOptions Options { get; set; } = new();
 
         public PSOOptimizer(OptimizerArguments args)
@@ -128,7 +127,7 @@ namespace Implementations
         public async Task<(double[], double, int)> Optimize(IProblem problem)
         {
             
-            Population = [];
+            Population = new List<Particle>();
             for (var i = 0; i < NumParticles; i++)
             {
                 var initialPosition = new double[Dimension];
@@ -137,10 +136,10 @@ namespace Implementations
                 {
                     initialPosition[j] = (random.NextDouble() - 0.5) * 2 * Options.InitSpan + Options.InitOffset;
                 }
-                _ = Population.Append(new Particle(initialPosition, Dimension, Options));
+                Population.Add(new Particle(initialPosition, Dimension, Options));
             }
             
-            Console.WriteLine(1.ToString());
+            Console.WriteLine(Population.Count);
 
             var globalBestPosition = new double[Dimension];
             var globalBestFitness = -1.0;
@@ -148,20 +147,11 @@ namespace Implementations
             // opt petlja
             for (var iter = 0; iter < MaxIterations; iter++)
             {
+                
                 // Evaluate fitness - za svaku cesticu
-                foreach (var particle in Population)
-                {
-                    await particle.Evaluate(problem);   //ne izvrsi se
-                     
-
-                    // Update global best
-                    if (particle.BestFitness < globalBestFitness || globalBestFitness == -1)
-                    {
-                        globalBestPosition = (double[])particle.BestPosition.Clone();
-                        globalBestFitness = particle.BestFitness;
-                    }
-                }
-
+                (globalBestPosition, globalBestFitness) = await EvaluateFitness(problem, globalBestPosition, globalBestFitness);
+                
+                
                 // Za svaku cesticu azuriraj velocity i position
                 foreach (var particle in Population)
                 {
@@ -171,6 +161,23 @@ namespace Implementations
             }
 
             return (globalBestPosition, globalBestFitness, MaxIterations);
+        }
+        
+        private async Task<(double[], double)> EvaluateFitness(IProblem problem, double[] globalBestPosition, double globalBestFitness) {
+
+             foreach (var particle in Population)
+                {
+                    await particle.Evaluate(problem);  
+                     
+
+                    // Update global best
+                    if (particle.BestFitness < globalBestFitness || globalBestFitness == -1)
+                    {
+                        globalBestPosition = (double[])particle.BestPosition.Clone();
+                        globalBestFitness = particle.BestFitness;
+                    }
+                }
+                return (globalBestPosition, globalBestFitness);
         }
     }
 

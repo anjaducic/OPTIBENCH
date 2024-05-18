@@ -125,9 +125,13 @@ namespace HttpClientSample
             //za pso
             spherical_pso_args = new OptimizerArguments 
             {
-                IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 1000 }, {"NumParticles", 200}},
+                IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 100 }, {"NumParticles", 200}},
                 DoubleSpecs = new Dictionary<string, double>{{"Cbi", 2.5}, {"Cbf", 0.5}, {"Cgi", 0.5}, {"Cgf", 2.5}, {"Wi", 0.9}, {"Wf", 0.4}, {"VSpanInit", 1}, {"InitOffset", 0}, {"InitSpan", 1}}
             };
+
+           
+
+            
 
         }
 
@@ -148,7 +152,7 @@ namespace HttpClientSample
         private static void ExecuteOptimizers()
         {
              //spherical
-            var spherical_optimum = spherical_random_search_optimizer!.Optimize(spherical_remote!);  //vraca optimum
+           /* var spherical_optimum = spherical_random_search_optimizer!.Optimize(spherical_remote!);  //vraca optimum
             spherical_optimum.Wait();
             var (x, fx, iterNum) = spherical_optimum.Result;
             Console.WriteLine($"spherical: x = [{string.Join(", ", x)}], fx = {fx}");
@@ -157,15 +161,7 @@ namespace HttpClientSample
             var monitoring = monitor.Save(spherical_result, spherical_remote);
             monitoring.Wait(); 
 
-           /* //spherical pso
-            var spherical_pso_optimum = spherical_pso_optimizer!.Optimize(spherical_remote!);  //vraca optimum
-            spherical_pso_optimum.Wait();
-            (x, fx, iterNum) = spherical_pso_optimum.Result;
-            Console.WriteLine($"spherical pso: x = [{string.Join(", ", x)}], fx = {fx}");
-            //store result
-            var spherical_pso_result = new OptimizationResultDto(x, fx, spherical_pso_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote!.Uri},{"ProblemName", spherical_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_pso_optimizer.OptimizerName);   
-            monitoring = monitor.Save(spherical_pso_result);
-            monitoring.Wait(); */
+          
             
 
             //rosenbrock
@@ -206,7 +202,7 @@ namespace HttpClientSample
             var matyas_result = new OptimizationResultDto(x, fx, matyas_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", matyas_remote!.Uri},{"ProblemName", matyas_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(matyas_result, matyas_remote);
             monitoring.Wait(); 
-            Console.WriteLine($"matyas: x = [{string.Join(", ", x)}], fx = {fx}"); 
+            Console.WriteLine($"matyas: x = [{string.Join(", ", x)}], fx = {fx}"); */
 
             //easom
           /*  var easom_optimum = easom_random_search_optimizer!.Optimize(easom_remote!);  //vraca optimum
@@ -219,7 +215,7 @@ namespace HttpClientSample
             Console.WriteLine($"easom: x = [{string.Join(", ", x)}], fx = {fx}");
 */
             //gomez-levi
-            var gomez_levi_optimum = gomez_levi_random_search_optimizer!.Optimize(gomez_levi_remote!);  //vraca optimum
+         /*   var gomez_levi_optimum = gomez_levi_random_search_optimizer!.Optimize(gomez_levi_remote!);  //vraca optimum
             gomez_levi_optimum.Wait();
             (x, fx, iterNum) = gomez_levi_optimum.Result;
             //store result
@@ -236,7 +232,7 @@ namespace HttpClientSample
             var mishras_bird_result = new OptimizationResultDto(x, fx, mishras_bird_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", mishras_bird_remote!.Uri},{"ProblemName", mishras_bird_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(mishras_bird_result, mishras_bird_remote);
             monitoring.Wait(); 
-            Console.WriteLine($"mishras: x = [{string.Join(", ", x)}], fx = {fx}");
+            Console.WriteLine($"mishras: x = [{string.Join(", ", x)}], fx = {fx}");*/
 
             /*
 
@@ -250,6 +246,16 @@ namespace HttpClientSample
             var spherical_result = new OptimizationResultDto(x, fx, spherical_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", py_bukin_n6_remote!.Uri},{"ProblemName", py_bukin_n6_remote!.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);
             var monitoring = monitor.Save(spherical_result);
             monitoring.Wait();*/
+
+              //spherical pso
+            var spherical_pso_optimum = spherical_pso_optimizer!.Optimize(mishras_bird_remote!);  //vraca optimum
+            spherical_pso_optimum.Wait();
+            var (x, fx, iterNum) = spherical_pso_optimum.Result;
+            Console.WriteLine($"spherical pso: x = [{string.Join(", ", x)}], fx = {fx}");
+            //store result
+            var spherical_pso_result = new OptimizationResultDto(x, fx, spherical_pso_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", mishras_bird_remote!.Uri},{"ProblemName", mishras_bird_remote.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_pso_optimizer.OptimizerName);   
+            var monitoring = monitor.Save(spherical_pso_result, mishras_bird_remote!);
+            monitoring.Wait(); 
         }
     }
 }
