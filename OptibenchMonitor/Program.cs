@@ -54,6 +54,7 @@ app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync
 app.MapGet("/results/problemName/{problemName}/optimizerName/{optimizerName}", async (ResultsContext db, string problemName, string optimizerName) =>
 {
     var allResults = await db.Results.ToListAsync();
+    //Console.WriteLine(allResults[0].ExactSolution);
 
     var filteredResults = allResults
             .Where(r => JObject.Parse(r.ProblemInfo)["ProblemName"]!.ToString() == problemName && r.OptimizerName == optimizerName)

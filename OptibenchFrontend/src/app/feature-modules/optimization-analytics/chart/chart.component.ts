@@ -51,6 +51,7 @@ export class ChartComponent implements OnInit {
             .subscribe({
                 next: (results: OptimizationResult[]) => {
                     this.results = results;
+                    console.log(this.results);
                     if (this.results.length > 0) {
                         this.findYBounds();
                         this.findXRanges();
@@ -164,42 +165,34 @@ export class ChartComponent implements OnInit {
 
                             const xValue =
                                 xAxis.getPixelForValue(exactSolution);
+                            ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+                            const rectWidth = 100;
+                            const rectHeight = 30;
+                            const rectX = xValue - rectWidth / 2;
 
-                            chart.canvas.addEventListener(
-                                "mousemove",
-                                function (event) {
-                                    const mouseX =
-                                        event.clientX -
-                                        chart.canvas.getBoundingClientRect()
-                                            .left;
-                                    const mouseY =
-                                        event.clientY -
-                                        chart.canvas.getBoundingClientRect()
-                                            .top;
+                            const rectBottomMargin = 10;
+                            const rectY = chart.scales["y"].top;
 
-                                    // Provjerite da li se miš nalazi u blizini linije
-                                    if (Math.abs(mouseX - xValue) < 5) {
-                                        // Prikazati vrijednost exactSolution kao tooltip
-                                        const tooltipText =
-                                            "Exact Solution: " + exactSolution;
-                                        // Kreirati tooltip objekt
-                                        const tooltip = chart.tooltip;
-                                        if (tooltip) {
-                                            tooltip.setActiveElements(
-                                                [{ datasetIndex: 0, index: 0 }],
-                                                { x: mouseX, y: mouseY },
-                                            );
-                                        }
-                                    }
-                                },
+                            ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+                            ctx.fillStyle = "black";
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            const textX = xValue;
+                            const textY = rectY + rectHeight / 2;
+                            ctx.fillText(
+                                `Exact Solution: ${exactSolution}`,
+                                textX,
+                                textY,
                             );
+
                             ctx.save();
                             ctx.strokeStyle = "rgb(0, 255, 0)";
                             ctx.lineWidth = 2;
                             ctx.beginPath();
                             ctx.moveTo(xValue, chart.scales["y"].bottom); //pocni u dnu y
                             const top =
-                                chart.scales["y"].getPixelForValue(maxResult); //visina max vrijednosti dataseta
+                                chart.scales["y"].getPixelForValue(maxResult) +
+                                30; //visina max vrijednosti dataseta
                             ctx.lineTo(xValue, top);
                             ctx.stroke();
                             ctx.restore();
