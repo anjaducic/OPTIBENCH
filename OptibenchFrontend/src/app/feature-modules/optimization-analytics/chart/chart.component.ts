@@ -128,7 +128,7 @@ export class ChartComponent implements OnInit {
     private createChart(): void {
         const chartType = this.results.length === 1 ? "scatter" : "bar";
         const maxResult = Math.max(...this.dataSets);
-        const exactSolution = this.results[0].exactSolution;
+        const exactSolution = this.results[0].exactSolution; //svima isto, svejedno
 
         const config: ChartConfiguration<"scatter" | "bar", number[], string> =
             {
@@ -140,6 +140,9 @@ export class ChartComponent implements OnInit {
                             label: "# number of results",
                             data: this.dataSets,
                             borderWidth: 1,
+                            backgroundColor: this.dataSets.map(y =>
+                                this.generateColor(y),
+                            ),
                         },
                     ],
                 },
@@ -161,16 +164,16 @@ export class ChartComponent implements OnInit {
                         id: "myPlugin",
                         afterDraw: function (chart: Chart<"bar" | "scatter">) {
                             const ctx = chart.ctx;
-                            const xAxis = chart.scales["y"];
+                            const xAxis = chart.scales["x"];
 
                             const xValue =
-                                xAxis.getPixelForValue(exactSolution);
-                            ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+                                xAxis.getPixelForDecimal(exactSolution);
+                            console.log(xValue);
+                            ctx.fillStyle = "rgba(0, 123, 255, 0.5)";
                             const rectWidth = 100;
                             const rectHeight = 30;
                             const rectX = xValue - rectWidth / 2;
 
-                            const rectBottomMargin = 10;
                             const rectY = chart.scales["y"].top;
 
                             ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
@@ -186,9 +189,12 @@ export class ChartComponent implements OnInit {
                             );
 
                             ctx.save();
-                            ctx.strokeStyle = "rgb(0, 255, 0)";
+                            ctx.strokeStyle = "rgb(0, 123, 255)";
                             ctx.lineWidth = 2;
                             ctx.beginPath();
+                            const xLabel =
+                                xAxis.getValueForPixel(exactSolution);
+
                             ctx.moveTo(xValue, chart.scales["y"].bottom); //pocni u dnu y
                             const top =
                                 chart.scales["y"].getPixelForValue(maxResult) +
@@ -203,5 +209,19 @@ export class ChartComponent implements OnInit {
 
         const ctx = document.getElementById("myChart") as HTMLCanvasElement;
         new Chart(ctx, config);
+    }
+
+    private generateColor(y: number): string {
+        const sortedDataSets = this.dataSets.slice().sort((a, b) => b - a);
+        const index = sortedDataSets.findIndex(value => value === y);
+        const percentPosition = index / (this.dataSets.length - 1);
+
+        // raxunam alfa kanal - lin interpolacija izmedju 0.9 i 0.1
+        const alpha = 0.8 - percentPosition * 0.7;
+
+        // boja sa izr alfa kanalom
+        const color = `rgba(124, 77, 255, ${alpha})`;
+
+        return color;
     }
 }
