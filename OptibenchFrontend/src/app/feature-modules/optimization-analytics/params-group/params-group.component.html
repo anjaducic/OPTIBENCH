@@ -25,6 +25,20 @@
                         </ng-container>
                     </div>
                 </div>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    class="chart-button"
+                    (click)="
+                        showChart(
+                            data.problemName,
+                            data.optimizerName,
+                            item.value
+                        )
+                    "
+                >
+                    <fa-icon [icon]="faChartLine" />
+                </button>
             </div>
         </div>
     </div>

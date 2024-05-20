@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
 import { OptimizationAnalyticsService } from "../optimization-analytics.service";
 import { OptimizationResult } from "../../model/optimization-result.model";
+import { faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { ChartByParamsComponent } from "../chart-by-params/chart-by-params.component";
 
 @Component({
     selector: "app-params-group",
@@ -11,10 +13,12 @@ import { OptimizationResult } from "../../model/optimization-result.model";
 export class ParamsGroupComponent implements OnInit {
     groupedResults: { [key: number]: OptimizationResult[] } = {};
     Object = Object;
+    faChartLine = faChartLine;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private service: OptimizationAnalyticsService,
+        private dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
@@ -68,6 +72,21 @@ export class ParamsGroupComponent implements OnInit {
                 this.groupedResults[result.paramsHashCode] = [];
             }
             this.groupedResults[result.paramsHashCode].push(result);
+        });
+    }
+    showChart(
+        problemName: string,
+        optimizerName: string,
+        values: OptimizationResult[],
+    ): void {
+        this.dialog.open(ChartByParamsComponent, {
+            width: "70vw",
+            height: "95vh",
+            data: {
+                problemName: problemName,
+                optimizerName: optimizerName,
+                results: values,
+            },
         });
     }
 }

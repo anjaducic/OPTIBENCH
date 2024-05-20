@@ -10,6 +10,7 @@ import { OptimizerHistoryComponent } from "./optimizer-history/optimizer-history
 import { ChartComponent } from "./chart/chart.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ParamsGroupComponent } from './params-group/params-group.component';
+import { ChartByParamsComponent } from './chart-by-params/chart-by-params.component';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { ParamsGroupComponent } from './params-group/params-group.component';
         OptimizerHistoryComponent,
         ChartComponent,
         ParamsGroupComponent,
+        ChartByParamsComponent,
     ],
     imports: [
         CommonModule,
