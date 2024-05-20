@@ -55,6 +55,13 @@
                 >
                     {{ alg }}
                 </a>
+                <a
+                    href="javascript:void(0)"
+                    (click)="showParamsCombination(selectedProblemName, alg)"
+                    class="link"
+                >
+                    PARAMETERS (chart)
+                </a>
                 <button
                     (click)="showChart(selectedProblemName, alg)"
                     mat-raised-button

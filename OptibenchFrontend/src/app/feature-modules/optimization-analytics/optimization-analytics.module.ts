@@ -9,12 +9,14 @@ import { MatSelectModule } from "@angular/material/select";
 import { OptimizerHistoryComponent } from "./optimizer-history/optimizer-history.component";
 import { ChartComponent } from "./chart/chart.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ParamsGroupComponent } from './params-group/params-group.component';
 
 @NgModule({
     declarations: [
         AnalyticsHomeComponent,
         OptimizerHistoryComponent,
         ChartComponent,
+        ParamsGroupComponent,
     ],
     imports: [
         CommonModule,

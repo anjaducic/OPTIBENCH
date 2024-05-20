@@ -5,6 +5,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { OptimizerHistoryComponent } from "../optimizer-history/optimizer-history.component";
 import { ChartComponent } from "../chart/chart.component";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { ParamsGroupComponent } from "../params-group/params-group.component";
 
 @Component({
     selector: "app-analytics-home",
@@ -13,6 +14,7 @@ import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 })
 export class AnalyticsHomeComponent implements OnInit {
     results: OptimizationResult[] = [];
+    groupedResults: { [key: number]: OptimizationResult[] } = {}; //grupisami po params hash codovima
     selectedProblemName: string = "";
     isProblemNameSelected: boolean = false;
     faChartLine = faChartLine;
@@ -76,6 +78,14 @@ export class AnalyticsHomeComponent implements OnInit {
 
     showChart(problemName: string, optimizerName: string): void {
         this.dialog.open(ChartComponent, {
+            width: "70vw",
+            height: "95vh",
+            data: { problemName: problemName, optimizerName: optimizerName },
+        });
+    }
+
+    showParamsCombination(problemName: string, optimizerName: string): void {
+        this.dialog.open(ParamsGroupComponent, {
             width: "70vw",
             height: "95vh",
             data: { problemName: problemName, optimizerName: optimizerName },
