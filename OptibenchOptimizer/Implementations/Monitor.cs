@@ -3,6 +3,7 @@ using System.Text;
 using Dtos;
 using interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Implementations
 {
@@ -19,8 +20,16 @@ namespace Implementations
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-        public async Task Save(OptimizationResultDto result)  //nema povr vrijednost za sada
+        public async Task Save(OptimizationResultDto result, IProblem problem)  //nema povr vrijednost za sada
         {
+            if(double.IsNaN(result.Y))
+            {
+                Console.WriteLine($"Failed to save the result to the database."); 
+                return;
+            }
+
+            result.ExactSolution = await problem.GetExactSolution(JObject.Parse(result.ProblemInfo)["ProblemName"]!.ToString());   
+
             string path = $"result";
             var resultJson = JsonConvert.SerializeObject(result); // Serijalizujem objekat u json string
             var httpContent = new StringContent(resultJson, Encoding.UTF8, "application/json"); // StringContent moze da se koristi sa klijentom

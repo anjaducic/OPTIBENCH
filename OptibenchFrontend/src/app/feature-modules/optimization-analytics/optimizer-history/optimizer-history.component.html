@@ -1,0 +1,40 @@
+<div class="dialog">
+    <div class="title">
+        <h3>HISTORY OF RESULTS</h3>
+        <label class="subtitle">Problem: {{ data.problemName }}</label>
+        <br />
+        <label class="subtitle">Algorithm: {{ data.optimizerName }}</label>
+    </div>
+    <div class="card-container">
+        <div *ngFor="let result of results" class="card">
+            <div class="field">
+                <label><strong>Optimal solution: </strong></label
+                ><label>{{ result.x }}</label>
+            </div>
+            <div class="field">
+                <label><strong>Optimal value: </strong></label
+                ><label>{{ result.y }}</label>
+            </div>
+            <div class="field">
+                <label><strong>Evaluation: </strong></label>
+                <div class="scrollable">
+                    <div
+                        *ngFor="
+                            let eval of getFormatted(result.evaluationCount)
+                        "
+                    >
+                        {{ eval }}
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label><strong>Parameters: </strong></label>
+                <div class="scrollable">
+                    <div *ngFor="let param of getFormatted(result.params)">
+                        {{ param }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

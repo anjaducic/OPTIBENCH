@@ -33,6 +33,9 @@ namespace OptibenchMonitor.Migrations
                         .IsRequired()
                         .HasColumnType("json");
 
+                    b.Property<double>("ExactSolution")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("OptimizerName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -40,6 +43,9 @@ namespace OptibenchMonitor.Migrations
                     b.Property<string>("Params")
                         .IsRequired()
                         .HasColumnType("json");
+
+                    b.Property<int>("ParamsHashCode")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ProblemInfo")
                         .IsRequired()

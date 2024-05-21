@@ -6,7 +6,7 @@ namespace Model
     public class OptimizationResult
     {
         [Key]
-        public required int Id { get; set; }
+        public  int Id { get; set; }
         public required double[] X { get; set; } 
         public required double Y { get; set; } 
 
@@ -14,7 +14,10 @@ namespace Model
         public required string ProblemInfo { get; set; } 
         public required string EvaluationCount { get; set; } 
         public required string OptimizerName { get; set; }
-        public OptimizationResult(double[] x, double y, string parameters, string problemInfo, string evaluationCount, string optimizerName)
+        public required double ExactSolution { get; set; }
+
+        public int ParamsHashCode { get; set; } //ne treba required zbog baze
+        public OptimizationResult(double[] x, double y, string parameters, string problemInfo, string evaluationCount, string optimizerName, double exactSolution)
         {
             X = x;
             Y = y;
@@ -22,6 +25,7 @@ namespace Model
             ProblemInfo = problemInfo;
             EvaluationCount = evaluationCount;
             OptimizerName = optimizerName;
+            ExactSolution = exactSolution;
         }
         public OptimizationResult(){}
     }

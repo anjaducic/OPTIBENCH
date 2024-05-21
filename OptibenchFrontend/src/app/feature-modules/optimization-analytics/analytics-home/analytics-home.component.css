@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.header {
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.line {
+    width: 100%;
+}
+
+.form-field {
+    width: 400px;
+}
+
+h1 {
+    color: #7c4dff;
+}
+
+.header .bold-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.link-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.link {
+    color: #007bff;
+    font-weight: bold;
+    width: 28rem;
+    text-align: left;
+    font-size: 1.3rem;
+}
+
+.chart-button {
+    border-radius: 50%;
+    padding: 1rem;
+    margin-left: 0.5rem;
+}

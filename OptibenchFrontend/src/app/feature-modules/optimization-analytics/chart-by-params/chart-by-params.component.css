@@ -1,0 +1,31 @@
+.dialog {
+    padding: 1rem;
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0;
+    border: 1rem solid #ccc;
+    min-height: 100%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.canvas-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.title {
+    text-align: center;
+}
