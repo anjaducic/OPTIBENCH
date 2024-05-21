@@ -10,7 +10,7 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 })
 export class RankingComponent implements OnInit {
     groupedResults: { [key: number]: OptimizationResult[] } = {};
-    rankedResults: { [key: string]: number } = {};
+    rankedResults: { [key: string]: { averageY: number; count: number } } = {};
     exactSolution: number = 0;
     Object = Object;
 
@@ -29,6 +29,7 @@ export class RankingComponent implements OnInit {
                 next: (results: OptimizationResult[]) => {
                     this.exactSolution = results[0].y;
                     this.groupResultsByParamsHashCode(results);
+                    this.calculateRankedResults();
                 },
             });
     }
@@ -80,27 +81,32 @@ export class RankingComponent implements OnInit {
     }
 
     calculateRankedResults(): void {
-        const averageResults: { [key: string]: number } = {};
+        const averageResults: {
+            [key: string]: { averageY: number; count: number };
+        } = {};
 
-        // average y
+        // average y i br rjesenja za svaku komb param
         Object.entries(this.groupedResults).forEach(([_, results]) => {
             const averageY = this.calculateAverageY(results);
-            averageResults[results[0].params] = averageY;
+            const count = results.length;
+            averageResults[results[0].params] = { averageY, count };
         });
 
-        // ranking by exact solution
+        // sortiram prema udalj od exact solution
         const sortedResults = Object.entries(averageResults).sort(
-            ([, avgY1], [, avgY2]) => {
+            ([, data1], [, data2]) => {
                 return (
-                    Math.abs(avgY1 - this.exactSolution) -
-                    Math.abs(avgY2 - this.exactSolution)
+                    Math.abs(data1.averageY - this.exactSolution) -
+                    Math.abs(data2.averageY - this.exactSolution)
                 );
             },
         );
 
-        const rankedResults: { [key: string]: number } = {};
-        sortedResults.forEach(([params, distance]) => {
-            rankedResults[params] = distance;
+        const rankedResults: {
+            [key: string]: { averageY: number; count: number };
+        } = {};
+        sortedResults.forEach(([params, { averageY, count }]) => {
+            rankedResults[params] = { averageY, count };
         });
 
         this.rankedResults = rankedResults;

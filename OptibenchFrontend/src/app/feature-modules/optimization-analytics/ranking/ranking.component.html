@@ -4,25 +4,20 @@
         <label class="subtitle">Problem: {{ data.problemName }}</label>
         <br />
         <label class="subtitle">Algorithm: {{ data.optimizerName }}</label>
+        <br />
+        <label class="subtitle">Exact solution: {{ exactSolution }}</label>
+        <br />
     </div>
     <div class="card-container">
-        <div *ngFor="let item of groupedResults | keyvalue" class="card">
+        <div *ngFor="let item of rankedResults | keyvalue" class="card">
             <div class="field">
                 <div class="scrollable">
-                    <div>
-                        <ng-container
-                            *ngFor="let result of item.value; let first = first"
-                        >
-                            <div *ngIf="first">
-                                <div
-                                    *ngFor="
-                                        let param of getFormatted(result.params)
-                                    "
-                                >
-                                    {{ param }}
-                                </div>
-                            </div>
-                        </ng-container>
+                    <div *ngFor="let param of getFormatted(item.key)">
+                        {{ param }}
+                    </div>
+                    <div class="average-fitness">
+                        Average fitness: {{ item.value.averageY }} (Count:
+                        {{ item.value.count }})
                     </div>
                 </div>
             </div>
