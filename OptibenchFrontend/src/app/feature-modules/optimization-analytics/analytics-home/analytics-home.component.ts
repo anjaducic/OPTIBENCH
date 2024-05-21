@@ -4,7 +4,7 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 import { MatDialog } from "@angular/material/dialog";
 import { OptimizerHistoryComponent } from "../optimizer-history/optimizer-history.component";
 import { ChartComponent } from "../chart/chart.component";
-import { faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faChartLine, faRankingStar } from "@fortawesome/free-solid-svg-icons";
 import { ParamsGroupComponent } from "../params-group/params-group.component";
 
 @Component({
@@ -18,6 +18,7 @@ export class AnalyticsHomeComponent implements OnInit {
     selectedProblemName: string = "";
     isProblemNameSelected: boolean = false;
     faChartLine = faChartLine;
+    faRankingStar = faRankingStar;
 
     constructor(
         private service: OptimizationAnalyticsService,

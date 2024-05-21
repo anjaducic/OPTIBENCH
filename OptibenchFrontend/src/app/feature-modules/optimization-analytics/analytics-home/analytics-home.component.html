@@ -68,6 +68,14 @@
                     color="primary"
                     class="chart-button"
                 >
+                    <fa-icon [icon]="faRankingStar" />
+                </button>
+                <button
+                    (click)="showChart(selectedProblemName, alg)"
+                    mat-raised-button
+                    color="primary"
+                    class="chart-button"
+                >
                     <fa-icon [icon]="faChartLine" />
                 </button>
             </li>

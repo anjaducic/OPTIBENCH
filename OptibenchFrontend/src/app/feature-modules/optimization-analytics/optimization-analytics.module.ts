@@ -11,6 +11,7 @@ import { ChartComponent } from "./chart/chart.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ParamsGroupComponent } from './params-group/params-group.component';
 import { ChartByParamsComponent } from './chart-by-params/chart-by-params.component';
+import { RankingComponent } from './ranking/ranking.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { ChartByParamsComponent } from './chart-by-params/chart-by-params.compon
         ChartComponent,
         ParamsGroupComponent,
         ChartByParamsComponent,
+        RankingComponent,
     ],
     imports: [
         CommonModule,
