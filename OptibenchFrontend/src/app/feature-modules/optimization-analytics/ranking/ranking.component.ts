@@ -10,12 +10,13 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 })
 export class RankingComponent implements OnInit {
     groupedResults: { [key: number]: OptimizationResult[] } = {};
+    rankedResults: { [key: string]: number } = {};
+    exactSolution: number = 0;
     Object = Object;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private service: OptimizationAnalyticsService,
-        private dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
@@ -26,6 +27,7 @@ export class RankingComponent implements OnInit {
             )
             .subscribe({
                 next: (results: OptimizationResult[]) => {
+                    this.exactSolution = results[0].y;
                     this.groupResultsByParamsHashCode(results);
                 },
             });
@@ -70,5 +72,37 @@ export class RankingComponent implements OnInit {
             }
             this.groupedResults[result.paramsHashCode].push(result);
         });
+    }
+
+    calculateAverageY(results: OptimizationResult[]): number {
+        const totalY = results.reduce((sum, result) => sum + result.y, 0);
+        return totalY / results.length;
+    }
+
+    calculateRankedResults(): void {
+        const averageResults: { [key: string]: number } = {};
+
+        // average y
+        Object.entries(this.groupedResults).forEach(([_, results]) => {
+            const averageY = this.calculateAverageY(results);
+            averageResults[results[0].params] = averageY;
+        });
+
+        // ranking by exact solution
+        const sortedResults = Object.entries(averageResults).sort(
+            ([, avgY1], [, avgY2]) => {
+                return (
+                    Math.abs(avgY1 - this.exactSolution) -
+                    Math.abs(avgY2 - this.exactSolution)
+                );
+            },
+        );
+
+        const rankedResults: { [key: string]: number } = {};
+        sortedResults.forEach(([params, distance]) => {
+            rankedResults[params] = distance;
+        });
+
+        this.rankedResults = rankedResults;
     }
 }

@@ -1,1 +1,31 @@
-<p>ranking works!</p>
+<div class="dialog">
+    <div class="title">
+        <h3>RANKING (for parameters combinations)</h3>
+        <label class="subtitle">Problem: {{ data.problemName }}</label>
+        <br />
+        <label class="subtitle">Algorithm: {{ data.optimizerName }}</label>
+    </div>
+    <div class="card-container">
+        <div *ngFor="let item of groupedResults | keyvalue" class="card">
+            <div class="field">
+                <div class="scrollable">
+                    <div>
+                        <ng-container
+                            *ngFor="let result of item.value; let first = first"
+                        >
+                            <div *ngIf="first">
+                                <div
+                                    *ngFor="
+                                        let param of getFormatted(result.params)
+                                    "
+                                >
+                                    {{ param }}
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

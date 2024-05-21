@@ -6,6 +6,7 @@ import { OptimizerHistoryComponent } from "../optimizer-history/optimizer-histor
 import { ChartComponent } from "../chart/chart.component";
 import { faChartLine, faRankingStar } from "@fortawesome/free-solid-svg-icons";
 import { ParamsGroupComponent } from "../params-group/params-group.component";
+import { RankingComponent } from "../ranking/ranking.component";
 
 @Component({
     selector: "app-analytics-home",
@@ -87,6 +88,14 @@ export class AnalyticsHomeComponent implements OnInit {
 
     showParamsCombination(problemName: string, optimizerName: string): void {
         this.dialog.open(ParamsGroupComponent, {
+            width: "70vw",
+            height: "95vh",
+            data: { problemName: problemName, optimizerName: optimizerName },
+        });
+    }
+
+    showRanking(problemName: string, optimizerName: string): void {
+        this.dialog.open(RankingComponent, {
             width: "70vw",
             height: "95vh",
             data: { problemName: problemName, optimizerName: optimizerName },
