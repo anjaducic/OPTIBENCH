@@ -143,6 +143,8 @@ export class ChartComponent implements OnInit {
                             backgroundColor: this.dataSets.map(y =>
                                 this.generateColor(y),
                             ),
+                            pointRadius: 10, // veca tacka
+                            pointHoverRadius: 12,
                         },
                     ],
                 },
@@ -212,6 +214,9 @@ export class ChartComponent implements OnInit {
     }
 
     private generateColor(y: number): string {
+        if (this.results.length === 1) {
+            return "rgba(124, 77, 255, 0.8)";
+        }
         const sortedDataSets = this.dataSets.slice().sort((a, b) => b - a);
         const index = sortedDataSets.findIndex(value => value === y);
         const percentPosition = index / (this.dataSets.length - 1);
