@@ -3,6 +3,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 20px;
+    background-color: #ffffff; /* bela pozadina kontejnera */
 }
 
 .header {
@@ -12,6 +14,10 @@
 
 .line {
     width: 100%;
+    border: none;
+    height: 1px;
+    background-color: #dcdcdc; /* svetlo siva linija */
+    margin: 0; /* uklanjanje margine za hr */
 }
 
 .form-field {
@@ -19,36 +25,56 @@
 }
 
 h1 {
-    color: #7c4dff;
+    color: #7c4dff; /* ljubičasto plava boja za naslov */
 }
 
 .header .bold-text {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
-.link-list {
-    max-height: 300px;
-    overflow-y: auto;
+.mat-form-field {
+    width: 100%; /* širina 100% za mat-form-field */
+    max-width: 400px; /* maksimalna širina za mat-form-field */
 }
 
-.list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+.optimizers-table {
+    width: 80%; /* širina tabele je 80% kontejnera */
+    border-collapse: collapse;
+    table-layout: fixed; /* fiksna širina tabele */
+    margin: 0 auto; /* centriranje tabele */
 }
 
-.link {
-    color: #007bff;
+.optimizers-table th,
+.optimizers-table td {
+    border: 1px solid #dcdcdc; /* sivi okvir za ćelije */
+    padding: 12px; /* veći padding za bolji izgled */
+    text-align: center;
+    white-space: nowrap; /* sprečava prelamanje teksta u ćelijama */
+    overflow: hidden; /* sakriva eventualni višak sadržaja */
+    text-overflow: ellipsis; /* dodaje trotoar ako ima viška teksta */
+}
+
+.optimizers-table th {
+    background-color: #f0f0f0; /* svetlo siva pozadina za zaglavlje */
+    color: #323232; /* tamno siva boja teksta */
     font-weight: bold;
-    width: 28rem;
-    text-align: left;
-    font-size: 1.3rem;
 }
 
-.chart-button {
+.optimizers-table td a {
+    color: #007bff; /* plava boja za linkove */
+    font-weight: bold;
+    text-decoration: none;
+}
+.bold-alg {
+    font-weight: bold;
+}
+
+.optimizers-table td a:hover {
+    text-decoration: underline;
+}
+
+.optimizers-table button {
     border-radius: 50%;
-    padding: 1rem;
-    margin-left: 0.5rem;
+    padding: 8px;
 }

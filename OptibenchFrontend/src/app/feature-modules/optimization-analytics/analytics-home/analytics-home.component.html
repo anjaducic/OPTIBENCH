@@ -42,43 +42,58 @@
         </mat-form-field>
     </div>
     <hr class="line" />
-    <div>
-        <ul class="link-list" *ngIf="isProblemNameSelected">
-            <li
-                *ngFor="let alg of getUniqueOptimizersForProblem()"
-                class="list-item"
-            >
-                <a
-                    href="javascript:void(0)"
-                    (click)="openDialog(selectedProblemName, alg)"
-                    class="link"
-                >
-                    {{ alg }}(history)
-                </a>
-                <a
-                    href="javascript:void(0)"
-                    (click)="showParamsCombination(selectedProblemName, alg)"
-                    class="link"
-                >
-                    PARAMETERS (chart)
-                </a>
-                <button
-                    (click)="showRanking(selectedProblemName, alg)"
-                    mat-raised-button
-                    color="primary"
-                    class="chart-button"
-                >
-                    <fa-icon [icon]="faRankingStar" />
-                </button>
-                <button
-                    (click)="showChart(selectedProblemName, alg)"
-                    mat-raised-button
-                    color="primary"
-                    class="chart-button"
-                >
-                    <fa-icon [icon]="faChartLine" />
-                </button>
-            </li>
-        </ul>
+    <div *ngIf="isProblemNameSelected">
+        <table class="optimizers-table">
+            <thead>
+                <tr>
+                    <th>Optimizer</th>
+                    <th>Details</th>
+                    <th>Parameters combinations</th>
+                    <th>Ranking</th>
+                    <th>Chart</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let alg of getUniqueOptimizersForProblem()">
+                    <td class="bold-alg">{{ alg }}</td>
+                    <td>
+                        <a
+                            href="javascript:void(0)"
+                            (click)="openDialog(selectedProblemName, alg)"
+                        >
+                            History
+                        </a>
+                    </td>
+                    <td>
+                        <a
+                            href="javascript:void(0)"
+                            (click)="
+                                showParamsCombination(selectedProblemName, alg)
+                            "
+                        >
+                            Parameters (chart)
+                        </a>
+                    </td>
+                    <td>
+                        <button
+                            (click)="showRanking(selectedProblemName, alg)"
+                            mat-raised-button
+                            color="primary"
+                        >
+                            <fa-icon [icon]="faRankingStar" />
+                        </button>
+                    </td>
+                    <td>
+                        <button
+                            (click)="showChart(selectedProblemName, alg)"
+                            mat-raised-button
+                            color="primary"
+                        >
+                            <fa-icon [icon]="faChartLine" />
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
