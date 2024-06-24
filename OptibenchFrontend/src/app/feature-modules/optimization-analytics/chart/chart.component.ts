@@ -14,12 +14,6 @@ import Chart, {
     Plugin,
 } from "chart.js/auto";
 import { Range } from "../../model/range.model";
-import * as ChartAnnotation from "chartjs-plugin-annotation";
-import { AnyObject } from "chart.js/types/basic";
-
-type PluginAfterDrawCallback<T extends keyof ChartTypeRegistry> = (
-    chart: Chart<T>,
-) => void;
 
 @Component({
     selector: "app-chart",
@@ -28,6 +22,7 @@ type PluginAfterDrawCallback<T extends keyof ChartTypeRegistry> = (
 })
 export class ChartComponent implements OnInit {
     results: OptimizationResult[] = [];
+    exactSolution: number = 0;
     chart: any = [];
     xRanges: Range[] = [];
     labels: string[] = [];
@@ -51,6 +46,7 @@ export class ChartComponent implements OnInit {
             .subscribe({
                 next: (results: OptimizationResult[]) => {
                     this.results = results;
+                    this.exactSolution = this.results[0].exactSolution;
                     console.log(this.results);
                     if (this.results.length > 0) {
                         this.findYBounds();
@@ -127,8 +123,6 @@ export class ChartComponent implements OnInit {
 
     private createChart(): void {
         const chartType = this.results.length === 1 ? "scatter" : "bar";
-        const maxResult = Math.max(...this.dataSets);
-        const exactSolution = this.results[0].exactSolution; //svima isto, svejedno
 
         const config: ChartConfiguration<"scatter" | "bar", number[], string> =
             {
@@ -161,52 +155,6 @@ export class ChartComponent implements OnInit {
                         },
                     },
                 },
-                plugins: [
-                    {
-                        id: "myPlugin",
-                        afterDraw: function (chart: Chart<"bar" | "scatter">) {
-                            const ctx = chart.ctx;
-                            const xAxis = chart.scales["x"];
-
-                            const xValue =
-                                xAxis.getPixelForDecimal(exactSolution);
-                            console.log(xValue);
-                            ctx.fillStyle = "rgba(0, 123, 255, 0.5)";
-                            const rectWidth = 100;
-                            const rectHeight = 30;
-                            const rectX = xValue - rectWidth / 2;
-
-                            const rectY = chart.scales["y"].top;
-
-                            ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-                            ctx.fillStyle = "black";
-                            ctx.textAlign = "center";
-                            ctx.textBaseline = "middle";
-                            const textX = xValue;
-                            const textY = rectY + rectHeight / 2;
-                            ctx.fillText(
-                                `Exact Solution: ${exactSolution}`,
-                                textX,
-                                textY,
-                            );
-
-                            ctx.save();
-                            ctx.strokeStyle = "rgb(0, 123, 255)";
-                            ctx.lineWidth = 2;
-                            ctx.beginPath();
-                            const xLabel =
-                                xAxis.getValueForPixel(exactSolution);
-
-                            ctx.moveTo(xValue, chart.scales["y"].bottom); //pocni u dnu y
-                            const top =
-                                chart.scales["y"].getPixelForValue(maxResult) +
-                                30; //visina max vrijednosti dataseta
-                            ctx.lineTo(xValue, top);
-                            ctx.stroke();
-                            ctx.restore();
-                        },
-                    } as Plugin<"bar" | "scatter", AnyObject>,
-                ],
             };
 
         const ctx = document.getElementById("myChart") as HTMLCanvasElement;
