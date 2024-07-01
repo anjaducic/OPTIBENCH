@@ -27,7 +27,7 @@ export class RankingComponent implements OnInit {
             )
             .subscribe({
                 next: (results: OptimizationResult[]) => {
-                    this.exactSolution = results[0].y;
+                    this.exactSolution = results[0].exactSolution;
                     this.groupResultsByParamsHashCode(results);
                     this.calculateRankedResults();
                 },

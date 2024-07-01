@@ -33,7 +33,6 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET_exact_solution(self):
         parsed_path = urlparse(self.path)
-        query_params = parse_qs(parsed_path.query)
         if parsed_path.path.startswith('/exact-solution/'):
             problem_name = parsed_path.path.split('/')[-1]
             result = self.get_exact_solution(problem_name)
