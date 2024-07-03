@@ -24,7 +24,6 @@ namespace Implementations
 
     public class Particle
     {
-        
         private readonly int Dimensions;
         private readonly PSOOptions Options;
 

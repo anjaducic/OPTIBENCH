@@ -28,3 +28,25 @@ class RemoteProblem(IProblem):
                 print(f"Cannot parse response '{ret_problem}' to double value.")
         
         return problem
+    
+    
+    async def get_exact_solution(self, problem_name):
+        path = f"exact-solution/{problem_name}"
+        full_url = urljoin(self.uri, path)
+        exact_solution = math.inf  # Set to max by default
+       
+
+        try:
+            response = self.client.get(full_url)
+            if response.status_code == 200:
+                ret_solution = response.text
+                try:
+                    exact_solution = float(ret_solution)
+                except ValueError:
+                    print(f"Cannot parse response '{ret_solution}' to double value.")
+            else:
+                print(f"Request failed with status code {response.status_code}")
+        except requests.RequestException as exc:
+            print(f"An error occurred while requesting {exc.request.url!r}.")
+
+        return exact_solution

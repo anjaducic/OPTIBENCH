@@ -10,7 +10,9 @@ import { OptimizationAnalyticsService } from "../optimization-analytics.service"
 })
 export class RankingComponent implements OnInit {
     groupedResults: { [key: number]: OptimizationResult[] } = {};
-    rankedResults: { [key: string]: { averageY: number; count: number } } = {};
+    rankedResults: {
+        [key: string]: { averageY: number; count: number; params: string };
+    } = {};
     exactSolution: number = 0;
     Object = Object;
 
@@ -82,33 +84,42 @@ export class RankingComponent implements OnInit {
 
     calculateRankedResults(): void {
         const averageResults: {
-            [key: string]: { averageY: number; count: number };
+            [key: string]: { averageY: number; count: number; params: string };
         } = {};
+
+        console.log("rankedResults");
 
         // average y i br rjesenja za svaku komb param
         Object.entries(this.groupedResults).forEach(([_, results]) => {
             const averageY = this.calculateAverageY(results);
             const count = results.length;
-            averageResults[results[0].params] = { averageY, count };
+            const params = results[0].params;
+            averageResults[params] = { averageY, count, params };
         });
+        console.log(averageResults);
 
         // sortiram prema udalj od exact solution
         const sortedResults = Object.entries(averageResults).sort(
             ([, data1], [, data2]) => {
-                return (
-                    Math.abs(data1.averageY - this.exactSolution) -
-                    Math.abs(data2.averageY - this.exactSolution)
-                );
+                console.log("data1", data1);
+                console.log("data2", data2);
+                const diff1 = Math.abs(data1.averageY - this.exactSolution);
+                const diff2 = Math.abs(data2.averageY - this.exactSolution);
+                return diff1 - diff2; // Sortiranje po rastućem redosledu razlika
             },
         );
 
+        console.log("sortirani", sortedResults);
+
+        // Konvertovanje nazad u željeni format
         const rankedResults: {
-            [key: string]: { averageY: number; count: number };
+            [key: string]: { averageY: number; count: number; params: string };
         } = {};
         sortedResults.forEach(([params, { averageY, count }]) => {
-            rankedResults[params] = { averageY, count };
+            rankedResults[averageY] = { averageY, count, params };
         });
 
+        // Postavljanje rankedResults na rezultate
         this.rankedResults = rankedResults;
     }
 }

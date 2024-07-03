@@ -1,24 +1,28 @@
 <div class="dialog">
     <div class="title">
-        <h3>RANKING (for parameters combinations)</h3>
+        <h3>RANKING (for parameter combinations)</h3>
         <label class="subtitle">Problem: {{ data.problemName }}</label>
         <label class="subtitle">Algorithm: {{ data.optimizerName }}</label>
         <label class="subtitle">Exact solution: {{ exactSolution }}</label>
     </div>
     <div class="card-container">
         <div
-            *ngFor="let item of rankedResults | keyvalue; let i = index"
+            *ngFor="let keyValuePair of rankedResults | keyvalue; let i = index"
             class="card"
         >
             <div class="field">
                 <div class="scrollable">
-                    <div *ngFor="let param of getFormatted(item.key)">
+                    <div
+                        *ngFor="
+                            let param of getFormatted(keyValuePair.value.params)
+                        "
+                    >
                         {{ param }}
                     </div>
                     <div class="average-fitness">
                         {{ i + 1 }}. Average fitness:
-                        {{ item.value.averageY }} (Count:
-                        {{ item.value.count }})
+                        {{ keyValuePair.value.averageY }} (Count:
+                        {{ keyValuePair.value.count }})
                     </div>
                 </div>
             </div>

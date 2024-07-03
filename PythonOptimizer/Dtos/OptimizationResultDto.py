@@ -6,3 +6,4 @@ class OptimizationResultDto:
         self.ProblemInfo = problem_info
         self.EvaluationCount = evaluation_count
         self.OptimizerName = optimizer_name
+        self.ExactSolution = None

@@ -95,8 +95,8 @@ namespace HttpClientSample
 
             spherical_random_search_args = new OptimizerArguments 
             {
-                ArrayDoubleSpecs = new Dictionary<string, double[]>{{"LowerBounds", new double[] {-0.5,-0.3}}, {"UpperBounds", new double[] {0.3,0.5} }},
-                IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 1100 }},
+                ArrayDoubleSpecs = new Dictionary<string, double[]>{{"LowerBounds", new double[] {-1,-0.5}}, {"UpperBounds", new double[] {0.3,0.5} }},
+                IntSpecs = new Dictionary<string, int>{{"Dimension", 2}, {"MaxIterations", 100 }},
             };
             rosenbrock_random_search_args = new OptimizerArguments 
             {
@@ -229,7 +229,7 @@ namespace HttpClientSample
             var monitoring = monitor.Save(spherical_result, spherical_remote_dotnet);
             monitoring.Wait(); 
             Console.WriteLine($"spherical-random-search: x = [{string.Join(", ", x)}], fx = {fx}");
-
+/*
             //rosenbrock
             var rosenbrock_optimum = rosenbrock_random_search_optimizer!.Optimize(rosenbrock_remote_dotnet!);  
             rosenbrock_optimum.Wait();
@@ -404,7 +404,7 @@ namespace HttpClientSample
             monitoring.Wait(); 
             Console.WriteLine($"booth-pso: x = [{string.Join(", ", x)}], fx = {fx}");
 
-
+*/
 
         }
     }

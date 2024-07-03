@@ -12,6 +12,7 @@ class RandomSearchOptimizer(IOptimizer):
         self.upper_bounds = args.array_double_specs["UpperBounds"]
         self.dimension = args.int_specs["Dimension"]
         self.max_iterations = args.int_specs["MaxIterations"]
+        self.optimizer_name = "Random-Search-Python"
 
     async def optimize(self, problem: IProblem) -> Tuple[list, float, int]:
         iter_num = 0

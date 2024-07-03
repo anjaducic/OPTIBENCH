@@ -1,189 +1,149 @@
 import asyncio
 import requests
 import json
-
 from Dtos.OptimizationResultDto import OptimizationResultDto
 from Implementations.Monitor import Monitor
 from Implementations.RandomSearchOptimizer import RandomSearchOptimizer
 from Implementations.RemoteProblem import RemoteProblem
+from Implementations.PsoOptimizer import PSOOptimizer
 from Utilities.OptimizerArguments import OptimizerArguments
 from Utilities.ParameterJsonGenerator import ParameterJsonGenerator
 
 
 class Program:
     def main(self):
-        #problem_local = LocalProblem()
-
-        spherical_remote = RemoteProblem("http://localhost:5030", "Spherical")
-        rosenbrock_remote = RemoteProblem("http://localhost:5030", "Rosenbrock")
-        rastrigin_remote = RemoteProblem("http://localhost:5030", "Rastrigin")
-        shekel_remote = RemoteProblem("http://localhost:5030", "Shekel")
-        matyas_remote = RemoteProblem("http://localhost:5030", "Matyas")
-        easom_remote = RemoteProblem("http://localhost:5030", "Easom")
-        gomez_levi_remote = RemoteProblem("http://localhost:5030", "GomezLevi")
-        mishras_bird_remote = RemoteProblem("http://localhost:5030", "MishrasBird")
-
-        #py_spherical_remote = RemoteProblem("http://localhost:5055", "Spherical")
-
-        
-        
-        spherical_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [-1, -1], "UpperBounds": [1, 1]}
-        )
-        rosenbrock_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [0, 0], "UpperBounds": [2, 2]}
-        )
-        rastrigin_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [-1, -1], "UpperBounds": [1, 1]}
-        )
-        shekel_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [-1, -1], "UpperBounds": [1, 1]}
-        )
-        matyas_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [-1, -1], "UpperBounds": [1, 1]}
-        )
-        easom_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [2, 2], "UpperBounds": [4, 4]}
-        )
-        gomez_levi_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [-1, -1], "UpperBounds": [0.75, 1]}
-        )
-        mishras_bird_args = OptimizerArguments(
-            int_specs={"Dimension": 2, "MaxIterations": 1000},
-            array_double_specs={"LowerBounds": [-4, -2.5], "UpperBounds": [-2, -0.5]}
-        )
-
-
-
-        # Ostali argumenti za probleme...
-
         monitor = Monitor("http://localhost:5201/")
-        spherical_random_search_optimizer = RandomSearchOptimizer(spherical_args)
-        rosenbrock_random_search_optimizer = RandomSearchOptimizer(rosenbrock_args)
-        rastrigin_random_search_optimizer = RandomSearchOptimizer(rastrigin_args)
-        shekel_random_search_optimizer = RandomSearchOptimizer(shekel_args)
-        matyas_random_search_optimizer = RandomSearchOptimizer(matyas_args)
-        easom_random_search_optimizer = RandomSearchOptimizer(easom_args)
-        gomez_levi_random_search_optimizer = RandomSearchOptimizer(gomez_levi_args)
-        mishras_bird_random_search_optimizer = RandomSearchOptimizer(mishras_bird_args)
-
-
-        # Ostali optimizatori...
-
         generator = ParameterJsonGenerator()
+
+        # ****************************************** PYTHON PROBLEMS *******************************************************
+        spherical_remote_py = RemoteProblem("http://localhost:5055", "Spherical")
+        easom_remote_py = RemoteProblem("http://localhost:5055", "Easom")
+        beale_remote_py = RemoteProblem("http://localhost:5055", "Beale")
+        
+       
+        # ****************************************** ARGUMENTS FOR RANDOM SEARCH *******************************************************
+        spherical_random_search_args = OptimizerArguments(
+            int_specs={"Dimension": 2, "MaxIterations": 10},
+            array_double_specs={"LowerBounds": [-1, -1], "UpperBounds": [1, 1]}
+        )
+        easom_random_search_args = OptimizerArguments(
+            int_specs={"Dimension": 2, "MaxIterations": 5},
+            array_double_specs={"LowerBounds": [3, 3], "UpperBounds": [4, 4]}
+        )
+        beale_random_search_args = OptimizerArguments(
+            int_specs={"Dimension": 2, "MaxIterations": 5},
+            array_double_specs={"LowerBounds": [2, 0], "UpperBounds": [4, 1]}
+        )
+
+        # ****************************************** ARGUMENTS FOR PSO *******************************************************
+        spherical_pso_args = OptimizerArguments(
+            int_specs={"Dimension": 2, "MaxIterations": 10, "NumParticles": 10},
+            double_specs={"Cbi": 2.5, "Cbf": 0.5, "Cgi": 0.5, "Cgf": 2.5, "Wi": 0.9, "Wf": 0.4, "VSpanInit": 1, "InitOffset": 0, "InitSpan": 10 }
+        )
+        easom_pso_args = OptimizerArguments(
+            int_specs={"Dimension": 2, "MaxIterations": 5, "NumParticles": 3},
+            double_specs={"Cbi": 2.5, "Cbf": 0.5, "Cgi": 0.5, "Cgf": 2.5, "Wi": 0.9, "Wf": 0.4, "VSpanInit": 1, "InitOffset": 0, "InitSpan": 10 }
+        )
+        beale_pso_args = OptimizerArguments(
+            int_specs={"Dimension": 2, "MaxIterations": 5, "NumParticles": 3},
+            double_specs={"Cbi": 2.5, "Cbf": 0.5, "Cgi": 0.5, "Cgf": 2.5, "Wi": 0.9, "Wf": 0.4, "VSpanInit": 1, "InitOffset": 0, "InitSpan": 10 }
+        )
+        
+
+
+        # ****************************************** OPTIMIZERS RANDOM SEARCH ***********************************************
+        spherical_random_search_optimizer = RandomSearchOptimizer(spherical_random_search_args)
+        easom_random_search_optimizer = RandomSearchOptimizer(easom_random_search_args)
+        beale_random_search_optimizer = RandomSearchOptimizer(beale_random_search_args)
+        
+
+        # ****************************************** OPTIMIZERS PSO ***********************************************
+        spherical_pso_optimizer = PSOOptimizer(spherical_pso_args)
+        easom_pso_optimizer = PSOOptimizer(easom_pso_args)
+        beale_pso_optimizer = PSOOptimizer(beale_pso_args)
+
+        
+        # ****************************************** EXECUTE RANDOM SEARCH ********************************************
 
         #spherical
         loop = asyncio.get_event_loop()
-        spherical_optimum_task = asyncio.ensure_future(spherical_random_search_optimizer.optimize(spherical_remote))
+        spherical_optimum_task = asyncio.ensure_future(spherical_random_search_optimizer.optimize(spherical_remote_py))
         loop.run_until_complete(spherical_optimum_task)
         spherical_optimum = spherical_optimum_task.result()
-        #treba li onda wait
         (x, fx, iterNum) = spherical_optimum
-        print(f"spherical: x = [{', '.join(map(str, x))}], fx = {fx}")
-        spherical_result = OptimizationResultDto(x, fx, spherical_args.generate_json(), generator.generate_json({"ProblemUri":spherical_remote.uri, "ProblemName":spherical_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
+        print(f"spherical-random-search: x = [{', '.join(map(str, x))}], fx = {fx}")
+        spherical_result = OptimizationResultDto(x, fx, spherical_random_search_args.generate_json(), generator.generate_json({"ProblemUri":spherical_remote_py.uri, "ProblemName":spherical_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), spherical_random_search_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(spherical_result))
+        monitor_task = asyncio.ensure_future(monitor.save(spherical_result, spherical_remote_py))
         loop.run_until_complete(monitor_task)
         #spherical_optimum = spherical_optimum_task.result()
 
-        #rosenbrock
+        #easom
         loop = asyncio.get_event_loop()
-        rosenbrock_optimum_task = asyncio.ensure_future(rosenbrock_random_search_optimizer.optimize(rosenbrock_remote))
-        loop.run_until_complete(rosenbrock_optimum_task)
-        rosenbrock_optimum = rosenbrock_optimum_task.result()
-        #treba li onda wait
-        (x, fx, iterNum) = rosenbrock_optimum
-        print(f"rosenbrock: x = [{', '.join(map(str, x))}], fx = {fx}")
-        rosenbrock_result = OptimizationResultDto(x, fx, rosenbrock_args.generate_json(), generator.generate_json({"ProblemUri":rosenbrock_remote.uri, "ProblemName":rosenbrock_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
+        easom_optimum_task = asyncio.ensure_future(easom_random_search_optimizer.optimize(easom_remote_py))
+        loop.run_until_complete(easom_optimum_task)
+        easom_optimum = easom_optimum_task.result()
+        (x, fx, iterNum) = easom_optimum
+        print(f"easom-random-search: x = [{', '.join(map(str, x))}], fx = {fx}")
+        easom_result = OptimizationResultDto(x, fx, easom_random_search_args.generate_json(), generator.generate_json({"ProblemUri":easom_remote_py.uri, "ProblemName":easom_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), easom_random_search_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(rosenbrock_result))
+        monitor_task = asyncio.ensure_future(monitor.save(easom_result, easom_remote_py))
         loop.run_until_complete(monitor_task)
 
-        #rastrigin
+        #beale
         loop = asyncio.get_event_loop()
-        rastrigin_optimum_task = asyncio.ensure_future(rastrigin_random_search_optimizer.optimize(rastrigin_remote))
-        loop.run_until_complete(rastrigin_optimum_task)
-        rastrigin_optimum = rastrigin_optimum_task.result()
+        beale_optimum_task = asyncio.ensure_future(beale_random_search_optimizer.optimize(beale_remote_py))
+        loop.run_until_complete(beale_optimum_task)
+        beale_optimum = beale_optimum_task.result()
         #treba li onda wait
-        (x, fx, iterNum) = rastrigin_optimum
-        print(f"rastrigin: x = [{', '.join(map(str, x))}], fx = {fx}")
-        rastrigin_result = OptimizationResultDto(x, fx, rastrigin_args.generate_json(), generator.generate_json({"ProblemUri":rastrigin_remote.uri, "ProblemName":rastrigin_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
+        (x, fx, iterNum) = beale_optimum
+        print(f"beale-random-search: x = [{', '.join(map(str, x))}], fx = {fx}")
+        beale_result = OptimizationResultDto(x, fx, beale_random_search_args.generate_json(), generator.generate_json({"ProblemUri":beale_remote_py.uri, "ProblemName":beale_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), beale_random_search_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(rastrigin_result))
+        monitor_task = asyncio.ensure_future(monitor.save(beale_result, beale_remote_py))
         loop.run_until_complete(monitor_task)
 
 
-        #shekel
+        # ****************************************** EXECUTE PSO ********************************************
+        
+        #spherical
         loop = asyncio.get_event_loop()
-        shekel_optimum_task = asyncio.ensure_future(shekel_random_search_optimizer.optimize(shekel_remote))
-        loop.run_until_complete(shekel_optimum_task)
-        shekel_optimum = shekel_optimum_task.result()
-        #treba li onda wait
-        (x, fx, iterNum) = shekel_optimum
-        print(f"shekel: x = [{', '.join(map(str, x))}], fx = {fx}")
-        shekel_result = OptimizationResultDto(x, fx, shekel_args.generate_json(), generator.generate_json({"ProblemUri":shekel_remote.uri, "ProblemName":shekel_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
+        spherical_optimum_task = asyncio.ensure_future(spherical_pso_optimizer.optimize(spherical_remote_py))
+        loop.run_until_complete(spherical_optimum_task)
+        spherical_optimum = spherical_optimum_task.result()
+        (x, fx, iterNum) = spherical_optimum
+        print(f"spherical-pso: x = [{', '.join(map(str, x))}], fx = {fx}")
+        spherical_result = OptimizationResultDto(x, fx, spherical_pso_args.generate_json(), generator.generate_json({"ProblemUri":spherical_remote_py.uri, "ProblemName":spherical_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), spherical_pso_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(shekel_result))
+        monitor_task = asyncio.ensure_future(monitor.save(spherical_result, spherical_remote_py))
         loop.run_until_complete(monitor_task)
-
-        #matyas
-        loop = asyncio.get_event_loop()
-        matyas_optimum_task = asyncio.ensure_future(matyas_random_search_optimizer.optimize(matyas_remote))
-        loop.run_until_complete(matyas_optimum_task)
-        matyas_optimum = matyas_optimum_task.result()
-        #treba li onda wait
-        (x, fx, iterNum) = matyas_optimum
-        print(f"matyas: x = [{', '.join(map(str, x))}], fx = {fx}")
-        matyas_result = OptimizationResultDto(x, fx, matyas_args.generate_json(), generator.generate_json({"ProblemUri":matyas_remote.uri, "ProblemName":matyas_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
-        loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(matyas_result))
-        loop.run_until_complete(monitor_task)
+        #spherical_optimum = spherical_optimum_task.result()
 
         #easom
         loop = asyncio.get_event_loop()
-        easom_optimum_task = asyncio.ensure_future(easom_random_search_optimizer.optimize(easom_remote))
+        easom_optimum_task = asyncio.ensure_future(easom_pso_optimizer.optimize(easom_remote_py))
         loop.run_until_complete(easom_optimum_task)
         easom_optimum = easom_optimum_task.result()
-        #treba li onda wait
         (x, fx, iterNum) = easom_optimum
-        print(f"easom: x = [{', '.join(map(str, x))}], fx = {fx}")
-        easom_result = OptimizationResultDto(x, fx, easom_args.generate_json(), generator.generate_json({"ProblemUri":easom_remote.uri, "ProblemName":easom_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
+        print(f"easom-pso: x = [{', '.join(map(str, x))}], fx = {fx}")
+        easom_result = OptimizationResultDto(x, fx, easom_pso_args.generate_json(), generator.generate_json({"ProblemUri":easom_remote_py.uri, "ProblemName":easom_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), easom_pso_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(easom_result))
+        monitor_task = asyncio.ensure_future(monitor.save(easom_result, easom_remote_py))
         loop.run_until_complete(monitor_task)
 
-        #gomez_levi
+        #beale
         loop = asyncio.get_event_loop()
-        gomez_levi_optimum_task = asyncio.ensure_future(gomez_levi_random_search_optimizer.optimize(gomez_levi_remote))
-        loop.run_until_complete(gomez_levi_optimum_task)
-        gomez_levi_optimum = gomez_levi_optimum_task.result()
+        beale_optimum_task = asyncio.ensure_future(beale_pso_optimizer.optimize(beale_remote_py))
+        loop.run_until_complete(beale_optimum_task)
+        beale_optimum = beale_optimum_task.result()
         #treba li onda wait
-        (x, fx, iterNum) = gomez_levi_optimum
-        print(f"gomez_levi: x = [{', '.join(map(str, x))}], fx = {fx}")
-        gomez_levi_result = OptimizationResultDto(x, fx, gomez_levi_args.generate_json(), generator.generate_json({"ProblemUri":gomez_levi_remote.uri, "ProblemName":gomez_levi_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
+        (x, fx, iterNum) = beale_optimum
+        print(f"beale-pso: x = [{', '.join(map(str, x))}], fx = {fx}")
+        beale_result = OptimizationResultDto(x, fx, beale_pso_args.generate_json(), generator.generate_json({"ProblemUri":beale_remote_py.uri, "ProblemName":beale_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), beale_pso_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(gomez_levi_result))
+        monitor_task = asyncio.ensure_future(monitor.save(beale_result, beale_remote_py))
         loop.run_until_complete(monitor_task)
 
-        #mishras_bird
-        loop = asyncio.get_event_loop()
-        mishras_bird_optimum_task = asyncio.ensure_future(mishras_bird_random_search_optimizer.optimize(mishras_bird_remote))
-        loop.run_until_complete(mishras_bird_optimum_task)
-        mishras_bird_optimum = mishras_bird_optimum_task.result()
-        #treba li onda wait
-        (x, fx, iterNum) = mishras_bird_optimum
-        print(f"mishras_bird: x = [{', '.join(map(str, x))}], fx = {fx}")
-        mishras_bird_result = OptimizationResultDto(x, fx, mishras_bird_args.generate_json(), generator.generate_json({"ProblemUri":mishras_bird_remote.uri, "ProblemName":mishras_bird_remote.problem_name}), generator.generate_json({"Count":iterNum}), "RandomSearch")
-        loop = asyncio.get_event_loop()
-        monitor_task = asyncio.ensure_future(monitor.save(mishras_bird_result))
-        loop.run_until_complete(monitor_task)
         
 
 if __name__ == "__main__":
