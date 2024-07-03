@@ -59,13 +59,20 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
             return Results.NotFound("No result.");
          return Results.Ok(fx);
       }
-      /*case "Easom":
+      case "Beale":
       {
-         double fx = MathFunctions.Easom(x);
+         double fx = MathFunctions.Beale(x);
          if(double.IsNaN(fx))
             return Results.NotFound("No result.");
          return Results.Ok(fx);
-      }*/
+      }
+      case "Booth":
+      {
+         double fx = MathFunctions.Booth(x);
+         if(double.IsNaN(fx))
+            return Results.NotFound("No result.");
+         return Results.Ok(fx);
+      }
         
       //sa ogranicenjima:
       case "GomezLevi":
@@ -115,10 +122,14 @@ app.MapGet("/exact-solution/{problem_name}", (string problem_name) => {
       {
          return Results.Ok(0.0);
       }
-      /*case "Easom":
+      case "Beale":
       {
-         return Results.Ok(-1.0);
-      }*/
+         return Results.Ok(0.0);
+      }
+      case "Booth":
+      {
+         return Results.Ok(0.0);
+      }
         
       //sa ogranicenjima:
       case "GomezLevi":

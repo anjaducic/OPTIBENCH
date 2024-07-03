@@ -57,7 +57,9 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
 
     def calculate_problem(self, problem_name, x_values):
-        if problem_name == "Easom":
+        if problem_name == "Spherical":
+            return MathFunctions.Sphere(x_values)
+        elif problem_name == "Easom":
             return MathFunctions.Easom(x_values)
         elif problem_name == "Beale":
             return MathFunctions.Beale(x_values)
@@ -73,7 +75,9 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
             return None
         
     def get_exact_solution(self, problem_name):
-            if problem_name == "Easom":
+            if problem_name == "Spherical":
+                return 0.0
+            elif problem_name == "Easom":
                 return -1.0
             elif problem_name == "Beale":
                 return 0.0

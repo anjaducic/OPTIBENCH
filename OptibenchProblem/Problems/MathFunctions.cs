@@ -39,12 +39,12 @@ public static class MathFunctions
 
     public static double Shekel(double[] x)
     {
-        if(x.Length > 4)  //??? da li smije tako, i da li je to ok ako je <4 zbog parametara (a,c) 
+        if(x.Length > 4) 
             return double.NaN;
         int m = 5;
         double sum = 0;
 
-        double[] c = [0.1,0.2,0.2,0.4,0.4]; //provjeriti sve parametre
+        double[] c = [0.1,0.2,0.2,0.4,0.4];
 
         double[,] a = {
             { 2, 2, 2, 2 },
@@ -69,19 +69,39 @@ public static class MathFunctions
 
     public static double Matyas(double[] x)
     {
+        if(x.Length != 2)
+            return double.NaN;
         double term1 = 0.26 * (Math.Pow(x[0], 2) + Math.Pow(x[1], 2));
         double term2 = -0.48 * x[0] * x[1];
         return term1 + term2;
     }
 
-    /*public static double Easom(double[] x)
+    public static double Beale(double[] x)
     {
-        double term1 = Math.Cos(x[0]);
-        double term2 = Math.Cos(x[1]);
-        double term3 = Math.Exp(-Math.Pow(x[0] - Math.PI, 2) - Math.Pow(x[1] - Math.PI, 2));
+        if(x.Length != 2)
+            return double.NaN;
 
-        return -term1 * term2 * term3;
-    }*/
+        double x1 = x[0];
+        double x2 = x[1];
+        double term1 = Math.Pow(1.5 - x1 + x1 * x2, 2);
+        double term2 = Math.Pow(2.25 - x1 + x1 * Math.Pow(x2, 2), 2);
+        double term3 = Math.Pow(2.625 - x1 + x1 * Math.Pow(x2, 3), 2);
+
+        return term1 + term2 + term3;
+    }
+
+    public static double Booth(double[] x)
+    {
+        if(x.Length != 2)
+            return double.NaN;
+
+        double x1 = x[0];
+        double x2 = x[1];
+        double term1 = Math.Pow(x1 + 2 * x2 - 7, 2);
+        double term2 = Math.Pow(2 * x1 + x2 - 5, 2);
+
+        return term1 + term2;
+    } 
 
 
 
@@ -90,7 +110,7 @@ public static class MathFunctions
     {
         if (!GomezLeviConstraints(x))
         {
-            return double.NaN; // nije ispunjen uslov, da li ovo smije
+            return double.NaN; // nije ispunjen uslov
         }
 
         double f = 4 * Math.Pow(x[0], 2) - 2.1 * Math.Pow(x[0], 4) + (1.0 / 3.0) * Math.Pow(x[0], 6)

@@ -31,19 +31,19 @@ namespace Implementations
         public double[] Position { get; private set; }
         public double[] Velocity { get; private set; }
         public double[] BestPosition { get; private set; }
-        public double BestFitness { get; private set; } = -1;
-        public double Fitness { get; private set; } = -1;
+        public double BestFitness { get; private set; } = double.NaN;
+        public double Fitness { get; private set; } = double.NaN;
 
         public Particle(double[] initialPosition, int dimension, PSOOptions options)
         {
             Dimensions = dimension;
             Options = options;
 
-            Position = initialPosition; //u py malo drugacije, provjeriti?
+            Position = initialPosition; 
             Velocity = new double[dimension];;
             BestPosition = new double[dimension];;
 
-            // inic brzina
+          
             var random = new Random();
             for (var i = 0; i < dimension; i++)
             {
@@ -142,7 +142,7 @@ namespace Implementations
                 Population.Add(new Particle(initialPosition, Dimension, Options));
             }
             
-            //Console.WriteLine(Population.Count);
+          
 
             var globalBestPosition = new double[Dimension];
             var globalBestFitness = double.NaN;
