@@ -219,23 +219,29 @@ namespace HttpClientSample
         private static void ExecuteOptimizers()
         {
             // ****************************************** EXECUTE RANDOM SEARCH ********************************************
-
+            
             //spherical
             var spherical_optimum = spherical_random_search_optimizer!.Optimize(spherical_remote_dotnet!);  
             spherical_optimum.Wait();
             var (x, fx, iterNum) = spherical_optimum.Result;
-            //store result
-            var spherical_result = new OptimizationResultDto(x, fx, spherical_random_search_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote_dotnet!.Uri},{"ProblemName", spherical_remote_dotnet!.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), spherical_random_search_optimizer.OptimizerName);   
+            var spherical_result = new OptimizationResultDto(x, fx, spherical_random_search_args!.GenerateJson(), 
+                                        generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", spherical_remote_dotnet!.Uri},
+                                        {"ProblemName", spherical_remote_dotnet!.ProblemName}}), 
+                                        generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), 
+                                        spherical_random_search_optimizer.OptimizerName);   
             var monitoring = monitor.Save(spherical_result, spherical_remote_dotnet);
             monitoring.Wait(); 
             Console.WriteLine($"spherical-random-search: x = [{string.Join(", ", x)}], fx = {fx}");
-/*
+
             //rosenbrock
             var rosenbrock_optimum = rosenbrock_random_search_optimizer!.Optimize(rosenbrock_remote_dotnet!);  
             rosenbrock_optimum.Wait();
             (x, fx, iterNum) = rosenbrock_optimum.Result;
-            //store result
-            var rosenbrock_result = new OptimizationResultDto(x, fx, rosenbrock_random_search_args!.GenerateJson(), generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", rosenbrock_remote_dotnet!.Uri},{"ProblemName", rosenbrock_remote_dotnet.ProblemName}}), generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}), rosenbrock_random_search_optimizer.OptimizerName);
+            var rosenbrock_result = new OptimizationResultDto(x, fx, rosenbrock_random_search_args!.GenerateJson(),
+                                        generator.GenerateJson(new Dictionary<string, object>{{"ProblemUri", rosenbrock_remote_dotnet!.Uri},
+                                        {"ProblemName", rosenbrock_remote_dotnet.ProblemName}}), 
+                                        generator.GenerateJson(new Dictionary<string, object>{{"Count", iterNum}}),
+                                        rosenbrock_random_search_optimizer.OptimizerName);
             monitoring = monitor.Save(rosenbrock_result, rosenbrock_remote_dotnet!);
             monitoring.Wait(); 
             Console.WriteLine($"rosenbrock-random-search: x = [{string.Join(", ", x)}], fx = {fx}"); 
@@ -404,7 +410,7 @@ namespace HttpClientSample
             monitoring.Wait(); 
             Console.WriteLine($"booth-pso: x = [{string.Join(", ", x)}], fx = {fx}");
 
-*/
+
 
         }
     }

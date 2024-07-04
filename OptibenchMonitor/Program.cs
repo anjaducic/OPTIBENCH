@@ -38,23 +38,12 @@ app.UseSwaggerUI(c =>
    c.SwaggerEndpoint("/swagger/v1/swagger.json", "OptibenchMonitor API V1");
 });
 
-app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync());    //get all
-/*app.MapGet("/param/{id}", async (ResultsContext db, int id) =>
-{
-    var result = await db.Results.FindAsync(id);
-    if (result == null)
-    {
-        return Results.NotFound();
-    }
+app.MapGet("/results", async (ResultsContext db) => await db.Results.ToListAsync());    
 
-    return Results.Ok(result.Params);
-});*/
-
-//za veliki histogram
-app.MapGet("/results/problemName/{problemName}/optimizerName/{optimizerName}", async (ResultsContext db, string problemName, string optimizerName) =>
+app.MapGet("/results/problemName/{problemName}/optimizerName/{optimizerName}", 
+            async (ResultsContext db, string problemName, string optimizerName) =>
 {
     var allResults = await db.Results.ToListAsync();
-    //Console.WriteLine(allResults[0].ExactSolution);
 
     var filteredResults = allResults
             .Where(r => JObject.Parse(r.ProblemInfo)["ProblemName"]!.ToString() == problemName && r.OptimizerName == optimizerName)

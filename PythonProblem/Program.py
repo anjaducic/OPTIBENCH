@@ -11,14 +11,11 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         if parsed_path.path.startswith('/problems/'):
             problem_name = parsed_path.path.split('/')[-1]
             x_values = [float(x) for x in query_params.get('x', [])]
-
             result = self.calculate_problem(problem_name, x_values)
-
             if result is not None:
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/plain')
                 self.end_headers()
-
                 response = str(result)
                 self.wfile.write(response.encode('utf-8'))
             else:
@@ -26,24 +23,19 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
         elif parsed_path.path.startswith('/exact-solution/'):
             problem_name = parsed_path.path.split('/')[-1]
-            
             result = self.get_exact_solution(problem_name)
-
             if result is not None:
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/plain')
                 self.end_headers()
-
                 response = str(result)
                 self.wfile.write(response.encode('utf-8'))
             else:
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/plain')
                 self.end_headers()
-
                 response = str(math.nan)
-                self.wfile.write(response.encode('utf-8'))
-        
+                self.wfile.write(response.encode('utf-8')) 
         else:
             self.send_response(404, 'Not Found: problem does not exist')
             self.end_headers()

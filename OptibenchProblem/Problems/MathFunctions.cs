@@ -1,7 +1,6 @@
 using System;
 using Microsoft.OpenApi.Any;
 
-// klasa koja sadrzi samo funkcije probleme
 public static class MathFunctions
 {
     

@@ -20,6 +20,8 @@ app.UseSwaggerUI(c =>
 
 
 //http://localhost:5030/problems/spherical?x=1&x=1.2&x=-0.5&x=0 - primjer izgleda putanje
+
+
 app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
 
    switch(problem_name)
@@ -85,7 +87,6 @@ app.MapGet("/problems/{problem_name}", (string problem_name, double[] x) => {
       case "MishrasBird":
       {
          double fx = MathFunctions.MishrasBird(x);
-        // Console.WriteLine(fx);
          if(double.IsNaN(fx))
             return Results.NotFound("No result.");
          return Results.Ok(fx);
@@ -116,7 +117,7 @@ app.MapGet("/exact-solution/{problem_name}", (string problem_name) => {
       }
       case "Shekel":
       {
-         return Results.NotFound(double.NaN.ToString());   //ok jer postoji fja, ali nepoznato rj
+         return Results.NotFound(double.NaN.ToString());   
       }
       case "Matyas":
       {

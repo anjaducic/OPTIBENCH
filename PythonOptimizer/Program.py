@@ -113,11 +113,12 @@ class Program:
         spherical_optimum = spherical_optimum_task.result()
         (x, fx, iterNum) = spherical_optimum
         print(f"spherical-pso: x = [{', '.join(map(str, x))}], fx = {fx}")
-        spherical_result = OptimizationResultDto(x, fx, spherical_pso_args.generate_json(), generator.generate_json({"ProblemUri":spherical_remote_py.uri, "ProblemName":spherical_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), spherical_pso_optimizer.optimizer_name)
+        spherical_result = OptimizationResultDto(x, fx, spherical_pso_args.generate_json(), 
+                                                generator.generate_json({"ProblemUri":spherical_remote_py.uri, "ProblemName":spherical_remote_py.problem_name}), 
+                                                generator.generate_json({"Count":iterNum}), spherical_pso_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
         monitor_task = asyncio.ensure_future(monitor.save(spherical_result, spherical_remote_py))
         loop.run_until_complete(monitor_task)
-        #spherical_optimum = spherical_optimum_task.result()
 
         #easom
         loop = asyncio.get_event_loop()
@@ -126,7 +127,9 @@ class Program:
         easom_optimum = easom_optimum_task.result()
         (x, fx, iterNum) = easom_optimum
         print(f"easom-pso: x = [{', '.join(map(str, x))}], fx = {fx}")
-        easom_result = OptimizationResultDto(x, fx, easom_pso_args.generate_json(), generator.generate_json({"ProblemUri":easom_remote_py.uri, "ProblemName":easom_remote_py.problem_name}), generator.generate_json({"Count":iterNum}), easom_pso_optimizer.optimizer_name)
+        easom_result = OptimizationResultDto(x, fx, easom_pso_args.generate_json(), 
+                                            generator.generate_json({"ProblemUri":easom_remote_py.uri, "ProblemName":easom_remote_py.problem_name}), 
+                                            generator.generate_json({"Count":iterNum}), easom_pso_optimizer.optimizer_name)
         loop = asyncio.get_event_loop()
         monitor_task = asyncio.ensure_future(monitor.save(easom_result, easom_remote_py))
         loop.run_until_complete(monitor_task)

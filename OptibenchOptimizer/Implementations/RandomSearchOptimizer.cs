@@ -33,27 +33,21 @@ namespace Implementations
                 double[] currentX = new double[Dimension];
                 double currentFitness;
                 for (int j = 0; j < Dimension; j++)
-                {
                     currentX[j] = random.NextDouble() * (this.UpperBounds[j] - this.LowerBounds[j]) + this.LowerBounds[j];
-                }
+
                 currentFitness = await problem.GetValue(currentX);
-
-                if(double.IsNaN(currentFitness))    //da li je u redu dodati ovu provjeru ovdje
+                if(double.IsNaN(currentFitness))
                     continue;
-                
                 iterNum++;
-
-                // novo najbolje rjesenje
                 if (double.IsNaN(bestFitness) || currentFitness < bestFitness)
                 {
                     Array.Copy(currentX, bestX, this.Dimension);
                     bestFitness = currentFitness;
                 }
             }
-
             if(iterNum > 0)
                 return (bestX, bestFitness, iterNum);
-            return (bestX, double.NaN, iterNum);    // :|
+            return (bestX, double.NaN, iterNum);   
         }
     }
 }

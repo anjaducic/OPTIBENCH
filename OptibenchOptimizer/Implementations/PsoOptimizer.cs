@@ -128,7 +128,6 @@ namespace Implementations
         }
         public async Task<(double[], double, int)> Optimize(IProblem problem)
         {
-            
             Population = new List<Particle>();
             for (var i = 0; i < NumParticles; i++)
             {
@@ -141,28 +140,18 @@ namespace Implementations
                 Population.Add(new Particle(initialPosition, Dimension, Options));
             }
             
-          
-
             var globalBestPosition = new double[Dimension];
             var globalBestFitness = double.NaN;
 
-            
-            // opt petlja
             for (var iter = 0; iter < MaxIterations; iter++)
             {
-                
-                // Evaluate fitness - za svaku cesticu
-                (globalBestPosition, globalBestFitness) = await EvaluateFitness(problem, globalBestPosition, globalBestFitness);
-                
-                
-                // Za svaku cesticu azuriraj velocity i position
+                (globalBestPosition, globalBestFitness) = await EvaluateFitness(problem, globalBestPosition, globalBestFitness);   
                 foreach (var particle in Population)
                 {
                     particle.UpdateVelocity(globalBestPosition, MaxIterations, iter);
                     particle.UpdatePosition();
                 }
             }
-
             return (globalBestPosition, globalBestFitness, iterNum);
         }
         
