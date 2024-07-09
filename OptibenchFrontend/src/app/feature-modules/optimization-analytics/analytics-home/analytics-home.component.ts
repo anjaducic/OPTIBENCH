@@ -15,7 +15,7 @@ import { RankingComponent } from "../ranking/ranking.component";
 })
 export class AnalyticsHomeComponent implements OnInit {
     results: OptimizationResult[] = [];
-    groupedResults: { [key: number]: OptimizationResult[] } = {}; //grupisami po params hash codovima
+    groupedResults: { [key: number]: OptimizationResult[] } = {}; //grupisani po params hash codovima
     selectedProblemName: string = "";
     isProblemNameSelected: boolean = false;
     faChartLine = faChartLine;

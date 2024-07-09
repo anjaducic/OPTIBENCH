@@ -4,7 +4,7 @@
     align-items: center;
     text-align: center;
     padding: 20px;
-    background-color: #ffffff; /* bela pozadina kontejnera */
+    background-color: #ffffff;
 }
 
 .header {
@@ -16,8 +16,8 @@
     width: 100%;
     border: none;
     height: 1px;
-    background-color: #dcdcdc; /* svetlo siva linija */
-    margin: 0; /* uklanjanje margine za hr */
+    background-color: #dcdcdc;
+    margin: 0;
 }
 
 .form-field {
@@ -25,7 +25,7 @@
 }
 
 h1 {
-    color: #7c4dff; /* ljubičasto plava boja za naslov */
+    color: #7c4dff;
 }
 
 .header .bold-text {
@@ -34,35 +34,35 @@ h1 {
 }
 
 .mat-form-field {
-    width: 100%; /* širina 100% za mat-form-field */
-    max-width: 400px; /* maksimalna širina za mat-form-field */
+    width: 100%;
+    max-width: 400px;
 }
 
 .optimizers-table {
-    width: 80%; /* širina tabele je 80% kontejnera */
+    width: 80%;
     border-collapse: collapse;
-    table-layout: fixed; /* fiksna širina tabele */
-    margin: 0 auto; /* centriranje tabele */
+    table-layout: fixed;
+    margin: 0 auto;
 }
 
 .optimizers-table th,
 .optimizers-table td {
-    border: 1px solid #dcdcdc; /* sivi okvir za ćelije */
-    padding: 12px; /* veći padding za bolji izgled */
+    border: 1px solid #dcdcdc;
+    padding: 12px;
     text-align: center;
-    white-space: nowrap; /* sprečava prelamanje teksta u ćelijama */
-    overflow: hidden; /* sakriva eventualni višak sadržaja */
-    text-overflow: ellipsis; /* dodaje trotoar ako ima viška teksta */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .optimizers-table th {
-    background-color: #f0f0f0; /* svetlo siva pozadina za zaglavlje */
-    color: #323232; /* tamno siva boja teksta */
+    background-color: #f0f0f0;
+    color: #323232;
     font-weight: bold;
 }
 
 .optimizers-table td a {
-    color: #007bff; /* plava boja za linkove */
+    color: #007bff;
     font-weight: bold;
     text-decoration: none;
 }

@@ -105,13 +105,12 @@ export class RankingComponent implements OnInit {
                 console.log("data2", data2);
                 const diff1 = Math.abs(data1.averageY - this.exactSolution);
                 const diff2 = Math.abs(data2.averageY - this.exactSolution);
-                return diff1 - diff2; // Sortiranje po rastućem redosledu razlika
+                return diff1 - diff2;
             },
         );
 
         console.log("sortirani", sortedResults);
 
-        // Konvertovanje nazad u željeni format
         const rankedResults: {
             [key: string]: { averageY: number; count: number; params: string };
         } = {};
@@ -119,7 +118,6 @@ export class RankingComponent implements OnInit {
             rankedResults[averageY] = { averageY, count, params };
         });
 
-        // Postavljanje rankedResults na rezultate
         this.rankedResults = rankedResults;
     }
 }

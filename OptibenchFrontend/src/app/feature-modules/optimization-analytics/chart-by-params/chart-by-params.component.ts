@@ -66,7 +66,7 @@ export class ChartByParamsComponent implements OnInit {
             };
             this.xRanges.push(singleRange);
         } else {
-            const rangeSize = (this.yMax - this.yMin) / 5; //provjeriti za negativne
+            const rangeSize = (this.yMax - this.yMin) / 5;
             for (let i = 0; i < 5; i++) {
                 if (i === 4)
                     var range: Range = {
@@ -125,7 +125,7 @@ export class ChartByParamsComponent implements OnInit {
                             backgroundColor: this.dataSets.map(y =>
                                 this.generateColor(y),
                             ),
-                            pointRadius: 10, // veca tacka
+                            pointRadius: 10,
                             pointHoverRadius: 12,
                         },
                     ],
